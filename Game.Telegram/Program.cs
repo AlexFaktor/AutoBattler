@@ -2,7 +2,10 @@
 using Game.Core.Database.Records.Users;
 using Game.Core.Resources.Enums.Telegram;
 using Game.Database.Context;
+using Game.Database.Service.Users;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
@@ -13,32 +16,31 @@ namespace Game.Telegram
 {
     internal class Program
     {
-        private static readonly ITelegramBotClient Bot = new TelegramBotClient(Config.telegram_token);
+        private static IHost _host;
 
-        private static GameDbContext CreateDbContext()
+        static async Task Main(string[] args)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<GameDbContext>();
-            optionsBuilder.UseSqlServer(Config.database_connection_string);
-            return new GameDbContext(optionsBuilder.Options);
-        }
+            _host = CreateHostBuilder(args).Build();
 
-        static async Task Main()
-        {
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
                 .CreateLogger();
 
             Log.Information("Starting bot...");
 
-            var updates = await Bot.GetUpdatesAsync();
+            var bot = _host.Services.GetRequiredService<ITelegramBotClient>();
+
+            var updates = await bot.GetUpdatesAsync();
             var lastUpdateId = updates.Length != 0 ? updates.Select(u => u.Id).Max() : 0;
 
-            Bot.StartReceiving(new DefaultUpdateHandler(Update, Error),
+            bot.StartReceiving(new DefaultUpdateHandler(Update, Error),
                 new ReceiverOptions
                 {
                     AllowedUpdates = new[] { UpdateType.Message },
                     Offset = lastUpdateId + 1
                 });
+
+            await _host.RunAsync();
 
             Console.WriteLine("Bot is running...");
             Console.ReadLine();
@@ -46,34 +48,42 @@ namespace Game.Telegram
 
         private static async Task Update(ITelegramBotClient client, Update update, CancellationToken token)
         {
+            using var scope = _host.Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<GameDbContext>();
+            var userService = scope.ServiceProvider.GetRequiredService<UserService>();
+            var userTelegramService = scope.ServiceProvider.GetRequiredService<UserTelegramService>();
+
             var message = update.Message;
             if (message == null || message.From == null) return;
 
             var chatId = message.Chat.Id;
             var userId = message.From.Id;
 
-            using var dbContext = CreateDbContext();
-            var userTelegram = await dbContext.UserTelegrams.FirstOrDefaultAsync(u => u.TelegramId == userId.ToString());
+            var userTelegram = await userTelegramService.GetAsync(userId.ToString());
 
             if (userTelegram == null)
             {
+                var userRecord = new UserRecord();
+
                 userTelegram = new UserTelegram
                 {
                     TelegramId = userId.ToString(),
                     Status = ETelegramUserStatus.Default
                 };
-                dbContext.UserTelegrams.Add(userTelegram);
-                await dbContext.SaveChangesAsync();
+
+                userRecord.Telegram = userTelegram;
+
+                await userService.AddAsync(userRecord);
             }
 
             switch (userTelegram.Status)
             {
                 case ETelegramUserStatus.InputNewUsername:
-                    await HandleNewUsername(message, userTelegram, dbContext);
+                    await InputNewUsername(message, userTelegram, dbContext);
                     break;
 
                 case ETelegramUserStatus.InputNewHashtag:
-                    await HandleNewHashtag(message, userTelegram, dbContext);
+                    await InputNewHashtag(message, userTelegram, dbContext);
                     break;
 
                 default:
@@ -88,57 +98,57 @@ namespace Game.Telegram
 
             if (message.Text!.StartsWith("/start"))
             {
-                await Bot.SendTextMessageAsync(chatId, "Welcome! Please enter your username (up to 16 characters):");
+                await _host.Services.GetRequiredService<ITelegramBotClient>().SendTextMessageAsync(chatId, "Welcome! Please enter your username (up to 16 characters):");
                 userTelegram.Status = ETelegramUserStatus.InputNewUsername;
                 await dbContext.SaveChangesAsync();
             }
             else if (message.Text.StartsWith("/setusername"))
             {
                 var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userTelegram.UserId);
-                await Bot.SendTextMessageAsync(chatId, $"Your current username is: {user.Username}. Please enter your new username (up to 16 characters):");
+                await _host.Services.GetRequiredService<ITelegramBotClient>().SendTextMessageAsync(chatId, $"Your current username is: {user.Username}. Please enter your new username (up to 16 characters):");
                 userTelegram.Status = ETelegramUserStatus.InputNewUsername;
                 await dbContext.SaveChangesAsync();
             }
         }
 
-        private static async Task HandleNewUsername(Message message, UserTelegram userTelegram, GameDbContext dbContext)
+        private static async Task InputNewUsername(Message message, UserTelegram userTelegram, GameDbContext dbContext)
         {
             var chatId = message.Chat.Id;
-            var newUsername = message.Text.Trim();
+            var newUsername = message.Text!.Trim();
 
             if (newUsername.Length > 16)
             {
-                await Bot.SendTextMessageAsync(chatId, "Username must be 16 characters or less. Please enter a valid username:");
+                await _host.Services.GetRequiredService<ITelegramBotClient>().SendTextMessageAsync(chatId, "Username must be 16 characters or less. Please enter a valid username:");
                 return;
             }
 
             var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Username == newUsername);
             if (existingUser != null)
             {
-                await Bot.SendTextMessageAsync(chatId, "This username is already taken. Please enter a different username:");
+                await _host.Services.GetRequiredService<ITelegramBotClient>().SendTextMessageAsync(chatId, "This username is already taken. Please enter a different username:");
                 return;
             }
 
             userTelegram.Status = ETelegramUserStatus.InputNewHashtag;
             await dbContext.SaveChangesAsync();
-            await Bot.SendTextMessageAsync(chatId, "Please enter your hashtag (6 characters starting with #):");
+            await _host.Services.GetRequiredService<ITelegramBotClient>().SendTextMessageAsync(chatId, "Please enter your hashtag (6 characters starting with #):");
         }
 
-        private static async Task HandleNewHashtag(Message message, UserTelegram userTelegram, GameDbContext dbContext)
+        private static async Task InputNewHashtag(Message message, UserTelegram userTelegram, GameDbContext dbContext)
         {
             var chatId = message.Chat.Id;
-            var newHashtag = message.Text.Trim();
+            var newHashtag = message.Text!.Trim();
 
             if (newHashtag.Length != 6 || !newHashtag.StartsWith("#") || !IsValidHashtag(newHashtag))
             {
-                await Bot.SendTextMessageAsync(chatId, "Invalid hashtag. It must be 6 characters, start with # and contain only alphanumeric characters. Please enter a valid hashtag:");
+                await _host.Services.GetRequiredService<ITelegramBotClient>().SendTextMessageAsync(chatId, "Invalid hashtag. It must be 6 characters, start with # and contain only alphanumeric characters. Please enter a valid hashtag:");
                 return;
             }
 
             var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Hashtag == newHashtag);
             if (existingUser != null)
             {
-                await Bot.SendTextMessageAsync(chatId, "This hashtag is already taken. Please enter a different hashtag:");
+                await _host.Services.GetRequiredService<ITelegramBotClient>().SendTextMessageAsync(chatId, "This hashtag is already taken. Please enter a different hashtag:");
                 return;
             }
 
@@ -167,7 +177,7 @@ namespace Game.Telegram
             userTelegram.Language = message.From?.LanguageCode;
 
             await dbContext.SaveChangesAsync();
-            await Bot.SendTextMessageAsync(chatId, "Your username and hashtag have been updated successfully.");
+            await _host.Services.GetRequiredService<ITelegramBotClient>().SendTextMessageAsync(chatId, "Your username and hashtag have been updated successfully.");
         }
 
         private static bool IsValidHashtag(string hashtag)
@@ -186,5 +196,16 @@ namespace Game.Telegram
                 Console.WriteLine($"An error occurred while handling an error: {ex.Message}");
             }
         }
+
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureServices((context, services) =>
+                {
+                    services.AddDbContext<GameDbContext>(options =>
+                        options.UseSqlServer(Config.database_connection_string));
+                    services.AddSingleton<ITelegramBotClient>(new TelegramBotClient(Config.telegram_token));
+                    services.AddTransient<UserService>();
+                    services.AddTransient<UserTelegramService>();
+                });
     }
 }

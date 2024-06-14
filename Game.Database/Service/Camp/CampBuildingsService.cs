@@ -30,6 +30,6 @@ namespace Game.Database.Service.Camp
                                                                 b.BuildingId == buildingId);
         }
 
-        public async Task<CampBuilding?> UpdateAsync(Guid userId, EBuildings buildingId, )
+        // public async Task<CampBuilding?> UpdateAsync(Guid userId, EBuildings buildingId, )
     }
 }

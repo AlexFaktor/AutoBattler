@@ -10,11 +10,11 @@ namespace Game.Database.Context
     {
         public DbSet<UserRecord> Users { get; set; }
         public DbSet<UserCamp> UserCamps { get; set; }
+        public DbSet<UserResources> UserResources { get; set; }
+        public DbSet<UserTelegram> UserTelegrams { get; set; }
+        public DbSet<UserStatistics> UserStatistics { get; set; }
         public DbSet<UserCharacter> UserCharacters { get; set; }
         public DbSet<UserItem> UserItems { get; set; }
-        public DbSet<UserResources> UserResources { get; set; }
-        public DbSet<UserStatistics> UserStatistics { get; set; }
-        public DbSet<UserTelegram> UserTelegrams { get; set; }
 
         public DbSet<CampBuilding> CampBuildings { get; set; }
 
@@ -33,6 +33,8 @@ namespace Game.Database.Context
             modelBuilder.ApplyConfiguration(new UserStatisticsConfiguration());
             modelBuilder.ApplyConfiguration(new UserTelegramConfiguration());
             modelBuilder.ApplyConfiguration(new CampBuildingsConfiguration());
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

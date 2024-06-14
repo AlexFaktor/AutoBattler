@@ -18,7 +18,8 @@ namespace Game.Database.Entity.Configurations.Users
             builder.Property(x => x.Status)
                 .HasConversion(
                     v => v.ToString(),
-                    v => (ETelegramUserStatus)Enum.Parse(typeof(ETelegramUserStatus), v));
+                    v => (ETelegramUserStatus)Enum.Parse(typeof(ETelegramUserStatus), v))
+                .IsRequired();
 
             builder.Property(x => x.Username)
                 .HasMaxLength(32);
