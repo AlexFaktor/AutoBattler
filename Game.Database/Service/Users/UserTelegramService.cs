@@ -26,10 +26,33 @@ namespace Game.Database.Service.Users
         {
             return await _db.UserTelegrams.FirstOrDefaultAsync(t => t.UserId == userId);
         }
+        
+        public async Task<UserTelegram?> GetAsync(string userId)
+        {
+            return await _db.UserTelegrams.FirstOrDefaultAsync(t => t.TelegramId == userId);
+        }
 
         public async Task<UserTelegram?> UpdateAsync(Guid userId, UserTelegram updatedTelegram)
         {
             var telegram = await _db.UserTelegrams.FirstOrDefaultAsync(t => t.UserId == userId);
+            if (telegram is not null)
+            {
+                telegram.TelegramId = updatedTelegram.TelegramId;
+                telegram.Username = updatedTelegram.Username;
+                telegram.FirstName = updatedTelegram.FirstName;
+                telegram.LastName = updatedTelegram.LastName;
+                telegram.Phone = updatedTelegram.Phone;
+                telegram.Language = updatedTelegram.Language;
+
+                await _db.SaveChangesAsync();
+                return telegram;
+            }
+            return null;
+        }
+
+        public async Task<UserTelegram?> UpdateAsync(string userId, UserTelegram updatedTelegram)
+        {
+            var telegram = await _db.UserTelegrams.FirstOrDefaultAsync(t => t.TelegramId == userId);
             if (telegram is not null)
             {
                 telegram.TelegramId = updatedTelegram.TelegramId;

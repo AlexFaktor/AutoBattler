@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Game.Database.Entity.Configurations
+namespace Game.Database.Entity.Configurations.Users
 {
     public class UserStatisticsConfiguration : IEntityTypeConfiguration<UserStatistics>
     {

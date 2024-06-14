@@ -25,12 +25,12 @@ namespace Game.Database.Service.Users
 
         public async Task<UserItem?> GetAsync(Guid userId, EItem itemId)
         {
-            return await _db.UserItems.FirstOrDefaultAsync(i => i.UserId == userId && i.Item == itemId);
+            return await _db.UserItems.FirstOrDefaultAsync(i => i.UserId == userId && i.ItemId == itemId);
         }
 
         public async Task<bool> DeleteAsync(Guid userId, EItem itemId)
         {
-            var item = await _db.UserItems.FirstOrDefaultAsync(i => i.UserId == userId && i.Item == itemId);
+            var item = await _db.UserItems.FirstOrDefaultAsync(i => i.UserId == userId && i.ItemId == itemId);
             if (item is not null)
             {
                 _db.UserItems.Remove(item);

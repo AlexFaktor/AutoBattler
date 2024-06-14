@@ -1,8 +1,9 @@
 ﻿using Game.Core.Database.Records.Users;
+using Game.Core.Resources.Enums.Telegram;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Game.Database.Entity.Configurations
+namespace Game.Database.Entity.Configurations.Users
 {
     public class UserTelegramConfiguration : IEntityTypeConfiguration<UserTelegram>
     {
@@ -13,6 +14,11 @@ namespace Game.Database.Entity.Configurations
             builder.Property(x => x.TelegramId)
                 .IsRequired()
                 .HasMaxLength(50);
+
+            builder.Property(x => x.Status)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (ETelegramUserStatus)Enum.Parse(typeof(ETelegramUserStatus), v));
 
             builder.Property(x => x.Username)
                 .HasMaxLength(32);

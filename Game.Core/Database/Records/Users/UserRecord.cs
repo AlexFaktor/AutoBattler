@@ -1,6 +1,6 @@
 ﻿namespace Game.Core.Database.Records.Users
 {
-    public class User
+    public class UserRecord
     {
         public Guid Id { get; set; }
         public string Username { get; set; } = string.Empty;
