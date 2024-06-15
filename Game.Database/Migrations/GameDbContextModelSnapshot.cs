@@ -167,6 +167,9 @@ namespace Game.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("StatusLevel")
+                        .HasColumnType("int");
+
                     b.Property<string>("TelegramId")
                         .IsRequired()
                         .HasMaxLength(50)

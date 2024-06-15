@@ -1,4 +1,6 @@
-﻿namespace Game.Core.Database.Records.Users
+﻿using Game.Core.Dtos.UserDtos.Telegrams;
+
+namespace Game.Core.Database.Records.Users
 {
     public class UserRecord
     {
@@ -14,5 +16,23 @@
         public UserCamp Camp { get; set; } = new();
         public List<UserCharacter> Characters { get; set; } = new();
         public List<UserItem> Items { get; set; } = new();
+
+        public UserRecord() { }
+
+        public UserRecord(UserTelegramCreateDto dto)
+        {
+            Username = dto.Username;
+            Hashtag = dto.Hashtag;
+
+            Telegram = new()
+            {
+                TelegramId = dto.TelegramId,
+                Username = dto.TelegramUsername,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Phone = dto.Phone,
+                Language = dto.Language,
+            };
+        }
     }
 }

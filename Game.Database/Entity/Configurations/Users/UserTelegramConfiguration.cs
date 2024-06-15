@@ -21,6 +21,9 @@ namespace Game.Database.Entity.Configurations.Users
                     v => (ETelegramUserStatus)Enum.Parse(typeof(ETelegramUserStatus), v))
                 .IsRequired();
 
+            builder.Property(x => x.StatusLevel)
+                .IsRequired();
+
             builder.Property(x => x.Username)
                 .HasMaxLength(32);
 

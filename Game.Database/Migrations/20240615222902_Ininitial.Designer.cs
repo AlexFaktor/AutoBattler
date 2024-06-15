@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Game.Database.Migrations
 {
     [DbContext(typeof(GameDbContext))]
-    [Migration("20240614222947_Initial")]
-    partial class Initial
+    [Migration("20240615222902_Ininitial")]
+    partial class Ininitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -169,6 +169,9 @@ namespace Game.Database.Migrations
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StatusLevel")
+                        .HasColumnType("int");
 
                     b.Property<string>("TelegramId")
                         .IsRequired()

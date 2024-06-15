@@ -20,27 +20,33 @@ namespace Game.Database.Entity.Configurations.Users
 
             builder.HasOne(x => x.Telegram)
                 .WithOne()
-                .HasForeignKey<UserTelegram>(x => x.UserId);
+                .HasForeignKey<UserTelegram>(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade); // Каскадне видалення
 
             builder.HasOne(x => x.Resources)
                 .WithOne()
-                .HasForeignKey<UserResources>(x => x.UserId);
+                .HasForeignKey<UserResources>(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade); // Каскадне видалення
 
             builder.HasOne(x => x.Statistics)
                 .WithOne()
-                .HasForeignKey<UserStatistics>(x => x.UserId);
+                .HasForeignKey<UserStatistics>(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade); // Каскадне видалення
 
             builder.HasOne(x => x.Camp)
                 .WithOne()
-                .HasForeignKey<UserCamp>(x => x.UserId);
+                .HasForeignKey<UserCamp>(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade); // Каскадне видалення
 
             builder.HasMany(x => x.Characters)
                 .WithOne()
-                .HasForeignKey(x => x.UserId);
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade); // Каскадне видалення
 
             builder.HasMany(x => x.Items)
                 .WithOne()
-                .HasForeignKey(x => x.UserId);
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade); // Каскадне видалення
         }
     }
 }

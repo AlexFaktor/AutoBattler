@@ -5,7 +5,9 @@
 
         Default = 0,
 
-        InputNewUsername = 101,
-        InputNewHashtag = 102,
+        UserRegistration = 100,
+
+        SetUsername = 101,
+        SetHashtag = 102,
     }
 }
