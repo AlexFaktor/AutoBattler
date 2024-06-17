@@ -10,6 +10,11 @@ namespace Game.Database.Entity.Configurations.Users
         {
             builder.HasKey(x => x.UserId);
 
+            builder.HasOne(x => x.User)
+                   .WithOne()
+                   .HasForeignKey<UserResources>(x => x.UserId)
+                   .IsRequired();
+
             builder.Property(x => x.RandomCoin)
                 .HasColumnType("decimal(18,2)")
                 .IsRequired();

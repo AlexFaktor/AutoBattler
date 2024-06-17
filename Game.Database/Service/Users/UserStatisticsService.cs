@@ -52,5 +52,18 @@ namespace Game.Database.Service.Users
             }
             return false;
         }
+
+        public async Task<bool?> AddInteraction(Guid userId)
+        {
+            var statistics = await _db.UserStatistics.FirstOrDefaultAsync(s => s.UserId == userId);
+            if (statistics is not null)
+            {
+                statistics.NumberInteractionsWithBot += 1;
+
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
     }
 }

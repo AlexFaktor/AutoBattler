@@ -24,7 +24,14 @@ namespace Game.Database.Service.Users
 
         public async Task<UserRecord?> GetAsync(Guid id)
         {
-            return await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
+            return await _db.Users
+                .Include(ur => ur.Telegram)
+                .Include(ur => ur.Resources)
+                .Include(ur => ur.Statistics)
+                .Include(ur => ur.Camp)
+                .Include(ur => ur.Characters)
+                .Include(ur => ur.Items)
+                .FirstOrDefaultAsync(ur => ur.Id == id);
         }
 
         public async Task<UserRecord?> UpdateAsync(Guid id, UserRecord updatedUser)

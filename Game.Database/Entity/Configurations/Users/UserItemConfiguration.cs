@@ -11,6 +11,11 @@ namespace Game.Database.Entity.Configurations.Users
         {
             builder.HasKey(x => new { x.UserId, x.ItemId });
 
+            builder.HasOne(x => x.User)
+                   .WithOne()
+                   .HasForeignKey<UserItem>(x => x.UserId)
+                   .IsRequired();
+
             builder.Property(x => x.ItemId)
                 .HasConversion(
                     v => v.ToString(),

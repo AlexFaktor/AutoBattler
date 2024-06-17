@@ -5,6 +5,7 @@ namespace Game.Core.Database.Records.Users
     public class UserCharacter
     {
         public Guid UserId { get; set; }
+        public virtual UserRecord User { get; set; }
         public ECharacter CharacterId { get; set; }
     }
 }

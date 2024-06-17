@@ -11,6 +11,11 @@ namespace Game.Database.Entity.Configurations.Users
         {
             builder.HasKey(x => x.UserId);
 
+            builder.HasOne(x => x.User)
+                   .WithOne()
+                   .HasForeignKey<UserTelegram>(x => x.UserId)
+                   .IsRequired();
+
             builder.Property(x => x.TelegramId)
                 .IsRequired()
                 .HasMaxLength(50);
