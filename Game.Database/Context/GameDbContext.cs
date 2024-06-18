@@ -15,7 +15,7 @@ namespace Game.Database.Context
         public DbSet<LogExecuteGlobalTask> LogExecuteTasks { get; set; } 
         public DbSet<LogExecuteIndividualTask> LogIndividualTasks { get; set; } 
 
-        public DbSet<UserRecord> Users { get; set; }
+        public DbSet<GameUser> Users { get; set; }
         public DbSet<UserCamp> UserCamps { get; set; }
         public DbSet<UserResources> UserResources { get; set; }
         public DbSet<UserTelegram> UserTelegrams { get; set; }

@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Game.Database.Entity.Configurations.Users
 {
-    public class UserConfiguration : IEntityTypeConfiguration<UserRecord>
+    public class UserConfiguration : IEntityTypeConfiguration<GameUser>
     {
-        public void Configure(EntityTypeBuilder<UserRecord> builder)
+        public void Configure(EntityTypeBuilder<GameUser> builder)
         {
             builder.HasKey(x => x.Id);
 

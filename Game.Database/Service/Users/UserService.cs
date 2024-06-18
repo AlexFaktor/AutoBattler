@@ -13,16 +13,16 @@ namespace Game.Database.Service.Users
             _db = db;
         }
 
-        public async Task<UserRecord?> AddAsync(UserRecord user)
+        public async Task<GameUser?> AddAsync(GameUser user)
         {
             await _db.Users.AddAsync(user);
             await _db.SaveChangesAsync();
             return user;
         }
 
-        public async Task<List<UserRecord>> GetAllAsync() => await _db.Users.ToListAsync();
+        public async Task<List<GameUser>> GetAllAsync() => await _db.Users.ToListAsync();
 
-        public async Task<UserRecord?> GetAsync(Guid id)
+        public async Task<GameUser?> GetAsync(Guid id)
         {
             return await _db.Users
                 .Include(ur => ur.Telegram)
@@ -34,7 +34,7 @@ namespace Game.Database.Service.Users
                 .FirstOrDefaultAsync(ur => ur.Id == id);
         }
 
-        public async Task<UserRecord?> UpdateAsync(Guid id, UserRecord updatedUser)
+        public async Task<GameUser?> UpdateAsync(Guid id, GameUser updatedUser)
         {
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
             if (user is not null)

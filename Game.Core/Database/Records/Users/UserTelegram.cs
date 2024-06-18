@@ -5,7 +5,7 @@ namespace Game.Core.Database.Records.Users
     public class UserTelegram
     { 
         public Guid UserId { get; set; }
-        public virtual UserRecord User { get; set; }
+        public virtual GameUser User { get; set; }
         public string TelegramId { get; set; } = string.Empty;
 
         public ETelegramUserStatus Status { get; set; } = ETelegramUserStatus.UserRegistration;

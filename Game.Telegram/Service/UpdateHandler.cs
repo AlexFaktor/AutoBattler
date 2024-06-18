@@ -38,7 +38,7 @@ public class UpdateHandler
         if (userTelegram == null)
         {
             var userService = scope.ServiceProvider.GetRequiredService<UserService>();
-            var user = await userService.AddAsync(new UserRecord(
+            var user = await userService.AddAsync(new GameUser(
                 new UserTelegramCreateDto
                 {
                     TelegramId = message.From.Id.ToString(),

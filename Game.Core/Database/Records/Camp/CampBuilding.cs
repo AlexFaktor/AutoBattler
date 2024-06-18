@@ -6,7 +6,7 @@ namespace Game.Core.Database.Records.Camp
     public class CampBuilding
     {
         public Guid UserId { get; set; }
-        public virtual UserRecord User { get; set; }
+        public virtual GameUser User { get; set; }
 
         public EBuildings BuildingId { get; set; }
     }
