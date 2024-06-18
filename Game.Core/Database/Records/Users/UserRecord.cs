@@ -1,4 +1,5 @@
-﻿using Game.Core.Dtos.UserDtos.Telegrams;
+﻿using Game.Core.Database.Records.Things;
+using Game.Core.Dtos.UserDtos.Telegrams;
 
 namespace Game.Core.Database.Records.Users
 {
@@ -14,8 +15,8 @@ namespace Game.Core.Database.Records.Users
         public UserStatistics Statistics { get; set; } = new();
 
         public UserCamp Camp { get; set; } = new();
-        public List<UserCharacter> Characters { get; set; } = new();
-        public List<UserItem> Items { get; set; } = new();
+        public List<CharacterRecord> Characters { get; set; } = new();
+        public List<ItemRecord> Items { get; set; } = new();
 
         public UserRecord() { }
 

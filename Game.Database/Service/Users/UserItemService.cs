@@ -1,4 +1,4 @@
-﻿using Game.Core.Database.Records.Users;
+﻿using Game.Core.Database.Records.Things;
 using Game.Core.Resources.Enums.Game;
 using Game.Database.Context;
 using Microsoft.EntityFrameworkCore;
@@ -14,16 +14,16 @@ namespace Game.Database.Service.Users
             _db = db;
         }
 
-        public async Task<UserItem?> AddAsync(UserItem item)
+        public async Task<ItemRecord?> AddAsync(ItemRecord item)
         {
             await _db.UserItems.AddAsync(item);
             await _db.SaveChangesAsync();
             return item;
         }
 
-        public async Task<List<UserItem>> GetAllAsync() => await _db.UserItems.ToListAsync();
+        public async Task<List<ItemRecord>> GetAllAsync() => await _db.UserItems.ToListAsync();
 
-        public async Task<UserItem?> GetAsync(Guid userId, EItem itemId)
+        public async Task<ItemRecord?> GetAsync(Guid userId, EItem itemId)
         {
             return await _db.UserItems.FirstOrDefaultAsync(i => i.UserId == userId && i.ItemId == itemId);
         }

@@ -1,36 +1,43 @@
+﻿using Game.Core.Resources.Interfraces.ScheduledTaskService;
 
-namespace Game.ScheduledTaskService
+namespace Game.Web;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
+        // Створюємо і запускаємо хост
+        var host = CreateHostBuilder(args).Build();
+
+        // Виконуємо ініціалізаційні завдання
+        using (var scope = host.Services.CreateScope())
         {
-            var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
-
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            var services = scope.ServiceProvider;
+            try
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                // Отримуємо сервіс для управління задачами
+                var taskService = services.GetRequiredService<ITaskService>();
+                // Запускаємо обробку задач
+                taskService.ProcessPendingTasksAsync().Wait();
             }
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-
-            app.MapControllers();
-
-            app.Run();
+            catch (Exception ex)
+            {
+                // Логування помилок
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "An error occurred while initializing the task processing.");
+            }
         }
+
+        // Запускаємо хост
+        host.Run();
     }
+
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                // Вказуємо клас Startup для конфігурації
+                webBuilder.UseStartup<Startup>();
+            });
 }
+

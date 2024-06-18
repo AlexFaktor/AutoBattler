@@ -1,9 +1,7 @@
 ﻿using Game.Core.Database.Records.Camp;
-using Game.Core.Database.Records.Users;
 using Game.Core.Resources.Enums.Game;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Reflection.Emit;
 
 namespace Game.Database.Entity.Configurations.Camp
 {

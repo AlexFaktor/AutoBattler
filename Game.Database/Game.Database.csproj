@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Entity\Configurations\ScheduledTask\" />
     <Folder Include="Migrations\" />
     <Folder Include="Service\Filters\" />
   </ItemGroup>
