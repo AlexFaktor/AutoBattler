@@ -3,6 +3,8 @@ using Game.Core.Database.Records.ScheduledTask;
 using Game.Core.Database.Records.Things;
 using Game.Core.Database.Records.Users;
 using Game.Database.Entity.Configurations.Camp;
+using Game.Database.Entity.Configurations.ScheduledTask;
+using Game.Database.Entity.Configurations.Things;
 using Game.Database.Entity.Configurations.Users;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,12 +37,14 @@ namespace Game.Database.Context
         {
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new UserCampConfiguration());
-            modelBuilder.ApplyConfiguration(new UserCharacterConfiguration());
-            modelBuilder.ApplyConfiguration(new UserItemConfiguration());
+            modelBuilder.ApplyConfiguration(new CharacterRecordConfiguration());
+            modelBuilder.ApplyConfiguration(new ItemRecordConfiguration());
             modelBuilder.ApplyConfiguration(new UserResourcesConfiguration());
             modelBuilder.ApplyConfiguration(new UserStatisticsConfiguration());
             modelBuilder.ApplyConfiguration(new UserTelegramConfiguration());
             modelBuilder.ApplyConfiguration(new CampBuildingsConfiguration());
+            modelBuilder.ApplyConfiguration(new GlobalTaskConfiguration());
+            modelBuilder.ApplyConfiguration(new IndividualTaskConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

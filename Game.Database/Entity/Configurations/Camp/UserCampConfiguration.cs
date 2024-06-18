@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Game.Database.Entity.Configurations.Users
+namespace Game.Database.Entity.Configurations.Camp
 {
     public class UserCampConfiguration : IEntityTypeConfiguration<UserCamp>
     {

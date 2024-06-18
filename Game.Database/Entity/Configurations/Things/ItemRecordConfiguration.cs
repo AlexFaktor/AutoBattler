@@ -3,9 +3,9 @@ using Game.Core.Resources.Enums.Game;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Game.Database.Entity.Configurations.Users
+namespace Game.Database.Entity.Configurations.Things
 {
-    public class UserItemConfiguration : IEntityTypeConfiguration<ItemRecord>
+    public class ItemRecordConfiguration : IEntityTypeConfiguration<ItemRecord>
     {
         public void Configure(EntityTypeBuilder<ItemRecord> builder)
         {
