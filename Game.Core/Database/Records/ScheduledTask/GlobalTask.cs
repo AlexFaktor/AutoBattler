@@ -1,5 +1,4 @@
-﻿using Game.Core.Database.Records.Users;
-using Game.Core.Resources.Enums.ScheduledTask;
+﻿using Game.Core.Resources.Enums.ScheduledTask;
 
 namespace Game.Core.Database.Records.ScheduledTask;
 

@@ -14,6 +14,7 @@ namespace Game.Database.Entity.Configurations.Users
             builder.HasOne(x => x.User)
                    .WithOne()
                    .HasForeignKey<UserTelegram>(x => x.UserId)
+                   .OnDelete(DeleteBehavior.Restrict)
                    .IsRequired();
 
             builder.Property(x => x.TelegramId)

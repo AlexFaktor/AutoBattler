@@ -1,0 +1,6 @@
+@Game.ContentManagementSystemAPI_HostAddress = http://localhost:5211
+
+GET {{Game.ContentManagementSystemAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Game.Database.Service.Users
 {
-    public class UserTelegramService
+    public class UTelegramRepository
     {
         private readonly GameDbContext _db;
 
-        public UserTelegramService(GameDbContext db)
+        public UTelegramRepository(GameDbContext db)
         {
             _db = db;
         }

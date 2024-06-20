@@ -9,11 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Core", "Game.Core\Game
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Telegram", "Game.Telegram\Game.Telegram.csproj", "{59FFEFFA-2231-4F02-AD12-A22FE2383964}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.WebAPI", "Game.WebAPI\Game.WebAPI.csproj", "{35F72E80-469C-4CA5-910B-81BC2A8AC665}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Discord", "Game.Discord\Game.Discord.csproj", "{8A2853BF-3BA8-4F00-8912-6EE179A92EA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.ScheduledTaskService", "Game.ScheduledTaskService\Game.ScheduledTaskService.csproj", "{9E087683-651D-45DE-9FC3-47FD0A1FBDC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.ScheduledTaskService", "Game.ScheduledTaskService\Game.ScheduledTaskService.csproj", "{9E087683-651D-45DE-9FC3-47FD0A1FBDC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.ContentManagementSystemAPI", "Game.ContentManagementSystemAPI\Game.ContentManagementSystemAPI.csproj", "{6A712816-E16D-4308-919A-21D42B641562}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +33,6 @@ Global
 		{59FFEFFA-2231-4F02-AD12-A22FE2383964}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59FFEFFA-2231-4F02-AD12-A22FE2383964}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59FFEFFA-2231-4F02-AD12-A22FE2383964}.Release|Any CPU.Build.0 = Release|Any CPU
-		{35F72E80-469C-4CA5-910B-81BC2A8AC665}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35F72E80-469C-4CA5-910B-81BC2A8AC665}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35F72E80-469C-4CA5-910B-81BC2A8AC665}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35F72E80-469C-4CA5-910B-81BC2A8AC665}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8A2853BF-3BA8-4F00-8912-6EE179A92EA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8A2853BF-3BA8-4F00-8912-6EE179A92EA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A2853BF-3BA8-4F00-8912-6EE179A92EA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{9E087683-651D-45DE-9FC3-47FD0A1FBDC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E087683-651D-45DE-9FC3-47FD0A1FBDC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E087683-651D-45DE-9FC3-47FD0A1FBDC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A712816-E16D-4308-919A-21D42B641562}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A712816-E16D-4308-919A-21D42B641562}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A712816-E16D-4308-919A-21D42B641562}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A712816-E16D-4308-919A-21D42B641562}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

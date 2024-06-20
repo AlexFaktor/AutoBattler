@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Game.Database.Service.Camp
 {
-    public class CampBuildingsService
+    public class CampBuildingsRepository
     {
         private readonly GameDbContext _db;
 
-        public CampBuildingsService(GameDbContext db)
+        public CampBuildingsRepository(GameDbContext db)
         {
             _db = db;
         }

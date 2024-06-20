@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Game.Database.Service.Users
 {
-    public class UserService
+    public class UserRepository
     {
         private readonly GameDbContext _db;
 
-        public UserService(GameDbContext db)
+        public UserRepository(GameDbContext db)
         {
             _db = db;
         }

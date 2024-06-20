@@ -19,8 +19,8 @@ public class Startup
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
         // Реєстрація сервісів
-        services.AddScoped<ITaskService, TaskService>();
-        services.AddHostedService<TaskSchedulerHostedService>();
+        services.AddScoped<ITaskService, TaskService>(); // Scoped service
+        services.AddSingleton<IHostedService, TaskSchedulerHostedService>(); // Singleton service
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

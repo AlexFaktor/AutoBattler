@@ -1,16 +1,17 @@
 ﻿using Game.Core.Resources.Interfraces.ScheduledTaskService;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Game.Web;
 
 public class TaskSchedulerHostedService : IHostedService, IDisposable
 {
     private Timer _timer;
-    private readonly ITaskService _taskService;
+    private readonly IServiceScopeFactory _scopeFactory;
     private readonly ILogger<TaskSchedulerHostedService> _logger;
 
-    public TaskSchedulerHostedService(ITaskService taskService, ILogger<TaskSchedulerHostedService> logger)
+    public TaskSchedulerHostedService(IServiceScopeFactory scopeFactory, ILogger<TaskSchedulerHostedService> logger)
     {
-        _taskService = taskService;
+        _scopeFactory = scopeFactory;
         _logger = logger;
     }
 
@@ -23,7 +24,11 @@ public class TaskSchedulerHostedService : IHostedService, IDisposable
 
     private void ProcessTasks(object state)
     {
-        _taskService.ProcessPendingTasksAsync().Wait();
+        using (var scope = _scopeFactory.CreateScope())
+        {
+            var taskService = scope.ServiceProvider.GetRequiredService<ITaskService>();
+            taskService.ProcessPendingTasksAsync().Wait();
+        }
     }
 
     public Task StopAsync(CancellationToken cancellationToken)

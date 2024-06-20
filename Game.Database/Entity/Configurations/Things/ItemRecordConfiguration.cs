@@ -12,9 +12,9 @@ namespace Game.Database.Entity.Configurations.Things
             builder.HasKey(x => new { x.UserId, x.ItemId });
 
             builder.HasOne(x => x.User)
-                   .WithOne()
-                   .HasForeignKey<ItemRecord>(x => x.UserId)
-                   .IsRequired();
+                .WithMany(u => u.Items)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(x => x.ItemId)
                 .HasConversion(

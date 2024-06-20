@@ -19,34 +19,34 @@ namespace Game.Database.Entity.Configurations.Users
                 .HasMaxLength(6);
 
             builder.HasOne(x => x.Telegram)
-                .WithOne()
+                .WithOne(t => t.User) // Додаємо точне визначення
                 .HasForeignKey<UserTelegram>(x => x.UserId)
-                .OnDelete(DeleteBehavior.Cascade); // Каскадне видалення
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(x => x.Resources)
-                .WithOne()
+                .WithOne(r => r.User) // Додаємо точне визначення
                 .HasForeignKey<UserResources>(x => x.UserId)
-                .OnDelete(DeleteBehavior.Cascade); // Каскадне видалення
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(x => x.Statistics)
-                .WithOne()
+                .WithOne(s => s.User) // Додаємо точне визначення
                 .HasForeignKey<UserStatistics>(x => x.UserId)
-                .OnDelete(DeleteBehavior.Cascade); // Каскадне видалення
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(x => x.Camp)
-                .WithOne()
+                .WithOne(c => c.User) // Додаємо точне визначення
                 .HasForeignKey<UserCamp>(x => x.UserId)
-                .OnDelete(DeleteBehavior.Cascade); // Каскадне видалення
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(x => x.Characters)
-                .WithOne()
+                .WithOne(c => c.User) // Додаємо точне визначення
                 .HasForeignKey(x => x.UserId)
-                .OnDelete(DeleteBehavior.Cascade); // Каскадне видалення
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(x => x.Items)
-                .WithOne()
+                .WithOne(i => i.User) // Додаємо точне визначення
                 .HasForeignKey(x => x.UserId)
-                .OnDelete(DeleteBehavior.Cascade); // Каскадне видалення
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

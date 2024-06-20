@@ -11,8 +11,9 @@ namespace Game.Database.Entity.Configurations.Users
             builder.HasKey(x => x.UserId);
 
             builder.HasOne(x => x.User)
-                   .WithOne()
-                   .HasForeignKey<UserResources>(x => x.UserId)
+                   .WithOne(u => u.Resources)
+                   .HasForeignKey<UserCamp>(x => x.UserId)
+                   .OnDelete(DeleteBehavior.Cascade)
                    .IsRequired();
 
             builder.Property(x => x.RandomCoin)

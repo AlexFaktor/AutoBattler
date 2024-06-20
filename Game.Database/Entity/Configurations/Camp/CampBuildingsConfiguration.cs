@@ -14,6 +14,7 @@ namespace Game.Database.Entity.Configurations.Camp
             builder.HasOne(x => x.User)
                    .WithOne()
                    .HasForeignKey<CampBuilding>(x => x.UserId)
+                   .OnDelete(DeleteBehavior.Restrict)
                    .IsRequired();
 
             builder.Property(x => x.BuildingId)

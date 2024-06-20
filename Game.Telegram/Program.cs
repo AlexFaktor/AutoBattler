@@ -24,9 +24,9 @@ namespace Game.Telegram
                     services.AddDbContext<GameDbContext>(options =>
                         options.UseSqlServer(Config.database_connection_string));
                     services.AddSingleton<ITelegramBotClient>(new TelegramBotClient(Config.telegram_token));
-                    services.AddTransient<UserService>();
-                    services.AddTransient<UserStatisticsService>();
-                    services.AddTransient<UserTelegramService>();
+                    services.AddTransient<UserRepository>();
+                    services.AddTransient<UStatisticsRepository>();
+                    services.AddTransient<UTelegramRepository>();
                     services.AddSingleton<UpdateHandler>();
                     services.AddSingleton<CommandHandler>();
                 })
@@ -48,8 +48,6 @@ namespace Game.Telegram
                 .WriteTo.Console()
                 .CreateLogger();
 
-            Log.Information("Starting bot...");
-
             var bot = _host.Services.GetRequiredService<ITelegramBotClient>();
             var updateHandler = _host.Services.GetRequiredService<UpdateHandler>();
 
@@ -67,6 +65,7 @@ namespace Game.Telegram
                 receiverOptions
             );
 
+            Log.Information("Starting bot...");
             await _host.RunAsync();
         }
     }

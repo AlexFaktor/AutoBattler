@@ -22,8 +22,8 @@ public class CommandHandler
     public async Task HandleCommand(ITelegramBotClient bot, Message message)
     {
         using var scope = _serviceProvider.CreateScope();
-        var telegramService = scope.ServiceProvider.GetRequiredService<UserTelegramService>();
-        var userService = scope.ServiceProvider.GetRequiredService<UserService>();
+        var telegramService = scope.ServiceProvider.GetRequiredService<UTelegramRepository>();
+        var userService = scope.ServiceProvider.GetRequiredService<UserRepository>();
         var userTelegram = await telegramService.GetAsync(message.From!.Id.ToString());
 
         if (userTelegram == null) return;
@@ -81,8 +81,8 @@ public class CommandHandler
     {
         using var scope = _serviceProvider.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<GameDbContext>();
-        var userService = scope.ServiceProvider.GetRequiredService<UserService>();
-        var telegramService = scope.ServiceProvider.GetRequiredService<UserTelegramService>();
+        var userService = scope.ServiceProvider.GetRequiredService<UserRepository>();
+        var telegramService = scope.ServiceProvider.GetRequiredService<UTelegramRepository>();
         var userTelegram = await telegramService.GetAsync(message.From!.Id.ToString());
 
         if (userTelegram == null) return;
@@ -114,8 +114,8 @@ public class CommandHandler
     {
         using var scope = _serviceProvider.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<GameDbContext>();
-        var userService = scope.ServiceProvider.GetRequiredService<UserService>();
-        var telegramService = scope.ServiceProvider.GetRequiredService<UserTelegramService>();
+        var userService = scope.ServiceProvider.GetRequiredService<UserRepository>();
+        var telegramService = scope.ServiceProvider.GetRequiredService<UTelegramRepository>();
         var userTelegram = await telegramService.GetAsync(message.From!.Id.ToString());
 
         if (userTelegram == null) return;
@@ -156,8 +156,8 @@ public class CommandHandler
     {
         using var scope = _serviceProvider.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<GameDbContext>();
-        var userService = scope.ServiceProvider.GetRequiredService<UserService>();
-        var telegramService = scope.ServiceProvider.GetRequiredService<UserTelegramService>();
+        var userService = scope.ServiceProvider.GetRequiredService<UserRepository>();
+        var telegramService = scope.ServiceProvider.GetRequiredService<UTelegramRepository>();
         var userTelegram = await telegramService.GetAsync(message.From!.Id.ToString());
 
         if (userTelegram == null) return;
