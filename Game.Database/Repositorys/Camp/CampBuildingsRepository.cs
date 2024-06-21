@@ -1,35 +1,20 @@
 ﻿using Game.Core.Database.Records.Camp;
 using Game.Core.Resources.Enums.Game;
-using Game.Database.Context;
-using Microsoft.EntityFrameworkCore;
+using Npgsql;
+using System.Data;
 
-namespace Game.Database.Service.Camp
+namespace Game.Database.Service.Camp;
+
+public class CampBuildingsRepository
 {
-    public class CampBuildingsRepository
+    private readonly string _connectionString;
+
+    private IDbConnection Connection => new NpgsqlConnection(_connectionString);
+
+    public CampBuildingsRepository(string connectionString)
     {
-        private readonly GameDbContext _db;
-
-        public CampBuildingsRepository(GameDbContext db)
-        {
-            _db = db;
-        }
-
-        public async Task<CampBuilding?> AddAsync(CampBuilding campBuilding)
-        {
-            await _db.CampBuildings.AddAsync(campBuilding);
-            await _db.SaveChangesAsync();
-            return campBuilding;
-        }
-
-        public async Task<List<CampBuilding>> GetAllAsync() => await _db.CampBuildings.ToListAsync();
-
-        public async Task<CampBuilding?> GetAsync(Guid userId, EBuildings buildingId)
-        {
-            return await _db.CampBuildings.FirstOrDefaultAsync(b =>
-                                                                b.UserId == userId &&
-                                                                b.BuildingId == buildingId);
-        }
-
-        // public async Task<CampBuilding?> UpdateAsync(Guid userId, EBuildings buildingId, )
+        _connectionString = connectionString;
     }
+
+    // CRUD
 }

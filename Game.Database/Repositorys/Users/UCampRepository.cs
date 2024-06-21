@@ -1,54 +1,50 @@
 ﻿using Game.Core.Database.Records.Users;
-using Game.Database.Context;
-using Microsoft.EntityFrameworkCore;
+using Dapper;
+using Npgsql;
+using System.Data;
 
-namespace Game.Database.Service.Users
+namespace Game.Database.Service.Users;
+
+public class UCampRepository
 {
-    public class UCampRepository
+    private readonly string _connectionString;
+
+    private IDbConnection Connection => new NpgsqlConnection(_connectionString);
+
+    public UCampRepository(string connectionString)
     {
-        private readonly GameDbContext _db;
+        _connectionString = connectionString;
+    }
 
-        public UCampRepository(GameDbContext db)
+    public async Task<List<UserCamp>> GetAllAsync()
+    {
+        using var connection = Connection;
+        var query = "SELECT * FROM user.Camp";
+        var result = await connection.QueryAsync<UserCamp>(query);
+        return result.ToList();
+    }
+
+    public async Task<UserCamp?> GetAsync(Guid userId)
+    {
+        using var connection = Connection;
+        var query = "SELECT * FROM user.Camp WHERE userId = @UserId";
+        var result = await connection.QuerySingleOrDefaultAsync<UserCamp>(query, new { UserId = userId });
+        return result;
+    }
+
+    public async Task<UserCamp?> UpdateAsync(Guid userId, UserCamp updatedCamp)
+    {
+        using var connection = Connection;
+        var query = @"
+                UPDATE user.Camp
+                SET name = @Name
+                WHERE userId = @UserId
+                RETURNING *";
+        var result = await connection.QuerySingleOrDefaultAsync<UserCamp>(query, new
         {
-            _db = db;
-        }
-
-        public async Task<UserCamp?> AddAsync(UserCamp camp)
-        {
-            await _db.UserCamps.AddAsync(camp);
-            await _db.SaveChangesAsync();
-            return camp;
-        }
-
-        public async Task<List<UserCamp>> GetAllAsync() => await _db.UserCamps.ToListAsync();
-
-        public async Task<UserCamp?> GetAsync(Guid userId)
-        {
-            return await _db.UserCamps.FirstOrDefaultAsync(c => c.UserId == userId);
-        }
-
-        public async Task<UserCamp?> UpdateAsync(Guid userId, UserCamp updatedCamp)
-        {
-            var camp = await _db.UserCamps.FirstOrDefaultAsync(c => c.UserId == userId);
-            if (camp is not null)
-            {
-                camp.Name = updatedCamp.Name;
-                await _db.SaveChangesAsync();
-                return camp;
-            }
-            return null;
-        }
-
-        public async Task<bool> DeleteAsync(Guid userId)
-        {
-            var camp = await _db.UserCamps.FirstOrDefaultAsync(c => c.UserId == userId);
-            if (camp is not null)
-            {
-                _db.UserCamps.Remove(camp);
-                await _db.SaveChangesAsync();
-                return true;
-            }
-            return false;
-        }
+            updatedCamp.Name,
+            UserId = userId,
+        });
+        return result;
     }
 }

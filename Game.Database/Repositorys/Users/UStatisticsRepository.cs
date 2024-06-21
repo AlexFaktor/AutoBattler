@@ -1,69 +1,64 @@
 ﻿using Game.Core.Database.Records.Users;
-using Game.Database.Context;
-using Microsoft.EntityFrameworkCore;
+using Dapper;
+using Npgsql;
+using System.Data;
 
-namespace Game.Database.Service.Users
+namespace Game.Database.Service.Users;
+
+public class UStatisticsRepository
 {
-    public class UStatisticsRepository
+    private readonly string _connectionString;
+
+    private IDbConnection Connection => new NpgsqlConnection(_connectionString);
+
+    public UStatisticsRepository(string connectionString)
     {
-        private readonly GameDbContext _db;
+        _connectionString = connectionString;
+    }
 
-        public UStatisticsRepository(GameDbContext db)
+    public async Task<List<UserStatistics>> GetAllAsync()
+    {
+        using var connection = Connection;
+        var query = "SELECT * FROM user.Statistics";
+        var result = await connection.QueryAsync<UserStatistics>(query);
+        return result.ToList();
+    }
+
+    public async Task<UserStatistics?> GetAsync(Guid userId)
+    {
+        using var connection = Connection;
+        var query = "SELECT * FROM user.Statistics WHERE userId = @UserId";
+        var result = await connection.QuerySingleOrDefaultAsync<UserStatistics>(query, new { UserId = userId });
+        return result;
+    }
+
+    public async Task<UserStatistics?> UpdateAsync(Guid userId, UserStatistics updatedStatistics)
+    {
+        using var connection = Connection;
+        var query = @"
+                UPDATE user.Statistics
+                SET dateOfUserRegistration = @DateOfUserRegistration,
+                    numberInteractionsWithBot = @NumberInteractionsWithBot
+                WHERE userId = @UserId
+                RETURNING *";
+        var result = await connection.QuerySingleOrDefaultAsync<UserStatistics>(query, new
         {
-            _db = db;
-        }
+            updatedStatistics.DateOfUserRegistration,
+            updatedStatistics.NumberInteractionsWithBot,
+            UserId = userId
+        });
+        return result;
+    }
 
-        public async Task<UserStatistics?> AddAsync(UserStatistics statistics)
-        {
-            await _db.UserStatistics.AddAsync(statistics);
-            await _db.SaveChangesAsync();
-            return statistics;
-        }
-
-        public async Task<List<UserStatistics>> GetAllAsync() => await _db.UserStatistics.ToListAsync();
-
-        public async Task<UserStatistics?> GetAsync(Guid userId)
-        {
-            return await _db.UserStatistics.FirstOrDefaultAsync(s => s.UserId == userId);
-        }
-
-        public async Task<UserStatistics?> UpdateAsync(Guid userId, UserStatistics updatedStatistics)
-        {
-            var statistics = await _db.UserStatistics.FirstOrDefaultAsync(s => s.UserId == userId);
-            if (statistics is not null)
-            {
-                statistics.DateOfUserRegistration = updatedStatistics.DateOfUserRegistration;
-                statistics.NumberInteractionsWithBot = updatedStatistics.NumberInteractionsWithBot;
-
-                await _db.SaveChangesAsync();
-                return statistics;
-            }
-            return null;
-        }
-
-        public async Task<bool> DeleteAsync(Guid userId)
-        {
-            var statistics = await _db.UserStatistics.FirstOrDefaultAsync(s => s.UserId == userId);
-            if (statistics is not null)
-            {
-                _db.UserStatistics.Remove(statistics);
-                await _db.SaveChangesAsync();
-                return true;
-            }
-            return false;
-        }
-
-        public async Task<bool?> AddInteraction(Guid userId)
-        {
-            var statistics = await _db.UserStatistics.FirstOrDefaultAsync(s => s.UserId == userId);
-            if (statistics is not null)
-            {
-                statistics.NumberInteractionsWithBot += 1;
-
-                await _db.SaveChangesAsync();
-                return true;
-            }
-            return false;
-        }
+    public async Task<bool> AddInteraction(Guid userId)
+    {
+        using var connection = Connection;
+        var query = @"
+                UPDATE user.Statistics
+                SET numberInteractionsWithBot = numberInteractionsWithBot + 1
+                WHERE userId = @UserId
+                RETURNING 1";
+        var result = await connection.ExecuteScalarAsync<int>(query, new { UserId = userId });
+        return result == 1;
     }
 }

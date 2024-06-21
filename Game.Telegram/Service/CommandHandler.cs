@@ -1,8 +1,6 @@
 ﻿using Game.Core.Dtos.UserDtos.Telegrams;
 using Game.Core.Resources.Enums.Telegram;
-using Game.Database.Context;
 using Game.Database.Service.Users;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.RegularExpressions;
 using Telegram.Bot;
@@ -14,20 +12,28 @@ public class CommandHandler
 {
     private readonly IServiceProvider _serviceProvider;
 
+    private readonly UserRepository _userRepository;
+    private readonly UTelegramRepository _telegramRepository;
+    private readonly UStatisticsRepository _statisticsRepository;
+    private readonly UResourcesRepository _resourcesRepository;
+
     public CommandHandler(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
+
+        var scope = _serviceProvider.CreateScope();
+        _userRepository = scope.ServiceProvider.GetRequiredService<UserRepository>();
+        _telegramRepository = scope.ServiceProvider.GetRequiredService<UTelegramRepository>();
+        _statisticsRepository = scope.ServiceProvider.GetRequiredService<UStatisticsRepository>();
+        _resourcesRepository = scope.ServiceProvider.GetRequiredService<UResourcesRepository>();
     }
 
     public async Task HandleCommand(ITelegramBotClient bot, Message message)
     {
-        using var scope = _serviceProvider.CreateScope();
-        var telegramService = scope.ServiceProvider.GetRequiredService<UTelegramRepository>();
-        var userService = scope.ServiceProvider.GetRequiredService<UserRepository>();
-        var userTelegram = await telegramService.GetAsync(message.From!.Id.ToString());
+        var userTelegram = await _telegramRepository.GetAsync(message.From!.Id.ToString());
 
         if (userTelegram == null) return;
-        var user = await userService.GetAsync(userTelegram.UserId);
+        var user = await _userRepository.GetAsync(userTelegram.UserId);
         if (message.Text == null) return;
 
         if (message.Text.StartsWith("/start"))
@@ -43,18 +49,18 @@ public class CommandHandler
                 Language = message.From?.LanguageCode,
             };
 
-            await telegramService.UpdateAsync(message.From!.Id.ToString(), dto);
-            await telegramService.ChangeStatus(message.From!.Id.ToString(), ETelegramUserStatus.Default, 0);
+            await _telegramRepository.UpdateAsync(message.From!.Id.ToString(), dto);
+            await _telegramRepository.ChangeStatus(message.From!.Id.ToString(), ETelegramUserStatus.Default, 0);
         }
         else if (message.Text.StartsWith("/setusername") && user != null)
         {
             await bot.SendTextMessageAsync(message.Chat.Id, $"Current name is {user.Username} \r\nEnter your new name:");
-            await telegramService.ChangeStatus(message.From!.Id.ToString(), ETelegramUserStatus.SetUsername, 0);
+            await _telegramRepository.ChangeStatus(message.From!.Id.ToString(), ETelegramUserStatus.SetUsername, 0);
         }
         else if (message.Text.StartsWith("/sethashtag") && user != null)
         {
             await bot.SendTextMessageAsync(message.Chat.Id, $"Current hashtag is {user.Hashtag} \r\nEnter your new hashtag:");
-            await telegramService.ChangeStatus(message.From!.Id.ToString(), ETelegramUserStatus.SetHashtag, 0);
+            await _telegramRepository.ChangeStatus(message.From!.Id.ToString(), ETelegramUserStatus.SetHashtag, 0);
         }
         else if (message.Text.StartsWith("/profile") && user != null)
         {
@@ -63,13 +69,13 @@ public class CommandHandler
                 $"Username - {user.Username}\n" +
                 $"Hashtag - {user.Hashtag}\n" +
                 $"\nStatistic:\n" +
-                $"DateOfUserRegistration - {user.Statistics.DateOfUserRegistration}\n" +
-                $"Interaction with the bot - {user.Statistics.NumberInteractionsWithBot}\n" +
+                $"DateOfUserRegistration - {user}\n" +
+                $"Interaction with the bot - {user}\n" +
                 $"\nResoursec:\n" +
-                $"RandomCoin - {user.Resources.RandomCoin}\n" +
-                $"Fackoins - {user.Resources.Fackoins}\n" +
-                $"SoulValue - {user.Resources.SoulValue}\n" +
-                $"Energy - {user.Resources.Energy}\n");
+                $"RandomCoin - {user}\n" +
+                $"Fackoins - {user}\n" +
+                $"SoulValue - {user}\n" +
+                $"Energy - {user}\n");
         }
         else
         {
@@ -79,14 +85,10 @@ public class CommandHandler
 
     public async Task SetUsername(ITelegramBotClient bot, Message message)
     {
-        using var scope = _serviceProvider.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<GameDbContext>();
-        var userService = scope.ServiceProvider.GetRequiredService<UserRepository>();
-        var telegramService = scope.ServiceProvider.GetRequiredService<UTelegramRepository>();
-        var userTelegram = await telegramService.GetAsync(message.From!.Id.ToString());
+        var userTelegram = await _telegramRepository.GetAsync(message.From!.Id.ToString());
 
         if (userTelegram == null) return;
-        var user = await userService.GetAsync(userTelegram.UserId);
+        var user = await _userRepository.GetAsync(userTelegram.UserId);
         if (user == null) return;
 
         var chatId = message.Chat.Id;
@@ -98,7 +100,7 @@ public class CommandHandler
             return;
         }
 
-        var existingUser = await db.Users.FirstOrDefaultAsync(u => u.Username == newUsername && u.Hashtag == user.Hashtag);
+        var existingUser = await _userRepository.GetAsync(userTelegram.UserId);
         if (existingUser != null)
         {
             await bot.SendTextMessageAsync(chatId, "This username and hashtag is already taken. Please enter a different username or change hashtag:");
@@ -106,20 +108,16 @@ public class CommandHandler
         }
 
         user.Username = newUsername;
-        await telegramService.ChangeStatus(message.From!.Id.ToString(), ETelegramUserStatus.Default, 0);
+        await _telegramRepository.ChangeStatus(message.From!.Id.ToString(), ETelegramUserStatus.Default, 0);
         await bot.SendTextMessageAsync(chatId, $"Your name has been changed. Your new name: {newUsername}");
     }
 
     public async Task SetHashtag(ITelegramBotClient bot, Message message)
     {
-        using var scope = _serviceProvider.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<GameDbContext>();
-        var userService = scope.ServiceProvider.GetRequiredService<UserRepository>();
-        var telegramService = scope.ServiceProvider.GetRequiredService<UTelegramRepository>();
-        var userTelegram = await telegramService.GetAsync(message.From!.Id.ToString());
+        var userTelegram = await _telegramRepository.GetAsync(message.From!.Id.ToString());
 
         if (userTelegram == null) return;
-        var user = await userService.GetAsync(userTelegram.UserId);
+        var user = await _userRepository.GetAsync(userTelegram.UserId);
         if (user == null) return;
 
         var chatId = message.Chat.Id;
@@ -137,7 +135,7 @@ public class CommandHandler
             return;
         }
 
-        var existingUser = await db.Users.FirstOrDefaultAsync(u => u.Username == user.Username && u.Hashtag == newHashtag);
+        var existingUser = await _userRepository.GetAsync(user.Id);
         if (existingUser != null)
         {
             await bot.SendTextMessageAsync(chatId, "This hashtag and username is already taken. Please enter a different hashtag or change username:");
@@ -146,7 +144,7 @@ public class CommandHandler
 
         user.Hashtag = newHashtag;
 
-        await telegramService.ChangeStatus(message.From!.Id.ToString(), ETelegramUserStatus.Default, 0);
+        await _telegramRepository.ChangeStatus(message.From!.Id.ToString(), ETelegramUserStatus.Default, 0);
         await bot.SendTextMessageAsync(chatId, $"Your hashtag has been changed. Your new hashtag: {newHashtag}");
 
         static bool ContainsOnlyAsciiLettersAndDigits(string input) => Regex.IsMatch(input, @"^[a-zA-Z0-9]+$");
@@ -154,14 +152,10 @@ public class CommandHandler
 
     public async Task UserRegistration(ITelegramBotClient bot, Message message)
     {
-        using var scope = _serviceProvider.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<GameDbContext>();
-        var userService = scope.ServiceProvider.GetRequiredService<UserRepository>();
-        var telegramService = scope.ServiceProvider.GetRequiredService<UTelegramRepository>();
-        var userTelegram = await telegramService.GetAsync(message.From!.Id.ToString());
+        var userTelegram = await _telegramRepository.GetAsync(message.From!.Id.ToString());
 
         if (userTelegram == null) return;
-        var user = await userService.GetAsync(userTelegram.UserId);
+        var user = await _userRepository.GetAsync(userTelegram.UserId);
         if (user == null) return;
 
         var chatId = message.Chat.Id;
@@ -169,7 +163,7 @@ public class CommandHandler
         if (userTelegram.StatusLevel == 0)
         {
             await bot.SendTextMessageAsync(chatId, $"Hi {userTelegram.FirstName}. Enter your name to be used in the game:");
-            await telegramService.ChangeStatus(message.From!.Id.ToString(), ETelegramUserStatus.UserRegistration, 1);
+            await _telegramRepository.ChangeStatus(message.From!.Id.ToString(), ETelegramUserStatus.UserRegistration, 1);
         }
         else if (userTelegram.StatusLevel == 1)
         {
@@ -181,7 +175,7 @@ public class CommandHandler
                 return;
             }
 
-            var existingUser = await db.Users.FirstOrDefaultAsync(u => u.Username == newUsername && u.Hashtag == user.Hashtag);
+            var existingUser = await _userRepository.GetAsync(userTelegram.UserId);
             if (existingUser != null)
             {
                 await bot.SendTextMessageAsync(chatId, "This username and hashtag is already taken. Please enter a different username:");
@@ -189,7 +183,7 @@ public class CommandHandler
             }
 
             user.Username = newUsername;
-            await telegramService.ChangeStatus(message.From!.Id.ToString(), ETelegramUserStatus.Default, 0);
+            await _telegramRepository.ChangeStatus(message.From!.Id.ToString(), ETelegramUserStatus.Default, 0);
             await bot.SendTextMessageAsync(chatId, $"Congratulations {newUsername} and have a great trip. You can view your information with the /profile command.");
         }
     }

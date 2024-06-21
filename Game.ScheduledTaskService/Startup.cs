@@ -1,43 +1,43 @@
 ﻿using Game.Core.Resources.Interfraces.ScheduledTaskService;
-using Game.Database.Context;
-using Microsoft.EntityFrameworkCore;
+using Npgsql;
+using System.Data;
 
-namespace Game.Web;
-
-public class Startup
+namespace Game.Web
 {
-    public Startup(IConfiguration configuration) => Configuration = configuration;
-
-    public IConfiguration Configuration { get; }
-
-    public void ConfigureServices(IServiceCollection services)
+    public class Startup
     {
-        services.AddControllers();
+        public Startup(IConfiguration configuration) => Configuration = configuration;
 
-        // Підключення бази даних
-        services.AddDbContext<GameDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+        public IConfiguration Configuration { get; }
 
-        // Реєстрація сервісів
-        services.AddScoped<ITaskService, TaskService>(); // Scoped service
-        services.AddSingleton<IHostedService, TaskSchedulerHostedService>(); // Singleton service
-    }
-
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-    {
-        if (env.IsDevelopment())
+        public void ConfigureServices(IServiceCollection services)
         {
-            app.UseDeveloperExceptionPage();
+            services.AddControllers();
+
+            // Add configuration for PostgreSQL connection
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+
+            services.AddSingleton<IDbConnection>(sp => new NpgsqlConnection(connectionString));
+
+            // Реєстрація сервісів
+            services.AddScoped<ITaskService, TaskService>(); // Scoped service
+            services.AddSingleton<IHostedService, TaskSchedulerHostedService>(); // Singleton service
         }
 
-        app.UseHttpsRedirection();
-        app.UseRouting();
-        app.UseAuthorization();
-        app.UseEndpoints(endpoints =>
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            endpoints.MapControllers();
-        });
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
     }
 }
-
-

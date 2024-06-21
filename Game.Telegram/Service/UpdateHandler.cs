@@ -1,5 +1,4 @@
-﻿using Game.Core.Database.Records.Users;
-using Game.Core.Dtos.UserDtos.Telegrams;
+﻿using Game.Core.Dtos.UserDtos.Telegrams;
 using Game.Core.Resources.Enums.Telegram;
 using Game.Database.Service.Users;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,90 +6,93 @@ using Serilog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace Game.Telegram.Service
+namespace Game.Telegram.Service;
+
+public class UpdateHandler
 {
-    public class UpdateHandler
+    private readonly IServiceProvider _serviceProvider;
+    private readonly CommandHandler _commandHandler;
+
+    private readonly UserRepository _userRepository;
+    private readonly UTelegramRepository _telegramRepository;
+    private readonly UStatisticsRepository _statisticsRepository;
+
+    public UpdateHandler(IServiceProvider serviceProvider, CommandHandler commandHandler)
     {
-        private readonly IServiceProvider _serviceProvider;
-        private readonly CommandHandler _commandHandler;
+        _serviceProvider = serviceProvider;
+        _commandHandler = commandHandler;
 
-        public UpdateHandler(IServiceProvider serviceProvider, CommandHandler commandHandler)
+        var scope = _serviceProvider.CreateScope();
+        _userRepository = scope.ServiceProvider.GetRequiredService<UserRepository>();
+        _telegramRepository = scope.ServiceProvider.GetRequiredService<UTelegramRepository>();
+        _statisticsRepository = scope.ServiceProvider.GetRequiredService<UStatisticsRepository>();
+    }
+
+    public async Task HandleUpdateAsync(ITelegramBotClient client, Update update, CancellationToken token)
+    {
+        Log.Information($"Received update from user {update.Message?.From?.FirstName} with message: {update.Message?.Text}");
+
+        if (update.Message?.From == null)
         {
-            _serviceProvider = serviceProvider;
-            _commandHandler = commandHandler;
+            Log.Warning("Update.Message.From is null");
+            return;
         }
 
-        public async Task HandleUpdateAsync(ITelegramBotClient client, Update update, CancellationToken token)
+        var message = update.Message;
+        var uTelegram = await _telegramRepository.GetAsync(message.From.Id.ToString());
+
+        if (uTelegram == null)
         {
-            Log.Information($"Received update from user {update.Message?.From?.FirstName} with message: {update.Message?.Text}");
+            var user = await _userRepository.AddAsync(
+                new UserTelegramCreateDto
+                {
+                    TelegramId = message.From.Id.ToString(),
+                    Username = message.From.FirstName,
+                    TelegramUsername = message.From.Username,
+                    FirstName = message.From.FirstName,
+                    LastName = message.From.LastName,
+                    Phone = message.Contact?.PhoneNumber,
+                    Language = message.From.LanguageCode
+                });
 
-            if (update.Message?.From == null)
-            {
-                Log.Warning("Update.Message.From is null");
-                return;
-            }
+            await _telegramRepository.ChangeStatus(message.From.Id.ToString(), ETelegramUserStatus.UserRegistration, 0);
+            uTelegram = await _telegramRepository.GetAsync(user!.Id);
+        }
 
-            using var scope = _serviceProvider.CreateScope();
-            var telegramService = scope.ServiceProvider.GetRequiredService<UTelegramRepository>();
-            var statisticsService = scope.ServiceProvider.GetRequiredService<UStatisticsRepository>();
+        if (uTelegram == null)
+        {
+            Log.Error("UserTelegram is still null after attempting to create it.");
+            return;
+        }
 
-            var message = update.Message;
-            var userTelegram = await telegramService.GetAsync(message.From.Id.ToString());
+        await _statisticsRepository.AddInteraction(uTelegram.UserId);
 
-            if (userTelegram == null)
-            {
-                var userService = scope.ServiceProvider.GetRequiredService<UserRepository>();
-                var user = await userService.AddAsync(new GameUser(
-                    new UserTelegramCreateDto
-                    {
-                        TelegramId = message.From.Id.ToString(),
-                        Username = message.From.FirstName,
-                        TelegramUsername = message.From.Username,
-                        FirstName = message.From.FirstName,
-                        LastName = message.From.LastName,
-                        Phone = message.Contact?.PhoneNumber,
-                        Language = message.From.LanguageCode
-                    }));
+        if (uTelegram is null)
+        {
+            await _commandHandler.HandleCommand(client, message);
+            return;
+        }
 
-                await telegramService.ChangeStatus(message.From.Id.ToString(), ETelegramUserStatus.UserRegistration, 0);
-                userTelegram = user?.Telegram;
-            }
-
-            if (userTelegram == null)
-            {
-                Log.Error("UserTelegram is still null after attempting to create it.");
-                return;
-            }
-
-            await statisticsService.AddInteraction(userTelegram.UserId);
-
-            if (userTelegram is null)
-            {
+        switch (uTelegram!.Status)
+        {
+            case ETelegramUserStatus.UserRegistration:
+                await _commandHandler.UserRegistration(client, message);
+                break;
+            case ETelegramUserStatus.SetUsername:
+                await _commandHandler.SetUsername(client, message);
+                break;
+            case ETelegramUserStatus.SetHashtag:
+                await _commandHandler.SetHashtag(client, message);
+                break;
+            default:
                 await _commandHandler.HandleCommand(client, message);
-                return;
-            }
-
-            switch (userTelegram!.Status)
-            {
-                case ETelegramUserStatus.UserRegistration:
-                    await _commandHandler.UserRegistration(client, message);
-                    break;
-                case ETelegramUserStatus.SetUsername:
-                    await _commandHandler.SetUsername(client, message);
-                    break;
-                case ETelegramUserStatus.SetHashtag:
-                    await _commandHandler.SetHashtag(client, message);
-                    break;
-                default:
-                    await _commandHandler.HandleCommand(client, message);
-                    break;
-            }
+                break;
         }
+    }
 
-        public Task HandleErrorAsync(ITelegramBotClient client, Exception exception, CancellationToken token)
-        {
-            Log.Error(exception, "An error occurred");
-            return Task.CompletedTask;
-        }
+    public Task HandleErrorAsync(ITelegramBotClient client, Exception exception, CancellationToken token)
+    {
+        Log.Error(exception, "An error occurred");
+        return Task.CompletedTask;
     }
 }

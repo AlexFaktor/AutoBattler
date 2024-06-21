@@ -1,5 +1,4 @@
 ﻿using Game.Core.Resources.Interfraces.ScheduledTaskService;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Game.Web;
 

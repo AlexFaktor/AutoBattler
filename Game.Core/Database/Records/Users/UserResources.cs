@@ -1,14 +1,11 @@
-﻿namespace Game.Core.Database.Records.Users
+﻿namespace Game.Core.Database.Records.Users;
+
+public class UserResources
 {
-    public class UserResources
-    {
-        public Guid UserId { get; set; }
-        public virtual GameUser User { get; set; }
+    public Guid UserId { get; set; }
+    public decimal RandomCoin { get; set; } = 0;
+    public decimal Fackoins { get; set; } = 0;
+    public uint SoulValue { get; set; } = 0;
 
-        public decimal RandomCoin { get; set; } = 0;
-        public decimal Fackoins { get; set; } = 0;
-        public uint SoulValue { get; set; } = 0;
-
-        public uint Energy { get; set; } = 0;
-    }
+    public uint Energy { get; set; } = 0;
 }

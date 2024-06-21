@@ -1,15 +1,15 @@
 ﻿using Game.Core.Database.Records.ScheduledTask;
-using Game.Database.Context;
+using System.Data;
 
 namespace Game.ScheduledTaskService.Executors
 {
-    public class ExecutorIndividualTasks(GameDbContext db)
+    public class ExecutorIndividualTasks(IDbConnection connection)
     {
-        private readonly GameDbContext _db = db;
+        private readonly IDbConnection _connection = connection;
 
         public async Task Execute(IndividualTask task)
         {
-            
+
         }
     }
 }

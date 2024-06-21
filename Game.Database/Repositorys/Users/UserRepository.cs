@@ -1,69 +1,169 @@
-﻿using Game.Core.Database.Records.Users;
-using Game.Database.Context;
-using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
+using Game.Core.Database.Records.Users;
+using Game.Core.Dtos.UserDtos.Telegrams;
+using Npgsql;
+using System.Data;
+using System.Security.Cryptography;
+using System.Text;
 
-namespace Game.Database.Service.Users
+namespace Game.Database.Service.Users;
+
+public class UserRepository
 {
-    public class UserRepository
+    private readonly string _connectionString;
+
+    private IDbConnection Connection => new NpgsqlConnection(_connectionString);
+
+    public UserRepository(string connectionString)
     {
-        private readonly GameDbContext _db;
+        _connectionString = connectionString;
+    }
 
-        public UserRepository(GameDbContext db)
-        {
-            _db = db;
-        }
+    public async Task<GameUser?> AddAsync(UserTelegramCreateDto userDto)
+    {
+        using var connection = Connection;
+        using var transaction = connection.BeginTransaction();
 
-        public async Task<GameUser?> AddAsync(GameUser user)
+        try
         {
-            await _db.Users.AddAsync(user);
-            await _db.SaveChangesAsync();
+            var userId = Guid.NewGuid();
+            var insertUserQuery = @"
+                    INSERT INTO user.Users (id, username, hashtag, password_hash)
+                    VALUES (@Id, @Username, @Hashtag, @PasswordHash)
+                    RETURNING *;
+                ";
+            var user = new GameUser
+            {
+                Id = userId,
+                Username = userDto.Username,
+                Hashtag = userDto.Hashtag,
+                PasswordHash = HashPassword("default_password") // Замість цього додайте реальну логіку для хешування пароля
+            };
+            await connection.ExecuteAsync(insertUserQuery, user, transaction);
+
+            // Вставка в таблицю user_telegram
+            var insertTelegramQuery = @"
+                    INSERT INTO user.Telegram (userId, telegramId, username, firstName, lastName, phone, language)
+                    VALUES (@UserId, @TelegramId, @Username, @FirstName, @LastName, @Phone, @Language);
+                ";
+            var userTelegram = new UserTelegram
+            {
+                UserId = userId,
+                TelegramId = userDto.TelegramId,
+                Username = userDto.TelegramUsername,
+                FirstName = userDto.FirstName,
+                LastName = userDto.LastName,
+                Phone = userDto.Phone,
+                Language = userDto.Language
+            };
+            await connection.ExecuteAsync(insertTelegramQuery, userTelegram, transaction);
+
+            // Вставка в таблицю user_camp
+            var insertCampQuery = @"
+                    INSERT INTO user.Camp (userId, name)
+                    VALUES (@UserId, @Name);
+                ";
+            var userCamp = new UserCamp
+            {
+                UserId = userId,
+                Name = "Default Camp Name" // Замість цього додайте реальну логіку для визначення імені табору
+            };
+            await connection.ExecuteAsync(insertCampQuery, userCamp, transaction);
+
+            // Вставка в таблицю user_resources
+            var insertResourcesQuery = @"
+                    INSERT INTO user.Resources (userId, randomCoin, fackoins, soulValue, energy)
+                    VALUES (@UserId, @RandomCoin, @Fackoins, @SoulValue, @Energy);
+                ";
+            var userResources = new UserResources
+            {
+                UserId = userId,
+                RandomCoin = 0,
+                Fackoins = 0,
+                SoulValue = 0,
+                Energy = 0
+            };
+            await connection.ExecuteAsync(insertResourcesQuery, userResources, transaction);
+
+            // Вставка в таблицю user_statistics
+            var insertStatisticsQuery = @"
+                    INSERT INTO user.Statistics (userId, dateOfUserRegistration, numberInteractionsWithBot)
+                    VALUES (@UserId, @DateOfUserRegistration, @NumberInteractionsWithBot);
+                ";
+            var userStatistics = new UserStatistics
+            {
+                UserId = userId,
+                DateOfUserRegistration = DateTime.Now,
+                NumberInteractionsWithBot = 0
+            };
+            await connection.ExecuteAsync(insertStatisticsQuery, userStatistics, transaction);
+
+            transaction.Commit();
             return user;
         }
-
-        public async Task<List<GameUser>> GetAllAsync() => await _db.Users.ToListAsync();
-
-        public async Task<GameUser?> GetAsync(Guid id)
+        catch
         {
-            return await _db.Users
-                .Include(ur => ur.Telegram)
-                .Include(ur => ur.Resources)
-                .Include(ur => ur.Statistics)
-                .Include(ur => ur.Camp)
-                .Include(ur => ur.Characters)
-                .Include(ur => ur.Items)
-                .FirstOrDefaultAsync(ur => ur.Id == id);
+            transaction.Rollback();
+            throw;
         }
+    }
 
-        public async Task<GameUser?> UpdateAsync(Guid id, GameUser updatedUser)
+    public async Task<List<GameUser>> GetAllAsync()
+    {
+        using var connection = Connection;
+        var query = "SELECT * FROM user.Users;";
+        var users = await connection.QueryAsync<GameUser>(query);
+        return users.ToList();
+    }
+
+    public async Task<GameUser?> GetAsync(Guid id)
+    {
+        using var connection = Connection;
+        var query = @"
+                SELECT * FROM user.Users WHERE id = @Id;
+                -- Add more queries to include related entities if necessary
+            ";
+        var user = await connection.QueryFirstOrDefaultAsync<GameUser>(query, new { Id = id });
+        if (user != null)
         {
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
-            if (user is not null)
-            {
-                user.Username = updatedUser.Username;
-                user.Hashtag = updatedUser.Hashtag;
-                user.Telegram = updatedUser.Telegram;
-                user.Resources = updatedUser.Resources;
-                user.Statistics = updatedUser.Statistics;
-                user.Camp = updatedUser.Camp;
-                user.Characters = updatedUser.Characters;
-                user.Items = updatedUser.Items;
-
-                await _db.SaveChangesAsync();
-                return user;
-            }
-            return null;
+            // Load related entities here using additional queries if needed
         }
+        return user;
+    }
 
-        public async Task<bool> DeleteAsync(Guid id)
+    public async Task<GameUser?> UpdateAsync(Guid id, GameUser updatedUser)
+    {
+        using var connection = Connection;
+        var query = @"
+                UPDATE user.Users SET
+                    username = @Username,
+                    hashtag = @Hashtag,
+                    password_hash = @PasswordHash
+                WHERE id = @Id
+                RETURNING *;
+            ";
+        return await connection.QuerySingleOrDefaultAsync<GameUser>(query, new
         {
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
-            if (user is not null)
-            {
-                _db.Users.Remove(user);
-                await _db.SaveChangesAsync();
-                return true;
-            }
-            return false;
-        }
+            Id = id,
+            updatedUser.Username,
+            updatedUser.Hashtag,
+            updatedUser.PasswordHash
+        });
+    }
+
+    public async Task<bool> DeleteAsync(Guid id)
+    {
+        using var connection = Connection;
+        var query = "DELETE FROM user.Users WHERE id = @Id;";
+        var result = await connection.ExecuteAsync(query, new { Id = id });
+        return result > 0;
+    }
+
+    private string HashPassword(string password)
+    {
+        // Реальна логіка хешування пароля
+        using var sha256 = SHA256.Create();
+        var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+        return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
     }
 }

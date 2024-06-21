@@ -1,58 +1,56 @@
 ﻿using Game.Core.Database.Records.Users;
-using Game.Database.Context;
-using Microsoft.EntityFrameworkCore;
+using Dapper;
+using Npgsql;
+using System.Data;
 
-namespace Game.Database.Service.Users
+namespace Game.Database.Service.Users;
+
+public class UResourcesRepository
 {
-    public class UResourcesRepository
+    private readonly string _connectionString;
+
+    private IDbConnection Connection => new NpgsqlConnection(_connectionString);
+
+    public UResourcesRepository(string connectionString)
     {
-        private readonly GameDbContext _db;
+        _connectionString = connectionString;
+    }
 
-        public UResourcesRepository(GameDbContext db)
+    public async Task<List<UserResources>> GetAllAsync()
+    {
+        using var connection = Connection;
+        var query = "SELECT * FROM user.Resources";
+        var result = await connection.QueryAsync<UserResources>(query);
+        return result.ToList();
+    }
+
+    public async Task<UserResources?> GetAsync(Guid userId)
+    {
+        using var connection = Connection;
+        var query = "SELECT * FROM user.Resources WHERE userId = @UserId";
+        var result = await connection.QuerySingleOrDefaultAsync<UserResources>(query, new { UserId = userId });
+        return result;
+    }
+
+    public async Task<UserResources?> UpdateAsync(Guid userId, UserResources updatedResources)
+    {
+        using var connection = Connection;
+        var query = @"
+                UPDATE user.Resources
+                SET randomCoin = @RandomCoin,
+                    fackoins = @Fackoins,
+                    soulValue = @SoulValue,
+                    energy = @Energy
+                WHERE userId = @UserId
+                RETURNING *";
+        var result = await connection.QuerySingleOrDefaultAsync<UserResources>(query, new
         {
-            _db = db;
-        }
-
-        public async Task<UserResources?> AddAsync(UserResources resources)
-        {
-            await _db.UserResources.AddAsync(resources);
-            await _db.SaveChangesAsync();
-            return resources;
-        }
-
-        public async Task<List<UserResources>> GetAllAsync() => await _db.UserResources.ToListAsync();
-
-        public async Task<UserResources?> GetAsync(Guid userId)
-        {
-            return await _db.UserResources.FirstOrDefaultAsync(r => r.UserId == userId);
-        }
-
-        public async Task<UserResources?> UpdateAsync(Guid userId, UserResources updatedResources)
-        {
-            var resources = await _db.UserResources.FirstOrDefaultAsync(r => r.UserId == userId);
-            if (resources is not null)
-            {
-                resources.RandomCoin = updatedResources.RandomCoin;
-                resources.Fackoins = updatedResources.Fackoins;
-                resources.SoulValue = updatedResources.SoulValue;
-                resources.Energy = updatedResources.Energy;
-
-                await _db.SaveChangesAsync();
-                return resources;
-            }
-            return null;
-        }
-
-        public async Task<bool> DeleteAsync(Guid userId)
-        {
-            var resources = await _db.UserResources.FirstOrDefaultAsync(r => r.UserId == userId);
-            if (resources is not null)
-            {
-                _db.UserResources.Remove(resources);
-                await _db.SaveChangesAsync();
-                return true;
-            }
-            return false;
-        }
+            updatedResources.RandomCoin,
+            updatedResources.Fackoins,
+            updatedResources.SoulValue,
+            updatedResources.Energy,
+            UserId = userId
+        });
+        return result;
     }
 }
