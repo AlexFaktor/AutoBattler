@@ -19,7 +19,7 @@ namespace Game.Database.Repositorys.Things
         {
             using var connection = Connection;
             var query = @"
-                INSERT INTO things.Items (id, userId, itemId)
+                INSERT INTO ""things"".""Items"" (""id"", ""userId"", ""itemId"")
                 VALUES (@Id, @UserId, @ItemId)
                 RETURNING *;
             ";
@@ -29,7 +29,7 @@ namespace Game.Database.Repositorys.Things
         public async Task<List<ItemRecord>> GetAllAsync()
         {
             using var connection = Connection;
-            var query = "SELECT * FROM things.Items";
+            var query = "SELECT * FROM \"things\".\"Items\"";
             var result = await connection.QueryAsync<ItemRecord>(query);
             return result.AsList();
         }
@@ -37,7 +37,7 @@ namespace Game.Database.Repositorys.Things
         public async Task<List<ItemRecord>> GetItemsAsync(Guid userId)
         {
             using var connection = Connection;
-            var query = "SELECT * FROM things.Items WHERE userId = @UserId";
+            var query = "SELECT * FROM \"things\".\"Items\" WHERE \"userId\" = @UserId";
             var result = await connection.QueryAsync<ItemRecord>(query, new { UserId = userId });
             return result.AsList();
         }
@@ -45,7 +45,7 @@ namespace Game.Database.Repositorys.Things
         public async Task<ItemRecord?> GetItemAsync(Guid id)
         {
             using var connection = Connection;
-            var query = "SELECT * FROM things.Items WHERE id = @Id";
+            var query = "SELECT * FROM \"things\".\"Items\" WHERE \"id\" = @Id";
             return await connection.QuerySingleOrDefaultAsync<ItemRecord>(query, new { Id = id });
         }
 
@@ -53,9 +53,9 @@ namespace Game.Database.Repositorys.Things
         {
             using var connection = Connection;
             var query = @"
-                UPDATE things.Items
-                SET user_id = @UserId, itemId = @ItemId
-                WHERE id = @Id
+                UPDATE ""things"".""Items""
+                SET ""user_id"" = @UserId, ""itemId"" = @ItemId
+                WHERE ""id"" = @Id
                 RETURNING *;
             ";
             return await connection.QuerySingleOrDefaultAsync<ItemRecord>(query, new
@@ -69,7 +69,7 @@ namespace Game.Database.Repositorys.Things
         public async Task<bool> DeleteAsync(Guid id)
         {
             using var connection = Connection;
-            var query = "DELETE FROM things.Items WHERE id = @Id";
+            var query = "DELETE FROM \"things\".\"Items\" WHERE \"id\" = @Id";
             var rowsAffected = await connection.ExecuteAsync(query, new { Id = id });
             return rowsAffected > 0;
         }

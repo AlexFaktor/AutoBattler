@@ -19,7 +19,7 @@ public class UCharacterRepository
     {
         using var connection = Connection;
         var query = @"
-                INSERT INTO things.Characters (id, userId, characterId)
+                INSERT INTO ""things"".""Characters"" (""id"", ""userId"", ""characterId"")
                 VALUES (@Id, @UserId, @CharacterId)
                 RETURNING *;
             ";
@@ -29,7 +29,7 @@ public class UCharacterRepository
     public async Task<List<CharacterRecord>> GetAllAsync()
     {
         using var connection = Connection;
-        var query = "SELECT * FROM things.Characters";
+        var query = "SELECT * FROM \"things\".\"Characters\"";
         var result = await connection.QueryAsync<CharacterRecord>(query);
         return result.AsList();
     }
@@ -37,7 +37,7 @@ public class UCharacterRepository
     public async Task<List<CharacterRecord>> GetItemsAsync(Guid userId)
     {
         using var connection = Connection;
-        var query = "SELECT * FROM things.Characters WHERE userId = @UserId";
+        var query = "SELECT * FROM \"things\".\"Characters\" WHERE \"userId\" = @UserId";
         var result = await connection.QueryAsync<CharacterRecord>(query, new { UserId = userId });
         return result.AsList();
     }
@@ -45,7 +45,7 @@ public class UCharacterRepository
     public async Task<CharacterRecord?> GetItemAsync(Guid id)
     {
         using var connection = Connection;
-        var query = "SELECT * FROM things.Characters WHERE id = @Id";
+        var query = "SELECT * FROM \"things\".\"Characters\" WHERE \"id\" = @Id";
         return await connection.QuerySingleOrDefaultAsync<CharacterRecord>(query, new { Id = id });
     }
 
@@ -53,9 +53,9 @@ public class UCharacterRepository
     {
         using var connection = Connection;
         var query = @"
-                UPDATE things.Characters
-                SET user_id = @UserId, itemId = @CharacterId
-                WHERE id = @Id
+                UPDATE ""things"".""Characters""
+                SET ""user_id"" = @UserId, ""itemId"" = @CharacterId
+                WHERE ""id"" = @Id
                 RETURNING *;
             ";
         return await connection.QuerySingleOrDefaultAsync<CharacterRecord>(query, new
@@ -69,7 +69,7 @@ public class UCharacterRepository
     public async Task<bool> DeleteAsync(Guid id)
     {
         using var connection = Connection;
-        var query = "DELETE FROM things.Characters WHERE id = @Id";
+        var query = "DELETE FROM \"things\".\"Characters\" WHERE \"id\" = @Id";
         var rowsAffected = await connection.ExecuteAsync(query, new { Id = id });
         return rowsAffected > 0;
     }

@@ -39,14 +39,14 @@ public class UpdateHandler
         }
 
         var message = update.Message;
-        var uTelegram = await _telegramRepository.GetAsync(message.From.Id.ToString());
+        var uTelegram = await _telegramRepository.GetAsync(message.From.Id);
 
         if (uTelegram == null)
         {
             var user = await _userRepository.AddAsync(
                 new UserTelegramCreateDto
                 {
-                    TelegramId = message.From.Id.ToString(),
+                    TelegramId = message.From.Id,
                     Username = message.From.FirstName,
                     TelegramUsername = message.From.Username,
                     FirstName = message.From.FirstName,
@@ -55,26 +55,16 @@ public class UpdateHandler
                     Language = message.From.LanguageCode
                 });
 
-            await _telegramRepository.ChangeStatus(message.From.Id.ToString(), ETelegramUserStatus.UserRegistration, 0);
+            await _telegramRepository.ChangeStatus(message.From.Id, ETelegramUserStatus.UserRegistration, 0);
             uTelegram = await _telegramRepository.GetAsync(user!.Id);
         }
-
-        if (uTelegram == null)
-        {
-            Log.Error("UserTelegram is still null after attempting to create it.");
-            return;
-        }
-
         await _statisticsRepository.AddInteraction(uTelegram.UserId);
-
-        if (uTelegram is null)
-        {
-            await _commandHandler.HandleCommand(client, message);
-            return;
-        }
 
         switch (uTelegram!.Status)
         {
+            case ETelegramUserStatus.Default:
+                await _commandHandler.HandleCommand(client, message);
+                break;
             case ETelegramUserStatus.UserRegistration:
                 await _commandHandler.UserRegistration(client, message);
                 break;
