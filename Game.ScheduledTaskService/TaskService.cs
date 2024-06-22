@@ -1,6 +1,7 @@
 ﻿using Dapper;
-using Game.Core.Database.Records.ScheduledTask;
+using Game.Core.DatabaseRecords.ScheduledTask;
 using Game.Core.Resources.Interfraces.ScheduledTaskService;
+using Game.Database.Repositorys.ScheduledTasks;
 using Game.ScheduledTaskService.Executors;
 using Npgsql;
 using System.Data;
@@ -10,9 +11,12 @@ namespace Game.Web;
 public class TaskService : ITaskService
 {
     private readonly ILogger<TaskService> _logger;
+    private readonly IDbConnection _connection;
     private readonly ExecutorGlobalTasks _executorGlobalTasks;
     private readonly ExecutorIndividualTasks _executorIndividualTasks;
-    private readonly IDbConnection _connection;
+
+    private readonly GlobalTaskRepository _globalTaskRepository;
+    private readonly IndividuaTaskRepository _individuaTaskRepository;
 
     public TaskService(ILogger<TaskService> logger, IDbConnection connection)
     {
@@ -21,6 +25,8 @@ public class TaskService : ITaskService
 
         _executorGlobalTasks = new ExecutorGlobalTasks(connection);
         _executorIndividualTasks = new ExecutorIndividualTasks(connection);
+        _globalTaskRepository = new(connection.ConnectionString);
+        _individuaTaskRepository = new(connection.ConnectionString);
     }
 
     public async Task ProcessPendingTasksAsync()
@@ -28,14 +34,14 @@ public class TaskService : ITaskService
         using (IDbConnection db = _connection)
         {
             // Обробка глобальних задач
-            var globalTasks = await db.QueryAsync<GlobalTask>("SELECT * FROM scheduledTask.GlobalTasks");
+            var globalTasks = await _globalTaskRepository.GetAllAsync();
             foreach (var task in globalTasks)
             {
                 await ProcessGlobalTaskAsync(task, db);
             }
 
             // Обробка індивідуальних задач
-            var individualTasks = await db.QueryAsync<IndividualTask>("SELECT * FROM scheduledTask.IndividualTasks");
+            var individualTasks = await _individuaTaskRepository.;
             foreach (var task in individualTasks)
             {
                 await ProcessIndividualTaskAsync(task, db);

@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Game.Core.Database.Records.Users;
+using Game.Core.DatabaseRecords.Users;
 using Game.Core.Dtos.UserDtos.Telegrams;
 using Npgsql;
 using System.Data;

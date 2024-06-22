@@ -1,6 +1,4 @@
-﻿using Game.Core.Database.Records.Camp;
-using Game.Core.Resources.Enums.Game;
-using Npgsql;
+﻿using Npgsql;
 using System.Data;
 
 namespace Game.Database.Service.Camp;

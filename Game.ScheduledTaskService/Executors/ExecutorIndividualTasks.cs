@@ -1,4 +1,4 @@
-﻿using Game.Core.Database.Records.ScheduledTask;
+﻿using Game.Core.DatabaseRecords.ScheduledTask;
 using System.Data;
 
 namespace Game.ScheduledTaskService.Executors

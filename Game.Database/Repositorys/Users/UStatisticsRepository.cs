@@ -1,7 +1,7 @@
-﻿using Game.Core.Database.Records.Users;
-using Dapper;
+﻿using Dapper;
 using Npgsql;
 using System.Data;
+using Game.Core.DatabaseRecords.Users;
 
 namespace Game.Database.Service.Users;
 

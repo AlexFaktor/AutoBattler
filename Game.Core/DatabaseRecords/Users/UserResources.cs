@@ -1,4 +1,4 @@
-﻿namespace Game.Core.Database.Records.Users;
+﻿namespace Game.Core.DatabaseRecords.Users;
 
 public class UserResources
 {

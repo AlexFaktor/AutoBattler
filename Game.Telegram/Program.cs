@@ -43,10 +43,6 @@ internal class Program
             {
                 config.MinimumLevel.Warning()
                     .WriteTo.Console();
-            })
-            .ConfigureLogging(logging =>
-            {
-                logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
             });
 
     static async Task Main(string[] args)

@@ -14,14 +14,12 @@ namespace Game.Web
         {
             services.AddControllers();
 
-            // Add configuration for PostgreSQL connection
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
             services.AddSingleton<IDbConnection>(sp => new NpgsqlConnection(connectionString));
 
-            // Реєстрація сервісів
-            services.AddScoped<ITaskService, TaskService>(); // Scoped service
-            services.AddSingleton<IHostedService, TaskSchedulerHostedService>(); // Singleton service
+            services.AddScoped<ITaskService, TaskService>();
+            services.AddSingleton<IHostedService, TaskSchedulerHostedService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

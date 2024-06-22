@@ -1,9 +1,9 @@
 ﻿using Game.Core.Resources.Enums.Telegram;
 
-namespace Game.Core.Database.Records.Users;
+namespace Game.Core.DatabaseRecords.Users;
 
 public class UserTelegram
-{ 
+{
     public Guid UserId { get; set; }
     public long TelegramId { get; set; }
 

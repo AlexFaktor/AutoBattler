@@ -1,4 +1,4 @@
-﻿using Game.Core.Database.Records.ScheduledTask;
+﻿using Game.Core.DatabaseRecords.ScheduledTask;
 using Game.Core.Resources.Enums.ScheduledTask;
 using Game.Database.Service.Users;
 using System.Data;
@@ -31,7 +31,7 @@ namespace Game.ScheduledTaskService.Executors
             foreach (var user in users)
             {
                 // Додаємо енергію, але не більше ніж MaxEnergy
-                user.Energy = Math.Min(user.Energy + energyAdded, maximumEnergy);
+                user.Energy = (int)Math.Min(user.Energy + energyAdded, maximumEnergy);
                 await _resourcesRepository.UpdateAsync(user.UserId ,user);
             }
         }

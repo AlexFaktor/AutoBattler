@@ -1,6 +1,6 @@
 ﻿using Game.Core.Resources.Enums.Game;
 
-namespace Game.Core.Database.Records.Things
+namespace Game.Core.DatabaseRecords.Things
 {
     public class ItemRecord
     {

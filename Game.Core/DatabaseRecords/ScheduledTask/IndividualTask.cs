@@ -1,6 +1,6 @@
 ﻿using Game.Core.Resources.Enums.ScheduledTask;
 
-namespace Game.Core.Database.Records.ScheduledTask;
+namespace Game.Core.DatabaseRecords.ScheduledTask;
 
 public class IndividualTask
 {

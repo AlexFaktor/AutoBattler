@@ -1,9 +1,9 @@
-﻿using Game.Core.Database.Records.Users;
-using Game.Core.Dtos.UserDtos.Telegrams;
+﻿using Game.Core.Dtos.UserDtos.Telegrams;
 using Game.Core.Resources.Enums.Telegram;
 using Dapper;
 using Npgsql;
 using System.Data;
+using Game.Core.DatabaseRecords.Users;
 
 namespace Game.Database.Service.Users;
 

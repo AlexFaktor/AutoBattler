@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using Game.Core.Database.Records.Things;
+using Game.Core.DatabaseRecords.Things;
 using Npgsql;
 using System.Data;
 
