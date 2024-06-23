@@ -4,7 +4,7 @@ namespace Game.Web;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var host = CreateHostBuilder(args).Build();
 
@@ -14,17 +14,16 @@ public class Program
             try
             {
                 var taskService = services.GetRequiredService<ITaskService>();
-                taskService.ProcessPendingTasksAsync().Wait();
+                await taskService.ProcessPendingTasksAsync();
             }
             catch (Exception ex)
             {
-                
                 var logger = services.GetRequiredService<ILogger<Program>>();
                 logger.LogError(ex, "An error occurred while initializing the task processing.");
             }
         }
 
-        host.Run();
+        await host.RunAsync();
     }
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>

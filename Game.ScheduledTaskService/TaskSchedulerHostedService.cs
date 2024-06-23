@@ -17,16 +17,16 @@ public class TaskSchedulerHostedService : IHostedService, IDisposable
     public Task StartAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Task Scheduler Hosted Service running.");
-        _timer = new Timer(ProcessTasks, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
+        _timer = new Timer(async state => await ProcessTasks(), null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
         return Task.CompletedTask;
     }
 
-    private void ProcessTasks(object state)
+    private async Task ProcessTasks()
     {
         using (var scope = _scopeFactory.CreateScope())
         {
             var taskService = scope.ServiceProvider.GetRequiredService<ITaskService>();
-            taskService.ProcessPendingTasksAsync().Wait();
+            await taskService.ProcessPendingTasksAsync();
         }
     }
 

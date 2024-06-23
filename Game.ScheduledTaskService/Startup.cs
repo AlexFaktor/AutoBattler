@@ -16,10 +16,10 @@ namespace Game.Web
 
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
-            services.AddSingleton<IDbConnection>(sp => new NpgsqlConnection(connectionString));
+            services.AddScoped<IDbConnection>(sp => new NpgsqlConnection(connectionString));
 
             services.AddScoped<ITaskService, TaskService>();
-            services.AddSingleton<IHostedService, TaskSchedulerHostedService>();
+            services.AddHostedService<TaskSchedulerHostedService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

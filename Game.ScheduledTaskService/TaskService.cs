@@ -1,9 +1,7 @@
-﻿using Dapper;
-using Game.Core.DatabaseRecords.ScheduledTask;
+﻿using Game.Core.DatabaseRecords.ScheduledTask;
 using Game.Core.Resources.Interfraces.ScheduledTaskService;
 using Game.Database.Repositorys.ScheduledTasks;
 using Game.ScheduledTaskService.Executors;
-using Npgsql;
 using System.Data;
 
 namespace Game.Web;
@@ -25,75 +23,78 @@ public class TaskService : ITaskService
 
         _executorGlobalTasks = new ExecutorGlobalTasks(connection);
         _executorIndividualTasks = new ExecutorIndividualTasks(connection);
-        _globalTaskRepository = new(connection.ConnectionString);
-        _individuaTaskRepository = new(connection.ConnectionString);
+        _globalTaskRepository = new GlobalTaskRepository(connection.ConnectionString);
+        _individuaTaskRepository = new IndividuaTaskRepository(connection.ConnectionString);
     }
 
     public async Task ProcessPendingTasksAsync()
     {
         using (IDbConnection db = _connection)
         {
-            // Обробка глобальних задач
-            var globalTasks = await _globalTaskRepository.GetAllAsync();
-            foreach (var task in globalTasks)
+            try
             {
-                await ProcessGlobalTaskAsync(task, db);
-            }
+                // Обробка глобальних задач
+                var globalTasks = await _globalTaskRepository.GetAllAsync();
+                foreach (var task in globalTasks)
+                {
+                    await ProcessGlobalTaskAsync(task, db);
+                }
 
-            // Обробка індивідуальних задач
-            var individualTasks = await _individuaTaskRepository.;
-            foreach (var task in individualTasks)
+                // Обробка індивідуальних задач
+                var individualTasks = await _individuaTaskRepository.GetAllAsync();
+                foreach (var task in individualTasks)
+                {
+                    await ProcessIndividualTaskAsync(task, db);
+                }
+            }
+            catch (Exception ex)
             {
-                await ProcessIndividualTaskAsync(task, db);
+                _logger.LogError(ex, "An error occurred while processing tasks.");
             }
         }
     }
 
     private async Task ProcessGlobalTaskAsync(GlobalTask task, IDbConnection db)
     {
-        var now = DateTime.UtcNow;
-        var timeSinceLastExecution = now - task.LastExecutionTime;
-        var executionsNeeded = (uint)(timeSinceLastExecution.TotalSeconds / task.FrequencyInSeconds);
+        CalculateTime(out int executionsNeeded, out int timeToNextExecution, task);
 
-        if (executionsNeeded > 0)
+        if (Math.Abs(executionsNeeded) > 0)
         {
             _logger.LogInformation($"Executing global task {task.Id} {executionsNeeded} times.");
 
-            for (uint i = 0; i < executionsNeeded && task.CallsNeeded > 0; i++)
+            for (uint i = 0; i < Math.Abs(executionsNeeded) && task.CallsNeeded > 0; i++)
             {
-                // Логіка виконання глобального завдання
                 await _executorGlobalTasks.Execute(task);
                 task.CallsNeeded--;
             }
 
-            task.LastExecutionTime = now;
-            await db.ExecuteAsync("UPDATE scheduledTask.GlobalTasks " +
-                                  "SET LastExecutionTime = @LastExecutionTime, CallsNeeded = @CallsNeeded " +
-                                  "WHERE Id = @Id", task);
+            task.LastExecutionTime = DateTime.UtcNow;
+            await _globalTaskRepository.UpdateAsync(task.Id, task);
         }
     }
 
     private async Task ProcessIndividualTaskAsync(IndividualTask task, IDbConnection db)
     {
-        var now = DateTime.UtcNow;
-        var timeSinceLastExecution = now - task.LastExecutionTime;
-        var executionsNeeded = (uint)(timeSinceLastExecution.TotalSeconds / task.FrequencyInSeconds);
+        CalculateTime(out int executionsNeeded, out int timeToNextExecution, task);
 
         if (executionsNeeded > 0)
         {
-            _logger.LogInformation($"Executing individual task {task.Id} for user {task.UserId} {executionsNeeded} times.");
+            _logger.LogInformation($"Executing individual task {task.Type.ToString()} for user {task.UserId} {executionsNeeded} times.");
 
-            for (uint i = 0; i < executionsNeeded && task.CallsNeeded > 0; i++)
+            for (int i = 0; i < executionsNeeded && task.CallsNeeded > 0; i++)
             {
-                // Логіка виконання індивідуального завдання
                 await _executorIndividualTasks.Execute(task);
                 task.CallsNeeded--;
             }
-
-            task.LastExecutionTime = now;
-            await db.ExecuteAsync("UPDATE scheduledTask.IndividualTasks " +
-                                  "SET LastExecutionTime = @LastExecutionTime, CallsNeeded = @CallsNeeded " +
-                                  "WHERE Id = @Id", task);
+            task.LastExecutionTime = DateTime.UtcNow;
+            await _individuaTaskRepository.UpdateAsync(task.Id, task);
         }
+    }
+
+    private static void CalculateTime(out int executionsNeeded, out int timeToNextExecution, TimeTask task)
+    {
+        var timeSinceLastExecution = DateTime.UtcNow - task.LastExecutionTime; // Скільки часу прошло з останього виклику
+        executionsNeeded = (int)timeSinceLastExecution.TotalSeconds / task.FrequencyInSeconds; // Скільки викликів потрібно зробити
+        timeToNextExecution = (int)timeSinceLastExecution.TotalSeconds - (executionsNeeded * task.FrequencyInSeconds); // Час до наступного виклику
     }
 }
