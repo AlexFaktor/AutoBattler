@@ -12,6 +12,9 @@ public class UpdateHandler
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly CommandHandler _commandHandler;
+    private readonly CallbackQueryHandler _callbackQueryHandler;
+
+    private readonly BotAnswer _answer;
 
     private readonly UserRepository _userRepository;
     private readonly UTelegramRepository _telegramRepository;
@@ -21,6 +24,9 @@ public class UpdateHandler
     {
         _serviceProvider = serviceProvider;
         _commandHandler = commandHandler;
+        _callbackQueryHandler = new(serviceProvider);
+
+        _answer = new(serviceProvider);
 
         var scope = _serviceProvider.CreateScope();
         _userRepository = scope.ServiceProvider.GetRequiredService<UserRepository>();
@@ -28,15 +34,21 @@ public class UpdateHandler
         _statisticsRepository = scope.ServiceProvider.GetRequiredService<UStatisticsRepository>();
     }
 
-    public async Task HandleUpdateAsync(ITelegramBotClient client, Update update, CancellationToken token)
+    public async Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
     {
-        Log.Information($"Received update from user {update.Message?.From?.FirstName} with message: {update.Message?.Text}");
+        if (update.CallbackQuery != null)
+        {
+            Log.Information($"Received \"{update.CallbackQuery?.From.FirstName}\" callbackQuery: {update.CallbackQuery.Data}");
 
+            await _callbackQueryHandler.HandleCallbackQueryAsync(bot, update.CallbackQuery);
+            return;
+        }
         if (update.Message?.From == null)
         {
             Log.Warning("Update.Message.From is null");
             return;
         }
+        Log.Information($"Received \"{update.Message?.From?.FirstName}\" message: {update.Message?.Text}");
 
         var message = update.Message;
         var uTelegram = await _telegramRepository.GetAsync(message.From.Id);
@@ -63,19 +75,19 @@ public class UpdateHandler
         switch (uTelegram!.Status)
         {
             case ETelegramUserStatus.Default:
-                await _commandHandler.HandleCommand(client, message);
+                await _commandHandler.HandleCommand(bot, message);
                 break;
             case ETelegramUserStatus.UserRegistration:
-                await _commandHandler.UserRegistration(client, message);
+                await _commandHandler.UserRegistration(bot, message);
                 break;
             case ETelegramUserStatus.SetUsername:
-                await _commandHandler.SetUsername(client, message);
+                await _commandHandler.SetUsername(bot, message);
                 break;
             case ETelegramUserStatus.SetHashtag:
-                await _commandHandler.SetHashtag(client, message);
+                await _commandHandler.SetHashtag(bot, message);
                 break;
             default:
-                await _commandHandler.HandleCommand(client, message);
+                await _commandHandler.HandleCommand(bot, message);
                 break;
         }
     }
@@ -84,5 +96,10 @@ public class UpdateHandler
     {
         Log.Error(exception, "An error occurred");
         return Task.CompletedTask;
+    }
+
+    internal async Task HandleCallbackQueryAsync(ITelegramBotClient client, CallbackQuery? callbackQuery)
+    {
+        throw new NotImplementedException();
     }
 }

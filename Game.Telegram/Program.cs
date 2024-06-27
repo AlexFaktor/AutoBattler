@@ -1,10 +1,10 @@
 ﻿using Game.Core.Config;
+using Game.Database.Repositorys.Things;
 using Game.Database.Service.Users;
 using Game.Telegram.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Npgsql;
 using Serilog;
 using System.Data;
@@ -36,8 +36,11 @@ internal class Program
                 services.AddTransient<UStatisticsRepository>(sp => new UStatisticsRepository(connectionString));
                 services.AddTransient<UTelegramRepository>(sp => new UTelegramRepository(connectionString));
                 services.AddTransient<UResourcesRepository>(sp => new UResourcesRepository(connectionString));
+                services.AddTransient<UCharacterRepository>(sp => new UCharacterRepository(connectionString));
+                services.AddTransient<UItemRepository>(sp => new UItemRepository(connectionString));
                 services.AddSingleton<UpdateHandler>();
                 services.AddSingleton<CommandHandler>();
+                services.AddSingleton<MenuHandler>();
             })
             .UseSerilog((context, config) =>
             {
@@ -61,7 +64,7 @@ internal class Program
 
         var receiverOptions = new ReceiverOptions
         {
-            AllowedUpdates = [UpdateType.Message],
+            AllowedUpdates = [UpdateType.Message, UpdateType.CallbackQuery],
             Offset = lastUpdateId + 1
         };
 

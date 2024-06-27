@@ -11,6 +11,8 @@ namespace Game.Telegram.Service;
 public class CommandHandler
 {
     private readonly IServiceProvider _serviceProvider;
+    private readonly MenuHandler _menuHandler;
+    private readonly BotAnswer _botAnswer;
 
     private readonly UserRepository _userRepository;
     private readonly UTelegramRepository _telegramRepository;
@@ -20,8 +22,11 @@ public class CommandHandler
     public CommandHandler(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
+        _menuHandler = new(serviceProvider);
+        _botAnswer = new(serviceProvider);
 
         var scope = _serviceProvider.CreateScope();
+        
         _userRepository = scope.ServiceProvider.GetRequiredService<UserRepository>();
         _telegramRepository = scope.ServiceProvider.GetRequiredService<UTelegramRepository>();
         _statisticsRepository = scope.ServiceProvider.GetRequiredService<UStatisticsRepository>();
@@ -36,7 +41,17 @@ public class CommandHandler
         var user = await _userRepository.GetAsync(userTelegram.UserId);
         if (message.Text == null) return;
 
-        if (message.Text.StartsWith("/start"))
+        if(message.Text[0] != '/')
+        {
+            await _menuHandler.HandleCommand(bot, message);
+            return;
+        }
+        if(message.Text.StartsWith("/menu"))
+        {
+            await _menuHandler.ShowMainMenu(bot, message);
+            return;
+        }
+        else if (message.Text.StartsWith("/start"))
         {
             await bot.SendTextMessageAsync(message.Chat.Id, "Your profile is already in the database. Let's update your information...");
 
@@ -64,20 +79,8 @@ public class CommandHandler
         }
         else if (message.Text.StartsWith("/profile") && user != null)
         {
-            var statistic = await _statisticsRepository.GetAsync(user.Id);
-            var resoursec = await _resourcesRepository.GetAsync(user.Id);
-            await bot.SendTextMessageAsync(message.Chat.Id,
-                $"User data:\n" +
-                $"Username - {user.Username}\n" +
-                $"Hashtag - {user.Hashtag}\n" +
-                $"\nStatistic:\n" +
-                $"DateOfUserRegistration - {statistic!.DateOfUserRegistration}\n" +
-                $"Interaction with the bot - {statistic.NumberInteractionsWithBot}\n" +
-                $"\nResoursec:\n" +
-                $"RandomCoin - {resoursec!.RandomCoin}\n" +
-                $"Fackoins - {resoursec.Fackoins}\n" +
-                $"SoulValue - {resoursec.SoulValue}\n" +
-                $"Energy - {resoursec.Energy}\n");
+            await _botAnswer.CommandProfile(bot,message,user);
+            return;
         }
         else if (message.Text.StartsWith("/delete_profile") && user != null)
         {

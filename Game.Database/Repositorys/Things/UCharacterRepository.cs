@@ -34,7 +34,7 @@ public class UCharacterRepository
         return result.AsList();
     }
 
-    public async Task<List<CharacterRecord>> GetItemsAsync(Guid userId)
+    public async Task<List<CharacterRecord>> GetCharactersAsync(Guid userId)
     {
         using var connection = Connection;
         var query = "SELECT * FROM \"things\".\"Characters\" WHERE \"userId\" = @UserId";
