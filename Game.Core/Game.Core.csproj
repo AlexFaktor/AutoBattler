@@ -10,4 +10,8 @@
     <Folder Include="Dtos\CampDtos\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.68.0.3421" />
+  </ItemGroup>
+
 </Project>

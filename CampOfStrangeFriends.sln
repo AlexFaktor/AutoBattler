@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Discord", "Game.Discor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.ScheduledTaskService", "Game.ScheduledTaskService\Game.ScheduledTaskService.csproj", "{9E087683-651D-45DE-9FC3-47FD0A1FBDC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.ContentManagementSystemAPI", "Game.ContentManagementSystemAPI\Game.ContentManagementSystemAPI.csproj", "{6A712816-E16D-4308-919A-21D42B641562}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.ContentManagementSystemAPI", "Game.ContentManagementSystemAPI\Game.ContentManagementSystemAPI.csproj", "{6A712816-E16D-4308-919A-21D42B641562}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.BattleManager", "Game.BattleManager\Game.BattleManager.csproj", "{02EC7883-9B1C-4E66-B9B8-23559D751FAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{6A712816-E16D-4308-919A-21D42B641562}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A712816-E16D-4308-919A-21D42B641562}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A712816-E16D-4308-919A-21D42B641562}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02EC7883-9B1C-4E66-B9B8-23559D751FAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02EC7883-9B1C-4E66-B9B8-23559D751FAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02EC7883-9B1C-4E66-B9B8-23559D751FAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02EC7883-9B1C-4E66-B9B8-23559D751FAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
