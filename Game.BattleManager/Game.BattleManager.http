@@ -1,6 +1,0 @@
-@Game.BattleManager_HostAddress = http://localhost:5279
-
-GET {{Game.BattleManager_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
