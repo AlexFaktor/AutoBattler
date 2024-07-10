@@ -8,7 +8,7 @@ public enum EUnitClass
     Controller,
     Healer,
     Mage,
-    Rifleman,
+    Marksman,
     Support,
     Tank,
     Warrior,

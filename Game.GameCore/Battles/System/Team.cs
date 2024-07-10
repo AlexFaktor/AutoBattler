@@ -1,8 +1,8 @@
 ﻿using Game.Core.DatabaseRecords.Users;
 
-namespace Game.GameCore.BattleSystem;
+namespace Game.GameCore.Battles.System;
 
-public struct Team
+public class Team
 {
     public Guid Token { get; } = Guid.NewGuid();
     public GameUser User { get; }

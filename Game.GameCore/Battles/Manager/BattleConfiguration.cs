@@ -1,7 +1,8 @@
-﻿using Game.GameCore.BattleSystem;
+﻿using Game.GameCore.Battles.System;
 using Game.GameCore.BattleSystem.Enums;
+using Game.Manager.BattleSystem;
 
-namespace Game.Manager.BattleSystem;
+namespace Game.GameCore.Battles.Manager;
 
 public struct BattleConfiguration
 {

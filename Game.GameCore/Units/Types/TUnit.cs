@@ -1,11 +1,11 @@
 ﻿namespace Game.GameCore.Units.Types;
 
-public class unitType<T>
+public class TUnit<T>
 {
     public T Default { get; }
-    public T Now { get; }
+    public T Now { get; set; }
 
-    public unitType(T defaultValue)
+    public TUnit(T defaultValue)
     {
         Default = defaultValue;
         Now = defaultValue;

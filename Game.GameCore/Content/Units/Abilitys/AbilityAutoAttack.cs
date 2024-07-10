@@ -1,21 +1,30 @@
-﻿using Game.GameCore.Tools.Formulas;
+﻿using Game.GameCore.Battles.Manager;
+using Game.GameCore.Tools.Formulas;
 using Game.GameCore.Units;
 using Game.GameCore.Units.Actions;
-using Game.Manager.BattleSystem;
 
 namespace Game.GameCore.Content.Units.Abilitys
 {
-    internal class AbilityAutoAttack : Ability
+    internal class AbilityAutoAttack : RechargingAbility
     {
-        public AbilityAutoAttack(BattleManager battle, Unit unit) : base(battle, unit)
+        public AbilityAutoAttack(Battle battle, Unit unit) : base(battle, unit)
         {
         }
 
         public override void Action()
         {
-            var enemys = _battle.AllUnits.Where(u => u.Team.Value.Token != _unit.Team.Value.Token).ToList();
+            if (_battle.Timeline < Time.Now)
+            {
+                _battle.Result.Logs.Text += $"[{_battle.Timeline}] AbilityAutoAttack on reload\n";
+            }
+
+            var enemys = _battle.AllUnits.Where(u => u.Team.Token != _unit.Team.Token).ToList();
 
             var target = _unit.SelectEnemy(enemys);
+
+            target.ReceiveDamageFromUnit(GetTotalPower());
+
+            Time.Reload();
         }
 
         private double GetTotalPower()

@@ -1,8 +1,7 @@
-﻿using Game.GameCore.BattleSystem;
+﻿using Game.GameCore.Battles.System;
 using Game.GameCore.Units.Actions;
 using Game.GameCore.Units.Enums;
 using Game.GameCore.Units.Types;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Game.GameCore.Units;
 
@@ -13,46 +12,46 @@ public abstract class Unit
     public Team? Team { get; set; }
 
     // Info
-    public short Id { get; set; } = 0;
-    public string Name { get; set; } = string.Empty;
+    public short Id { get; protected set; }
+    public string Name { get; protected set; }
 
     // Tactics
-    public EUnitClass Class { get; set; }
-    public EUnitClass SubClass { get; set; }
-    public unitTypeResource<float> Initiative { get; set; }
-    public unitType<float> Speed { get; set; }
-    public unitType<float> AttackRange { get; set; }
-    public ETacticalType TacticalType { get; set; }
-    public unitType<int> TacticalLevel { get; set; }
+    public EUnitClass Class { get; protected set; }
+    public EUnitClass SubClass { get; protected set; }
+    public TUnitResource<float> Initiative { get; protected set; }
+    public TUnit<float> Speed { get; protected set; }
+    public TUnit<float> AttackRange { get; protected set; }
+    public ETacticalType TacticalType { get; protected set; }
+    public TUnit<int> TacticalLevel { get; protected set; }
 
     // General
-    public unitTypePercentage AbilityHaste { get; set; }
-    public unitTypePercentage Vaparism { get; set; }
-    public unitTypeResource<float> Mana { get; set; }
+    public TUnitPercentage AbilityHaste { get; protected set; }
+    public TUnitPercentage Vaparism { get; protected set; }
+    public TUnitResource<float> Mana { get; protected set; }
 
     // Attack
-    public unitType<double> Damage { get; set; }
-    public battleTime AttackSpeed { get; set; }
-    public unitTypePercentage Accuracy { get; set; }
-    public unitTypePercentage CriticalChance { get; set; }
-    public unitTypePercentage CriticalDamage { get; set; }
-    public unitTypePercentage ArmorPenetration { get; set; }
-    public unitType<float> IgnoringArmor { get; set; }
+    public TUnit<double> Damage { get; protected set; }
+    public BattleTimer AttackSpeed { get; protected set; }
+    public TUnitPercentage Accuracy { get; protected set; }
+    public TUnitPercentage CriticalChance { get; protected set; }
+    public TUnitPercentage CriticalDamage { get; protected set; }
+    public TUnitPercentage ArmorPenetration { get; protected set; }
+    public TUnit<float> IgnoringArmor { get; protected set; }
 
     // Defensive
-    public unitTypeResource<double> HealthPoints { get; set; }
-    public unitTypeResource<double> Shield { get; set; }
-    public unitTypePercentage ShieldEfficiency { get; set; }
-    public unitType<float> HealthPassive { get; set; }
-    public unitTypePercentage HealthEfficiency { get; set; }
-    public unitTypePercentage Dexterity { get; set; }
-    public unitTypePercentage CriticalDefeat { get; set; }
-    public unitType<int> Armor { get; set; }
+    public TUnitResource<double> HealthPoints { get; protected set; }
+    public TUnitResource<double> Shield { get; protected set; }
+    public TUnitPercentage ShieldEfficiency { get; protected set; }
+    public TUnit<float> HealthPassive { get; protected set; }
+    public TUnitPercentage HealthEfficiency { get; protected set; }
+    public TUnitPercentage Dexterity { get; protected set; }
+    public TUnitPercentage CriticalDefeat { get; protected set; }
+    public TUnit<int> Armor { get; protected set; }
 
     // Other
-    public double Position { get; set; }
+    public double Position { get; protected set; }
 
-    private List<UnitAction> _actions = [];
+    protected List<UnitAction> _actions = [];
 
     // Events
     public event EventHandler<AttackEventArgs> OnAttack;
@@ -82,15 +81,15 @@ public abstract class Unit
         return enemys[0];
     }
 
-    public void ReceiveDamageFromUnit(double damage)
+    public virtual void ReceiveDamageFromUnit(double damage)
     {
         if (IsShield())
-        { 
-        
+        {
+            Shield.Now -= damage;
         }
         else if (IsAlive())
         {
-            
+            HealthPoints.Now -= damage;
         }
         else // Dead
             return;

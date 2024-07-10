@@ -1,4 +1,4 @@
-﻿namespace Game.Manager.BattleSystem;
+﻿namespace Game.GameCore.Battles.Manager;
 
 public class BattleLogs
 {

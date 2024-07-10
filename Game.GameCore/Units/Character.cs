@@ -1,6 +1,6 @@
 ﻿namespace Game.GameCore.Units;
 
-public class Character : Unit
+public abstract class Character : Unit
 {
 
 }

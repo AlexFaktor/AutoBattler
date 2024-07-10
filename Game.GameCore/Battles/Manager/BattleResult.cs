@@ -1,4 +1,4 @@
-﻿namespace Game.Manager.BattleSystem;
+﻿namespace Game.GameCore.Battles.Manager;
 
 public class BattleResult
 {
@@ -9,7 +9,8 @@ public class BattleResult
     public BattleStats Stats { get; }
     public BattleLogs Logs { get; }
 
-    public BattleResult()
+    public BattleResult(BattleConfiguration configuration)
     {
+        Configuration = configuration;
     }
 }

@@ -1,25 +1,14 @@
-﻿using Game.Manager.BattleSystem;
+﻿using Game.GameCore.Battles.Manager;
+using Game.GameCore.Battles.System;
 
 namespace Game.GameCore.Units.Actions;
 
-public abstract class UnitAction
+public abstract class UnitAction : BattleAction
 {
-    protected BattleManager _battle;
-    protected Unit _unit;
+    protected Unit? _unit;
 
-    protected UnitAction(BattleManager battle, Unit unit)
+    protected UnitAction(Battle battle, Unit unit) : base(battle)
     {
-        _battle = battle;
         _unit = unit;
     }
-
-    public abstract void Action();
-
-    public List<Unit> GetEnemys()
-    {
-        
-
-        return;
-    }
-
 }

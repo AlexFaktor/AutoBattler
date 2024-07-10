@@ -1,6 +1,6 @@
-﻿namespace Game.Manager.BattleSystem;
+﻿namespace Game.GameCore.Battles.Manager;
 
-public struct BattleStats
+public class BattleStats
 {
     public Guid Winner { get; set; }
     public long TotalTime { get; set; }
