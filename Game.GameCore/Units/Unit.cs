@@ -22,7 +22,7 @@ public abstract class Unit
     public TUnit<float> Speed { get; protected set; }
     public TUnit<float> AttackRange { get; protected set; }
     public ETacticalType TacticalType { get; protected set; }
-    public TUnit<int> TacticalLevel { get; protected set; }
+    public TUnit<byte> TacticalLevel { get; protected set; }
 
     // General
     public TUnitPercentage AbilityHaste { get; protected set; }
@@ -32,8 +32,8 @@ public abstract class Unit
     // Attack
     public TUnit<double> Damage { get; protected set; }
     public BattleTimer AttackSpeed { get; protected set; }
-    public TUnitPercentage Accuracy { get; protected set; }
-    public TUnitPercentage CriticalChance { get; protected set; }
+    public TUnitChance Accuracy { get; protected set; }
+    public TUnitChance CriticalChance { get; protected set; }
     public TUnitPercentage CriticalDamage { get; protected set; }
     public TUnitPercentage ArmorPenetration { get; protected set; }
     public TUnit<float> IgnoringArmor { get; protected set; }
@@ -44,9 +44,9 @@ public abstract class Unit
     public TUnitPercentage ShieldEfficiency { get; protected set; }
     public TUnit<float> HealthPassive { get; protected set; }
     public TUnitPercentage HealthEfficiency { get; protected set; }
-    public TUnitPercentage Dexterity { get; protected set; }
-    public TUnitPercentage CriticalDefeat { get; protected set; }
-    public TUnit<int> Armor { get; protected set; }
+    public TUnitChance Dexterity { get; protected set; }
+    public TUnitChance CriticalDefeat { get; protected set; }
+    public TUnit<float> Armor { get; protected set; }
 
     // Other
     public double Position { get; protected set; }

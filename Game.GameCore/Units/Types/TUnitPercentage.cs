@@ -2,6 +2,30 @@
 
 public class TUnitPercentage
 {
+    public float Default { get; }
+    public float Max { get; set; }
+    public float Now { get; set; }
 
+    public TUnitPercentage(float value)
+    {
+        Default = value;
+        Max = value;
+        Now = value;
+    }
 
 }
+
+public class TUnitChance
+{
+    public float Default { get; }
+    public float Max { get; } = 100;
+    public float Now { get; set; }
+
+    public TUnitChance(float value)
+    {
+        Default = value;
+        Now = value;
+    }
+}
+
+
