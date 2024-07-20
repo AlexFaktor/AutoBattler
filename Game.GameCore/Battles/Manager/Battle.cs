@@ -10,6 +10,11 @@ public class Battle
     public BattleConfiguration Configuration { get; }
     public BattleResult Result { get; }
 
+    public ulong Timeline { get; set; }
+    public List<Unit> AllUnits { get; protected set; }
+    public List<Team> AllTeam { get; protected set; }
+    public List<BattleAction> AllBattleActions { get; protected set; }
+
     public Battle(BattleConfiguration battleConfiguration)
     {
         Configuration = battleConfiguration;
@@ -19,23 +24,17 @@ public class Battle
                     .SelectMany(squad => squad.Units)
                     .ToList();
         AllTeam = battleConfiguration.Teams;
+        AllBattleActions = [];
 
         Result = CalculateBattle(battleConfiguration);
     }
 
-    public ulong Timeline { get; set; }
-    public List<Unit> AllUnits { get; }
-    public List<Team> AllTeam { get; }
-    public List<BattleAction> AllBattleActions { get; }
-
+    
     private BattleResult CalculateBattle(BattleConfiguration configuration)
     {
         try
         {
             var result = new BattleResult(configuration);
-
-            // Конфігурація перед ігровим циклом
-
 
             // Ігровий цикл
             while (true)
@@ -43,7 +42,7 @@ public class Battle
                 FindAndExecuteAction();
                 FindWinner(result);
 
-                if (result.Stats.Winner != Guid.Empty)
+                if (result.Stats.TeamWinner != Guid.Empty)
                     return result;
 
             }
@@ -60,16 +59,17 @@ public class Battle
         if (Result != null)
             return;
         if (AllBattleActions.Count <= 0)
-            throw new Exception("No BattkeAction");
+            throw new Exception("No BattleAction");
 
         foreach (var battleAction in AllBattleActions)
         {
-            if (battleAction is not IReloadable)
+            if (battleAction is not IPeriodicAbility)
             {
                 battleAction.Action();
                 AllBattleActions.Remove(battleAction);
                 return;
             }
+
         }
 
         var reloadableBattleActions = new List<RechargingAbility>();
@@ -98,6 +98,6 @@ public class Battle
         if (AliveTeams.Count == 0)
             throw new Exception("No alive teams");
         else if (AliveTeams.Count == 1)
-            result.Stats.Winner = AliveTeams.First().Token;
+            result.Stats.TeamWinner = AliveTeams.First().Token;
     }
 }

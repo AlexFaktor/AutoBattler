@@ -2,7 +2,7 @@
 
 namespace Game.GameCore.Units.Actions.Interfaces;
 
-public interface IReloadable
+public interface IPeriodicAbility
 {
     public BattleTimer Time { get; set; }
 }

@@ -1,7 +1,11 @@
-﻿namespace Game.GameCore.Battles.Manager;
+﻿using Game.GameCore.Units;
+
+namespace Game.GameCore.Battles.Manager;
 
 public class BattleStats
 {
-    public Guid Winner { get; set; }
+    public Guid TeamWinner { get; set; }
     public long TotalTime { get; set; }
+
+    public List<UnitStatistics> UnitStatistics { get; set; } = [];
 }

@@ -1,18 +1,16 @@
 ﻿namespace Game.GameCore.Units.Types;
 
-public class TUnitPercentage
+public class TUnitChance
 {
     public float Default { get; }
-    public float Max { get; set; }
+    public float Max { get; } = 100;
     public float Now { get; set; }
 
-    public TUnitPercentage(float value)
+    public TUnitChance(float value)
     {
         Default = value;
-        Max = value;
         Now = value;
     }
-
 }
 
 

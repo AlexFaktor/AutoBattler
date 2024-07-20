@@ -1,5 +1,7 @@
 using Game.GameCore.Battles.Manager;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Serilog;
 
 namespace Game.ContentManagementSystemAPI.Controllers
 {
@@ -7,20 +9,25 @@ namespace Game.ContentManagementSystemAPI.Controllers
     [Route("[controller]")]
     public class TestBattleController : ControllerBase
     {
-        private readonly ILogger<TestBattleController> _logger;
 
-        public TestBattleController(ILogger<TestBattleController> logger)
+        public TestBattleController()
         {
-            _logger = logger;
+            
         }
 
         [HttpGet("custom")]
         public async Task<IActionResult> Get([FromQuery] string jsonBattleConfiguration)
         {
-            var config = new BattleConfiguration();
-            var result = ;
+            var config = JsonConvert.DeserializeObject<BattleConfiguration>(jsonBattleConfiguration);
+            if (config == null)
+            { 
+                Log.Error($"Cannot create config with this JSON:\n{jsonBattleConfiguration}\n");
+                return NotFound();
+            }
 
-            return Ok(result);
+            var battle = new Battle(config!);
+
+            return Ok(battle.Result);
         }
     }
 }

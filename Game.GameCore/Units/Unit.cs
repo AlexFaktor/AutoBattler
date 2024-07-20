@@ -13,40 +13,40 @@ public abstract class Unit
 
     // Info
     public short Id { get; protected set; }
-    public string Name { get; protected set; }
+    public string Name { get; protected set; } = string.Empty;
 
     // Tactics
     public EUnitClass Class { get; protected set; }
     public EUnitClass SubClass { get; protected set; }
-    public TUnitResource<float> Initiative { get; protected set; }
-    public TUnit<float> Speed { get; protected set; }
-    public TUnit<float> AttackRange { get; protected set; }
+    public TUnitResource<float> Initiative { get; protected set; } = new(100); // Event when changed
+    public TUnitValue<float> Speed { get; protected set; } = new(5);
+    public TUnitValue<float> AttackRange { get; protected set; } = new(30);
     public ETacticalType TacticalType { get; protected set; }
-    public TUnit<byte> TacticalLevel { get; protected set; }
+    public TUnitValue<byte> TacticalLevel { get; protected set; } = new(0);
 
     // General
-    public TUnitPercentage AbilityHaste { get; protected set; }
-    public TUnitPercentage Vaparism { get; protected set; }
-    public TUnitResource<float> Mana { get; protected set; }
+    public TUnitPercentage AbilityHaste { get; protected set; } = new(0);
+    public TUnitPercentage Vaparism { get; protected set; } = new(0);
+    public TUnitResource<float> Mana { get; protected set; } = new(100);
 
     // Attack
-    public TUnit<double> Damage { get; protected set; }
-    public BattleTimer AttackSpeed { get; protected set; }
-    public TUnitChance Accuracy { get; protected set; }
-    public TUnitChance CriticalChance { get; protected set; }
-    public TUnitPercentage CriticalDamage { get; protected set; }
-    public TUnitPercentage ArmorPenetration { get; protected set; }
-    public TUnit<float> IgnoringArmor { get; protected set; }
+    public TUnitValue<double> Damage { get; protected set; } = new(0);
+    public BattleTimer AttackSpeed { get; protected set; } = new(1000);
+    public TUnitChance Accuracy { get; protected set; } = new(0.66f);
+    public TUnitChance CriticalChance { get; protected set; } = new(0.05f);
+    public TUnitPercentage CriticalDamage { get; protected set; } = new(0.20f);
+    public TUnitPercentage ArmorPenetration { get; protected set; } = new(0);
+    public TUnitValue<float> IgnoringArmor { get; protected set; } = new(0);
 
     // Defensive
-    public TUnitResource<double> HealthPoints { get; protected set; }
-    public TUnitResource<double> Shield { get; protected set; }
-    public TUnitPercentage ShieldEfficiency { get; protected set; }
-    public TUnit<float> HealthPassive { get; protected set; }
-    public TUnitPercentage HealthEfficiency { get; protected set; }
-    public TUnitChance Dexterity { get; protected set; }
-    public TUnitChance CriticalDefeat { get; protected set; }
-    public TUnit<float> Armor { get; protected set; }
+    public TUnitResource<double> HealthPoints { get; protected set; } = new(1); // Event when changed 
+    public TUnitResource<double> Shield { get; protected set; } = new(0); // Event when changed
+    public TUnitPercentage ShieldEfficiency { get; protected set; } = new(0f);
+    public TUnitValue<float> HealthPassive { get; protected set; } = new(0);
+    public TUnitPercentage HealthEfficiency { get; protected set; } = new(0f);
+    public TUnitChance Dexterity { get; protected set; } = new(0);
+    public TUnitChance CriticalDefeat { get; protected set; } = new(0);
+    public TUnitValue<float> Armor { get; protected set; } = new(0);
 
     // Other
     public double Position { get; protected set; }
@@ -54,8 +54,8 @@ public abstract class Unit
     protected List<UnitAction> _actions = [];
 
     // Events
-    public event EventHandler<AttackEventArgs> OnAttack;
-    public event EventHandler<DamageReceivedEventArgs> OnDamageReceived;
+    public event EventHandler<AttackEventArgs>? OnAttack;
+    public event EventHandler<DamageReceivedEventArgs>? OnDamageReceived;
 
     public void ApplyEffect(Effect effect)
     {
@@ -98,6 +98,7 @@ public abstract class Unit
     public bool IsAlive() => HealthPoints.Now > 0;
     public bool IsShield() => Shield.Now > 0;
 }
+
 public class AttackEventArgs : EventArgs
 {
     public double DamageDealt { get; }

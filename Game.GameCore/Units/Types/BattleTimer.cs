@@ -9,18 +9,15 @@ public class BattleTimer
     public BattleTimer(float attackBySecond)
     {
         Default =  uint.Parse((1000 / attackBySecond).ToString());
+        NextUse += Default;
     }
 
-    public BattleTimer(uint _default, uint now, ulong nextUxe)
+    public BattleTimer(uint _default)
     {
         Default = _default;
-        Now = now;
-        NextUse = nextUxe;
+        NextUse += Default;
     }
 
-    public BattleTimer()
-    { 
-    }
 
     public void Reload()
     {

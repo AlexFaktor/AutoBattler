@@ -1,12 +1,15 @@
 ﻿using Game.GameCore.Units;
-using Game.Manager.BattleSystem;
 
 namespace Game.GameCore.Battles.System;
 
 public class Squad
 {
-    public EBattleTactics Tactics { get; set; }
     public List<Unit> Units { get; } = [];
+
+    public Squad(SquadConfiguration configuration)
+    {
+
+    }
 
     public bool IsSquadAilve()
     {
@@ -20,5 +23,14 @@ public class Squad
         if (AliveSoldiers == 0)
             return false;
         return true;
+    }
+}
+
+public class SquadConfiguration
+{
+    public List<UnitConfiguration> UnitConfigurations { get; set; }
+    public SquadConfiguration(List<UnitConfiguration> unitConfigurations)
+    {
+        UnitConfigurations = unitConfigurations;
     }
 }

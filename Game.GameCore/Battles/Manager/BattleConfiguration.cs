@@ -1,16 +1,33 @@
 ﻿using Game.GameCore.Battles.System;
 using Game.GameCore.BattleSystem.Enums;
 using Game.Manager.BattleSystem;
+using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 
 namespace Game.GameCore.Battles.Manager;
 
-public struct BattleConfiguration
+public class BattleConfiguration
 {
-    public int RandomSeed { get; }
-    public EDayTime DayTime { get; }
-    public ETempetura Tempetura { get; }
-    public ETerrain Terrain { get; }
-    public EWeather Weather { get; }
+    public BattleConfiguration(int randomSeed, EDayTime dayTime, ETempetura tempetura, ETerrain terrain, EWeather weather, List<Team> teams)
+    {
+        RandomSeed = randomSeed;
+        DayTime = dayTime;
+        Tempetura = tempetura;
+        Terrain = terrain;
+        Weather = weather;
+        Teams = teams;
+    }
 
-    public List<Team> Teams { get; }
+    public int RandomSeed { get; set; }
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    public EDayTime DayTime { get; set; }
+    [JsonConverter(typeof(StringEnumConverter))]
+    public ETempetura Tempetura { get; set; }
+    [JsonConverter(typeof(StringEnumConverter))]
+    public ETerrain Terrain { get; set; }
+    [JsonConverter(typeof(StringEnumConverter))]
+    public EWeather Weather { get; set; }
+
+    public List<Team> Teams { get; set; }
 }

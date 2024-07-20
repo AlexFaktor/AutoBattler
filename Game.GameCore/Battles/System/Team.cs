@@ -1,14 +1,14 @@
-﻿using Game.Core.DatabaseRecords.Users;
-
-namespace Game.GameCore.Battles.System;
+﻿namespace Game.GameCore.Battles.System;
 
 public class Team
 {
     public Guid Token { get; } = Guid.NewGuid();
-    public GameUser User { get; }
+    public Player Player { get; }
     public Squad Squad { get; }
 
-    public Team()
+    public Team(Player player, SquadConfiguration squadConfiguration)
     {
+        Player = player;
+        Squad = new(squadConfiguration);
     }
 }

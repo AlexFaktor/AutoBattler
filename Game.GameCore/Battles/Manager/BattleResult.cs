@@ -6,8 +6,8 @@ public class BattleResult
     public Guid Id { get; } = Guid.NewGuid();
     public DateTime Time { get; }
 
-    public BattleStats Stats { get; }
-    public BattleLogs Logs { get; }
+    public BattleStats Stats { get; } = new ();
+    public BattleLogs Logs { get; } = new();
 
     public BattleResult(BattleConfiguration configuration)
     {
