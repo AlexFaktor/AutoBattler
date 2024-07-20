@@ -1,3 +1,4 @@
+using Game.GameCore.Battles.Manager;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Game.ContentManagementSystemAPI.Controllers
@@ -13,6 +14,13 @@ namespace Game.ContentManagementSystemAPI.Controllers
             _logger = logger;
         }
 
+        [HttpGet("custom")]
+        public async Task<IActionResult> Get([FromQuery] string jsonBattleConfiguration)
+        {
+            var config = new BattleConfiguration();
+            var result = ;
 
+            return Ok(result);
+        }
     }
 }
