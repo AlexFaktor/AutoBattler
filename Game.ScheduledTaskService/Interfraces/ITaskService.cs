@@ -1,4 +1,4 @@
-﻿namespace Game.Core.Resources.Interfraces.ScheduledTaskService;
+﻿namespace App.Core.Resources.Interfraces.ScheduledTaskService;
 
 public interface ITaskService
 {

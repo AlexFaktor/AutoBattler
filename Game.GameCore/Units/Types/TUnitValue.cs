@@ -1,4 +1,4 @@
-﻿namespace Game.GameCore.Units.Types;
+﻿namespace App.GameCore.Units.Types;
 
 public class TUnitValue<T>
 {

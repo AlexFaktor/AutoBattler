@@ -1,4 +1,4 @@
-﻿namespace Game.Core.Resources.Enums.ScheduledTask
+﻿namespace App.Core.Resources.Enums.ScheduledTask
 {
     public enum EIndidualTask
     {

@@ -1,5 +1,5 @@
 
-namespace Game.BattleManager
+namespace App.BattleManager
 {
     public class Program
     {

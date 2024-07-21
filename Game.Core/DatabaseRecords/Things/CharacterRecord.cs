@@ -1,6 +1,6 @@
-﻿using Game.Core.Resources.Enums.Game;
+﻿using App.Core.Resources.Enums.Game;
 
-namespace Game.Core.DatabaseRecords.Things;
+namespace App.Core.DatabaseRecords.Things;
 
 public class CharacterRecord
 {

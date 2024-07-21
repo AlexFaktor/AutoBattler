@@ -1,4 +1,4 @@
-﻿namespace Game.Manager.BattleSystem;
+﻿namespace App.Manager.BattleSystem;
 
 public enum EWeather
 {

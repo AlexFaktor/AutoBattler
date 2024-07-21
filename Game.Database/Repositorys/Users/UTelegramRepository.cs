@@ -1,11 +1,11 @@
-﻿using Game.Core.Dtos.UserDtos.Telegrams;
-using Game.Core.Resources.Enums.Telegram;
+﻿using App.Core.Dtos.UserDtos.Telegrams;
+using App.Core.Resources.Enums.Telegram;
 using Dapper;
 using Npgsql;
 using System.Data;
-using Game.Core.DatabaseRecords.Users;
+using App.Core.DatabaseRecords.Users;
 
-namespace Game.Database.Service.Users;
+namespace App.Database.Service.Users;
 
 public class UTelegramRepository
 {

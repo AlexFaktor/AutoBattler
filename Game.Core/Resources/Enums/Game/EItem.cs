@@ -1,4 +1,4 @@
-﻿namespace Game.Core.Resources.Enums.Game
+﻿namespace App.Core.Resources.Enums.Game
 {
     public enum EItem
     {

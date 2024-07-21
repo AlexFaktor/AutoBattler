@@ -1,4 +1,4 @@
-﻿namespace Game.GameCore.Units
+﻿namespace App.GameCore.Units
 {
     public class UnitStatistics
     {

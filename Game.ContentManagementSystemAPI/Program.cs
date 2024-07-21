@@ -1,10 +1,10 @@
-using Game.ContentManagementSystemAPI;
-using Game.GameCore.Tools.ConfigImporters.ConfigReaders;
+using App.ContentManagementSystemAPI;
+using App.GameCore.Tools.ConfigImporters.ConfigReaders;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Game.ContentManagementSystemAPI
+namespace App.ContentManagementSystemAPI
 {
     public class Program
     {

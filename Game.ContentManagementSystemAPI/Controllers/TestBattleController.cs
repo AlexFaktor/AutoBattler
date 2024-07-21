@@ -1,9 +1,9 @@
-using Game.GameCore.Battles.Manager;
+using App.GameCore.Battles.Manager;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Serilog;
 
-namespace Game.ContentManagementSystemAPI.Controllers
+namespace App.ContentManagementSystemAPI.Controllers
 {
     [ApiController]
     [Route("admin/[controller]")]

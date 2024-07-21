@@ -1,9 +1,9 @@
-﻿using Game.GameCore.Battles.System;
-using Game.GameCore.Units;
-using Game.GameCore.Units.Actions;
-using Game.GameCore.Units.Actions.Interfaces;
+﻿using App.GameCore.Battles.System;
+using App.GameCore.Units;
+using App.GameCore.Units.Actions;
+using App.GameCore.Units.Actions.Interfaces;
 
-namespace Game.GameCore.Battles.Manager;
+namespace App.GameCore.Battles.Manager;
 
 public class Battle
 {

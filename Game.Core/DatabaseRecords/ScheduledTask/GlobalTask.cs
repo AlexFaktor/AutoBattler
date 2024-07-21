@@ -1,6 +1,6 @@
-﻿using Game.Core.Resources.Enums.ScheduledTask;
+﻿using App.Core.Resources.Enums.ScheduledTask;
 
-namespace Game.Core.DatabaseRecords.ScheduledTask;
+namespace App.Core.DatabaseRecords.ScheduledTask;
 
 public class GlobalTask : TimeTask
 {

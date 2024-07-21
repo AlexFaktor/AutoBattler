@@ -2,7 +2,7 @@
 using CsvHelper.Configuration;
 using System.Globalization;
 
-namespace Game.GameCore.Tools.ConfigImporters.ConfigReaders;
+namespace App.GameCore.Tools.ConfigImporters.ConfigReaders;
 
 public class CharacterConfigReader
 {

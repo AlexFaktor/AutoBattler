@@ -1,4 +1,4 @@
-﻿namespace Game.Core.Config;
+﻿namespace App.Core.Config;
 
 public static class Config
 {

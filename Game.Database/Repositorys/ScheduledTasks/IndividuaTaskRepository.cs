@@ -1,9 +1,9 @@
 ﻿using Dapper;
-using Game.Core.DatabaseRecords.ScheduledTask;
+using App.Core.DatabaseRecords.ScheduledTask;
 using Npgsql;
 using System.Data;
 
-namespace Game.Database.Repositorys.ScheduledTasks;
+namespace App.Database.Repositorys.ScheduledTasks;
 
 public class IndividuaTaskRepository
 {

@@ -1,4 +1,4 @@
-﻿namespace Game.Core.Dtos.UserDtos.Telegrams;
+﻿namespace App.Core.Dtos.UserDtos.Telegrams;
 
 public class UserTelegramCreateDto
 {

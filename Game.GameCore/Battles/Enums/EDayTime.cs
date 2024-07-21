@@ -1,4 +1,4 @@
-﻿namespace Game.GameCore.BattleSystem.Enums;
+﻿namespace App.GameCore.BattleSystem.Enums;
 
 public enum EDayTime
 {

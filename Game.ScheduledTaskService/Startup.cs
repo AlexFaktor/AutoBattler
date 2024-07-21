@@ -1,8 +1,8 @@
-﻿using Game.Core.Resources.Interfraces.ScheduledTaskService;
+﻿using App.Core.Resources.Interfraces.ScheduledTaskService;
 using Npgsql;
 using System.Data;
 
-namespace Game.Web
+namespace App.Web
 {
     public class Startup
     {

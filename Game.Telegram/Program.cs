@@ -1,7 +1,7 @@
-﻿using Game.Core.Config;
-using Game.Database.Repositorys.Things;
-using Game.Database.Service.Users;
-using Game.Telegram.Service;
+﻿using App.Core.Config;
+using App.Database.Repositorys.Things;
+using App.Database.Service.Users;
+using App.Telegram.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -12,7 +12,7 @@ using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
 
-namespace Game.Telegram;
+namespace App.Telegram;
 
 internal class Program
 {

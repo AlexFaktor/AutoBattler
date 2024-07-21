@@ -1,6 +1,6 @@
 ﻿using Telegram.Bot.Types.ReplyMarkups;
 
-namespace Game.Telegram.Service.Keyboards
+namespace App.Telegram.Service.Keyboards
 {
     internal class InlineKeyboards
     {

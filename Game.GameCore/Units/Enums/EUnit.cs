@@ -1,4 +1,4 @@
-﻿namespace Game.GameCore.Units.Enums;
+﻿namespace App.GameCore.Units.Enums;
 
 public enum EUnit
 {

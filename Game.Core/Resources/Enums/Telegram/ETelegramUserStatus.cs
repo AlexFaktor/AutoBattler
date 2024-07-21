@@ -1,4 +1,4 @@
-﻿namespace Game.Core.Resources.Enums.Telegram
+﻿namespace App.Core.Resources.Enums.Telegram
 {
     public enum ETelegramUserStatus
     {

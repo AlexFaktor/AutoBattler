@@ -1,4 +1,4 @@
-﻿namespace Game.GameCore.Tools.Formulas;
+﻿namespace App.GameCore.Tools.Formulas;
 
 public static class GameFormulas
 {

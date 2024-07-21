@@ -1,6 +1,6 @@
-﻿using Game.GameCore.Units;
+﻿using App.GameCore.Units;
 
-namespace Game.GameCore.Battles.System;
+namespace App.GameCore.Battles.System;
 
 public class Squad
 {

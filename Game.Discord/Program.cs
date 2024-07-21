@@ -1,4 +1,4 @@
-﻿namespace Game.Discord;
+﻿namespace App.Discord;
 
 internal class Program
 {

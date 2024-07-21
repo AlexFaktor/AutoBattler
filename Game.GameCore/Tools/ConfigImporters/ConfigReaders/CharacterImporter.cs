@@ -1,10 +1,10 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
-using Game.GameCore.Units.Enums;
+using App.GameCore.Units.Enums;
 using System.Globalization;
 
-namespace Game.GameCore.Tools.ConfigImporters.ConfigReaders;
+namespace App.GameCore.Tools.ConfigImporters.ConfigReaders;
 
 internal class CharacterImporter
 {
@@ -31,9 +31,7 @@ internal class CharacterImporter
     {
         var character = _characters.Find(c => c.ID == id);
         if (character == null)
-        {
             throw new ArgumentException($"Character with ID {id} not found.");
-        }
 
         return type switch
         {

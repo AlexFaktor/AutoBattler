@@ -1,6 +1,6 @@
-﻿using Game.Core.Resources.Enums.Telegram;
+﻿using App.Core.Resources.Enums.Telegram;
 
-namespace Game.Core.DatabaseRecords.Users;
+namespace App.Core.DatabaseRecords.Users;
 
 public class UserTelegram
 {

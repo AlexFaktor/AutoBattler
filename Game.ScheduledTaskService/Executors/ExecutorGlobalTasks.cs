@@ -1,10 +1,10 @@
-﻿using Game.Core.DatabaseRecords.ScheduledTask;
-using Game.Core.Resources.Enums.ScheduledTask;
-using Game.Database.Repositorys.ScheduledTasks;
-using Game.Database.Service.Users;
+﻿using App.Core.DatabaseRecords.ScheduledTask;
+using App.Core.Resources.Enums.ScheduledTask;
+using App.Database.Repositorys.ScheduledTasks;
+using App.Database.Service.Users;
 using System.Data;
 
-namespace Game.ScheduledTaskService.Executors;
+namespace App.ScheduledTaskService.Executors;
 
 public class ExecutorGlobalTasks(IDbConnection connection)
 {

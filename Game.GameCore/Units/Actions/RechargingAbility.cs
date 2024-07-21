@@ -1,7 +1,7 @@
-﻿using Game.GameCore.Units.Actions.Interfaces;
-using Game.GameCore.Units.Types;
+﻿using App.GameCore.Units.Actions.Interfaces;
+using App.GameCore.Units.Types;
 
-namespace Game.GameCore.Units.Actions;
+namespace App.GameCore.Units.Actions;
 
 public abstract class RechargingAbility : Ability, IPeriodicAbility
 {

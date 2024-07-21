@@ -1,4 +1,4 @@
-﻿namespace Game.GameCore.Units.Actions.Interfaces;
+﻿namespace App.GameCore.Units.Actions.Interfaces;
 
 public interface IInstant
 {

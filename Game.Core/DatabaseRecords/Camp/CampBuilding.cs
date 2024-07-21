@@ -1,6 +1,6 @@
-﻿using Game.Core.Resources.Enums.Game;
+﻿using App.Core.Resources.Enums.Game;
 
-namespace Game.Core.DatabaseRecords.Camp;
+namespace App.Core.DatabaseRecords.Camp;
 
 public class CampBuilding
 {

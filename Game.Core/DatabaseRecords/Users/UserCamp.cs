@@ -1,4 +1,4 @@
-﻿namespace Game.Core.DatabaseRecords.Users;
+﻿namespace App.Core.DatabaseRecords.Users;
 
 public class UserCamp
 {

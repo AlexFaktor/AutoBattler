@@ -1,9 +1,9 @@
-﻿using Game.GameCore.Battles.System;
-using Game.GameCore.Units.Actions;
-using Game.GameCore.Units.Enums;
-using Game.GameCore.Units.Types;
+﻿using App.GameCore.Battles.System;
+using App.GameCore.Units.Actions;
+using App.GameCore.Units.Enums;
+using App.GameCore.Units.Types;
 
-namespace Game.GameCore.Units;
+namespace App.GameCore.Units;
 
 public abstract class Unit
 {

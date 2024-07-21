@@ -1,7 +1,7 @@
 ﻿using Npgsql;
 using System.Data;
 
-namespace Game.Database.Service.Camp;
+namespace App.Database.Service.Camp;
 
 public class CampBuildingsRepository
 {

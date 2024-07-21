@@ -1,4 +1,4 @@
-﻿namespace Game.Core.DatabaseRecords.ScheduledTask;
+﻿namespace App.Core.DatabaseRecords.ScheduledTask;
 
 public abstract class TimeTask
 {

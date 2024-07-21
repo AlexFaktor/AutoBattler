@@ -1,12 +1,12 @@
-﻿using Game.Database.Repositorys.Things;
-using Game.Database.Service.Users;
-using Game.Telegram.Service.Keyboards;
+﻿using App.Database.Repositorys.Things;
+using App.Database.Service.Users;
+using App.Telegram.Service.Keyboards;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace Game.Telegram.Service;
+namespace App.Telegram.Service;
 
 public class CallbackQueryHandler
 {

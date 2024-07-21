@@ -1,9 +1,9 @@
-﻿using Game.GameCore.Battles.Manager;
-using Game.GameCore.Tools.Formulas;
-using Game.GameCore.Units;
-using Game.GameCore.Units.Actions;
+﻿using App.GameCore.Battles.Manager;
+using App.GameCore.Tools.Formulas;
+using App.GameCore.Units;
+using App.GameCore.Units.Actions;
 
-namespace Game.GameCore.Content.Units.Abilitys
+namespace App.GameCore.Content.Units.Abilitys
 {
     internal class AbilityAutoAttack : RechargingAbility
     {

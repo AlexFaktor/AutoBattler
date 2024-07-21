@@ -1,8 +1,8 @@
-﻿using Game.GameCore.Battles.System;
-using Game.GameCore.Tools.ConfigImporters.ConfigReaders;
-using Game.GameCore.Units;
+﻿using App.GameCore.Battles.System;
+using App.GameCore.Tools.ConfigImporters.ConfigReaders;
+using App.GameCore.Units;
 
-namespace Game.GameCore.Content.Characters.Bloodhound0001
+namespace App.GameCore.Content.Characters.Bloodhound0001
 {
     internal class Bloodhound_0001 : Character
     {

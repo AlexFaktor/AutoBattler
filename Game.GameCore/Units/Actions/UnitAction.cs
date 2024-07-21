@@ -1,7 +1,7 @@
-﻿using Game.GameCore.Battles.Manager;
-using Game.GameCore.Battles.System;
+﻿using App.GameCore.Battles.Manager;
+using App.GameCore.Battles.System;
 
-namespace Game.GameCore.Units.Actions;
+namespace App.GameCore.Units.Actions;
 
 public abstract class UnitAction : BattleAction
 {

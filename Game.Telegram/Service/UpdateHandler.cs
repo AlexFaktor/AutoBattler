@@ -1,12 +1,12 @@
-﻿using Game.Core.Dtos.UserDtos.Telegrams;
-using Game.Core.Resources.Enums.Telegram;
-using Game.Database.Service.Users;
+﻿using App.Core.Dtos.UserDtos.Telegrams;
+using App.Core.Resources.Enums.Telegram;
+using App.Database.Service.Users;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace Game.Telegram.Service;
+namespace App.Telegram.Service;
 
 public class UpdateHandler
 {

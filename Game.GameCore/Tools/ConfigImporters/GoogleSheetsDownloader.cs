@@ -2,7 +2,7 @@
 using Google.Apis.Sheets.v4;
 using Google.Apis.Util.Store;
 
-namespace Game.GameCore.Tools.ConfigImporters;
+namespace App.GameCore.Tools.ConfigImporters;
 
 public class GoogleSheetsDownloader
 {

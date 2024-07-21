@@ -1,7 +1,7 @@
-﻿using Game.Core.DatabaseRecords.ScheduledTask;
+﻿using App.Core.DatabaseRecords.ScheduledTask;
 using System.Data;
 
-namespace Game.ScheduledTaskService.Executors;
+namespace App.ScheduledTaskService.Executors;
 
 public class ExecutorIndividualTasks(IDbConnection connection)
 {

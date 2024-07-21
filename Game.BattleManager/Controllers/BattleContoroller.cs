@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Game.BattleManager.Controllers;
+namespace App.BattleManager.Controllers;
 
 [ApiController]
 [Route("[controller]")]

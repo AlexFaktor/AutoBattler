@@ -1,6 +1,6 @@
-﻿using Game.GameCore.Battles.Manager;
+﻿using App.GameCore.Battles.Manager;
 
-namespace Game.GameCore.Battles.System;
+namespace App.GameCore.Battles.System;
 
 public abstract class BattleAction
 {

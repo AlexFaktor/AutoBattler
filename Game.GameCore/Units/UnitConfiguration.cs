@@ -1,6 +1,6 @@
-﻿using Game.GameCore.Battles.System;
+﻿using App.GameCore.Battles.System;
 
-namespace Game.GameCore.Units;
+namespace App.GameCore.Units;
 
 public class UnitConfiguration
 {

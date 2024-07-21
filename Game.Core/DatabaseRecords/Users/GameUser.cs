@@ -1,6 +1,6 @@
-﻿using Game.Core.Dtos.UserDtos.Telegrams;
+﻿using App.Core.Dtos.UserDtos.Telegrams;
 
-namespace Game.Core.DatabaseRecords.Users;
+namespace App.Core.DatabaseRecords.Users;
 public class GameUser
 {
     public Guid Id { get; set; }

@@ -3,21 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Database", "Game.Database\Game.Database.csproj", "{4372AD9B-0339-49C8-B684-5F0123138CA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Database", "Game.Database\App.Database.csproj", "{4372AD9B-0339-49C8-B684-5F0123138CA5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Core", "Game.Core\Game.Core.csproj", "{422A6BE9-8468-47E2-AD88-10CA849B838B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Core", "Game.Core\App.Core.csproj", "{422A6BE9-8468-47E2-AD88-10CA849B838B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Telegram", "Game.Telegram\Game.Telegram.csproj", "{59FFEFFA-2231-4F02-AD12-A22FE2383964}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Telegram", "Game.Telegram\App.Telegram.csproj", "{59FFEFFA-2231-4F02-AD12-A22FE2383964}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Discord", "Game.Discord\Game.Discord.csproj", "{8A2853BF-3BA8-4F00-8912-6EE179A92EA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Discord", "Game.Discord\App.Discord.csproj", "{8A2853BF-3BA8-4F00-8912-6EE179A92EA5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.ScheduledTaskService", "Game.ScheduledTaskService\Game.ScheduledTaskService.csproj", "{9E087683-651D-45DE-9FC3-47FD0A1FBDC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.ScheduledTaskService", "Game.ScheduledTaskService\App.ScheduledTaskService.csproj", "{9E087683-651D-45DE-9FC3-47FD0A1FBDC7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.ContentManagementSystemAPI", "Game.ContentManagementSystemAPI\Game.ContentManagementSystemAPI.csproj", "{6A712816-E16D-4308-919A-21D42B641562}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.ContentManagementSystemAPI", "Game.ContentManagementSystemAPI\App.ContentManagementSystemAPI.csproj", "{6A712816-E16D-4308-919A-21D42B641562}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Manager", "Game.BattleManager\Game.Manager.csproj", "{02EC7883-9B1C-4E66-B9B8-23559D751FAC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.GameCore", "Game.GameCore\Game.GameCore.csproj", "{5A3E49D3-D3C8-4440-8453-65ED9398609A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.GameCore", "Game.GameCore\App.GameCore.csproj", "{5A3E49D3-D3C8-4440-8453-65ED9398609A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,10 +47,6 @@ Global
 		{6A712816-E16D-4308-919A-21D42B641562}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A712816-E16D-4308-919A-21D42B641562}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A712816-E16D-4308-919A-21D42B641562}.Release|Any CPU.Build.0 = Release|Any CPU
-		{02EC7883-9B1C-4E66-B9B8-23559D751FAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02EC7883-9B1C-4E66-B9B8-23559D751FAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02EC7883-9B1C-4E66-B9B8-23559D751FAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02EC7883-9B1C-4E66-B9B8-23559D751FAC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5A3E49D3-D3C8-4440-8453-65ED9398609A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5A3E49D3-D3C8-4440-8453-65ED9398609A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A3E49D3-D3C8-4440-8453-65ED9398609A}.Release|Any CPU.ActiveCfg = Release|Any CPU

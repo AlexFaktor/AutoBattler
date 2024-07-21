@@ -1,6 +1,6 @@
-﻿using Game.Core.Resources.Interfraces.ScheduledTaskService;
+﻿using App.Core.Resources.Interfraces.ScheduledTaskService;
 
-namespace Game.Web;
+namespace App.Web;
 
 public class Program
 {

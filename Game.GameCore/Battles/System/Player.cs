@@ -1,4 +1,4 @@
-﻿namespace Game.GameCore.Battles.System;
+﻿namespace App.GameCore.Battles.System;
 
 public class Player
 {

@@ -1,8 +1,8 @@
-﻿using Game.GameCore.Battles.System;
-using Game.GameCore.Tools.ConfigImporters.ConfigReaders;
-using Game.GameCore.Units.Enums;
+﻿using App.GameCore.Battles.System;
+using App.GameCore.Tools.ConfigImporters.ConfigReaders;
+using App.GameCore.Units.Enums;
 
-namespace Game.GameCore.Units;
+namespace App.GameCore.Units;
 
 public abstract class Character : Unit
 {

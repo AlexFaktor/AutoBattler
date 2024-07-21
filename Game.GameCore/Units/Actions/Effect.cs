@@ -1,6 +1,6 @@
-﻿using Game.GameCore.Battles.Manager;
+﻿using App.GameCore.Battles.Manager;
 
-namespace Game.GameCore.Units.Actions;
+namespace App.GameCore.Units.Actions;
 
 public abstract class Effect : UnitAction
 {

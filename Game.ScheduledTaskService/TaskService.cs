@@ -1,10 +1,10 @@
-﻿using Game.Core.DatabaseRecords.ScheduledTask;
-using Game.Core.Resources.Interfraces.ScheduledTaskService;
-using Game.Database.Repositorys.ScheduledTasks;
-using Game.ScheduledTaskService.Executors;
+﻿using App.Core.DatabaseRecords.ScheduledTask;
+using App.Core.Resources.Interfraces.ScheduledTaskService;
+using App.Database.Repositorys.ScheduledTasks;
+using App.ScheduledTaskService.Executors;
 using System.Data;
 
-namespace Game.Web;
+namespace App.Web;
 
 public class TaskService : ITaskService
 {
