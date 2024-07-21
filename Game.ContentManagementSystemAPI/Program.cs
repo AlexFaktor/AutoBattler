@@ -1,3 +1,8 @@
+using Game.ContentManagementSystemAPI;
+using Game.GameCore.Tools.ConfigImporters.ConfigReaders;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Game.ContentManagementSystemAPI
 {
@@ -8,11 +13,18 @@ namespace Game.ContentManagementSystemAPI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // Add Google Sheets downloader service
+            builder.Services.AddSingleton<GoogleSheetsDownloader>();
+            builder.Services.AddSingleton<CharacterConfigReader>(provider =>
+            {
+                var googleSheetsDownloader = provider.GetRequiredService<GoogleSheetsDownloader>();
+                googleSheetsDownloader.DownloadSheetAsCsv().Wait(); // Ensure the config is downloaded before creating the reader
+                return new CharacterConfigReader("path/to/your/csv/file.csv"); // Path to your CSV file
+            });
 
             var app = builder.Build();
 
@@ -24,12 +36,8 @@ namespace Game.ContentManagementSystemAPI
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
-
             app.Run();
         }
     }

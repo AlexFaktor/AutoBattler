@@ -1,77 +1,76 @@
 ﻿using Google.Apis.Auth.OAuth2;
-using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
+using Google.Apis.Util.Store;
+
+namespace Game.GameCore.Tools.ConfigImporters;
 
 public class GoogleSheetsDownloader
 {
-    private static readonly string[] Scopes = { SheetsService.Scope.Spreadsheets };
-    private static readonly string ApplicationName = "YourApplicationName";
-    private readonly string _spreadsheetId;
-    private readonly string _sheetName;
-    private readonly string _csvFilePath;
-    private readonly string _credentialsFilePath;
-    private readonly string _range;
+    private readonly GoogleSheetsSettings _settings;
+    private readonly HttpClient _httpClient;
+    private static readonly string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
+    private UserCredential _credential;
 
-    public GoogleSheetsDownloader(string spreadsheetId, string sheetName, string range, string csvFilePath, string credentialsFilePath)
+    public GoogleSheetsDownloader(GoogleSheetsSettings settings, HttpClient httpClient)
     {
-        _spreadsheetId = spreadsheetId;
-        _sheetName = sheetName;
-        _csvFilePath = csvFilePath;
-        _credentialsFilePath = credentialsFilePath;
-        _range = $"{_sheetName}!{range}";
+        _settings = settings;
+        _httpClient = httpClient;
     }
 
-    public async Task DownloadSheetAsCsv()
+    public void Authorize()
     {
-        GoogleCredential credential;
+        using var stream = new FileStream(_settings.CredentialsFilePath, FileMode.Open, FileAccess.Read);
+        string credPath = "token.json";
+        _credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+            GoogleClientSecrets.Load(stream).Secrets,
+            Scopes,
+            "user",
+            CancellationToken.None,
+            new FileDataStore(credPath, true)).Result;
+        Console.WriteLine("Credential file saved to: " + credPath);
+    }
 
-        using (var stream = new FileStream(_credentialsFilePath, FileMode.Open, FileAccess.Read))
+    public async Task DownloadGoogleSheetAsync()
+    {
+        if (_credential == null)
         {
-            credential = GoogleCredential.FromStream(stream)
-                .CreateScoped(Scopes);
+            throw new InvalidOperationException("Authorization is required before making requests.");
         }
 
-        var service = new SheetsService(new BaseClientService.Initializer()
+        if (File.Exists(_settings.CsvFilePath))
         {
-            HttpClientInitializer = credential,
-            ApplicationName = ApplicationName,
-        });
+            Console.WriteLine("File already exists.");
+            return;
+        }
 
-        if (!File.Exists(_csvFilePath))
+        string accessToken = await _credential.GetAccessTokenForRequestAsync();
+        string downloadUrl = $"https://docs.google.com/spreadsheets/d/{_settings.SpreadsheetId}/gviz/tq?tqx=out:csv&sheet={_settings.SheetName}";
+
+        using var requestMessage = new HttpRequestMessage(HttpMethod.Get, downloadUrl);
+        requestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+
+        var response = await _httpClient.SendAsync(requestMessage);
+        if (response.IsSuccessStatusCode)
         {
-            await DownloadSheet(service);
+            var content = await response.Content.ReadAsByteArrayAsync();
+            await File.WriteAllBytesAsync(_settings.CsvFilePath, content);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("File downloaded successfully.");
+            Console.ResetColor();
         }
         else
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"CSV file {_csvFilePath} already exists.");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Failed to download file. Status code: " + response.StatusCode);
             Console.ResetColor();
         }
     }
+}
 
-    private async Task DownloadSheet(SheetsService service)
-    {
-        var request = service.Spreadsheets.Values.Get(_spreadsheetId, _range);
-        var response = await request.ExecuteAsync();
-
-        using (var streamWriter = new StreamWriter(_csvFilePath))
-        {
-            foreach (var row in response.Values)
-            {
-                for (int i = 0; i < row.Count; i++)
-                {
-                    streamWriter.Write($"{row[i]}");
-                    if (i != row.Count - 1)
-                    {
-                        streamWriter.Write(",");
-                    }
-                }
-                streamWriter.WriteLine();
-            }
-        }
-
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine($"CSV file {_csvFilePath} downloaded successfully.");
-        Console.ResetColor();
-    }
+public class GoogleSheetsSettings
+{
+    public string SpreadsheetId { get; set; } = string.Empty;
+    public string SheetName { get; set; } = string.Empty;
+    public string CsvFilePath { get; set; } = string.Empty;
+    public string CredentialsFilePath { get; set; } = string.Empty;
 }

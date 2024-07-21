@@ -13,13 +13,15 @@
             {
                 if (!_now.Equals(value))
                 {
+                    OnNowChanging?.Invoke(this, new ResourceChangingEventArgs<T>(_now, value));
                     _now = value;
-                    OnNowChanged(EventArgs.Empty);
+                    OnNowChanged?.Invoke(this, new ResourceChangedEventArgs<T>(_now));
                 }
             }
         }
 
-        public event EventHandler NowChanged;
+        public event EventHandler<ResourceChangingEventArgs<T>> OnNowChanging;
+        public event EventHandler<ResourceChangedEventArgs<T>> OnNowChanged;
 
         public TUnitResource(T defaultValue)
         {
@@ -27,10 +29,27 @@
             Max = defaultValue;
             _now = defaultValue;
         }
+    }
 
-        protected virtual void OnNowChanged(EventArgs e)
+    public class ResourceChangingEventArgs<T> : EventArgs
+    {
+        public T OldValue { get; }
+        public T NewValue { get; }
+
+        public ResourceChangingEventArgs(T oldValue, T newValue)
         {
-            NowChanged?.Invoke(this, e);
+            OldValue = oldValue;
+            NewValue = newValue;
+        }
+    }
+
+    public class ResourceChangedEventArgs<T> : EventArgs
+    {
+        public T NewValue { get; }
+
+        public ResourceChangedEventArgs(T newValue)
+        {
+            NewValue = newValue;
         }
     }
 }

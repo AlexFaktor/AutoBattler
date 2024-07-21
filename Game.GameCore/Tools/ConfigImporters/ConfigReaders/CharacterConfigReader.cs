@@ -1,6 +1,5 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
-using Game.GameCore.Tools.ConfigImporters.CsvEntitys;
 using System.Globalization;
 
 namespace Game.GameCore.Tools.ConfigImporters.ConfigReaders;
@@ -72,3 +71,40 @@ public class CharacterConfigReader
         }
     }
 }
+
+public class CharacterConfig
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Universe { get; set; } = string.Empty;
+    public int Version { get; set; }
+    public string Description { get; set; } = string.Empty;
+    public string UrlImage { get; set; } = string.Empty;
+    public string Class1 { get; set; } = string.Empty;
+    public string Class2 { get; set; } = string.Empty;
+    public float Initiative { get; set; }
+    public float Speed { get; set; }
+    public float AttackRange { get; set; }
+    public string TacticalType { get; set; } = string.Empty;
+    public byte TacticalLevel { get; set; }
+    public float AbilityHaste { get; set; }
+    public float Vampirism { get; set; }
+    public float Mana { get; set; }
+    public double Damage { get; set; }
+    public float AttackSpeed { get; set; }
+    public float Accuracy { get; set; }
+    public float CriticalChance { get; set; }
+    public float CriticalDamage { get; set; }
+    public float ArmorPenetration { get; set; }
+    public float IgnoringArmor { get; set; }
+    public double HealthPoints { get; set; }
+    public double Shield { get; set; }
+    public float ShieldEfficiency { get; set; }
+    public float HealthPassive { get; set; }
+    public float HealthEfficiency { get; set; }
+    public float Dexterity { get; set; }
+    public float CriticalDefeat { get; set; }
+    public float Armor { get; set; }
+}
+
+

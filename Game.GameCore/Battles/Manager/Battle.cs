@@ -8,33 +8,25 @@ namespace Game.GameCore.Battles.Manager;
 public class Battle
 {
     public BattleConfiguration Configuration { get; }
-    public BattleResult Result { get; }
 
     public ulong Timeline { get; set; }
-    public List<Unit> AllUnits { get; protected set; }
-    public List<Team> AllTeam { get; protected set; }
-    public List<BattleAction> AllBattleActions { get; protected set; }
+    public List<Unit> AllUnits { get; protected set; } = [];
+    public List<Team> AllTeam { get; protected set; } = [];
+    public List<BattleAction> AllBattleActions { get; protected set; } = [];
+    public BattleResult BattleResult { get; protected set; }
 
     public Battle(BattleConfiguration battleConfiguration)
     {
         Configuration = battleConfiguration;
-
-        AllUnits = battleConfiguration.Teams
-                    .Select(team => team.Squad)
-                    .SelectMany(squad => squad.Units)
-                    .ToList();
-        AllTeam = battleConfiguration.Teams;
-        AllBattleActions = [];
-
-        Result = CalculateBattle(battleConfiguration);
+        BattleResult = new(battleConfiguration);
     }
 
     
-    private BattleResult CalculateBattle(BattleConfiguration configuration)
+    public async Task<BattleResult> CalculateBattle()
     {
         try
         {
-            var result = new BattleResult(configuration);
+            var result = BattleResult;
 
             // Ігровий цикл
             while (true)
@@ -56,7 +48,7 @@ public class Battle
 
     private void FindAndExecuteAction()
     {
-        if (Result != null)
+        if (BattleResult.Stats.TeamWinner != Guid.Empty)
             return;
         if (AllBattleActions.Count <= 0)
             throw new Exception("No BattleAction");

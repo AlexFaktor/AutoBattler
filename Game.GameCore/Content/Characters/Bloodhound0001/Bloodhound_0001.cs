@@ -6,7 +6,7 @@ namespace Game.GameCore.Content.Characters.Bloodhound0001
 {
     internal class Bloodhound_0001 : Character
     {
-        public Bloodhound_0001(int id, Team team, CharacterConfigReader pathConfig) : base(id, team, pathConfig)
+        public Bloodhound_0001(UnitConfiguration config, Team team, CharacterConfigReader pathConfig) : base(config, team, pathConfig)
         {
         }
     }

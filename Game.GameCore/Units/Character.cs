@@ -6,9 +6,9 @@ namespace Game.GameCore.Units;
 
 public abstract class Character : Unit
 {
-    public Character(int id,Team team, CharacterConfigReader configReader) 
+    public Character(UnitConfiguration configuration,Team team, CharacterConfigReader configReader) 
     {
-        var config = configReader.GetCharacterConfigById(id);
+        var config = configReader.GetCharacterConfigById(configuration.Id);
 
         if (config == null)
             throw new Exception("The character does not exist");
@@ -26,25 +26,25 @@ public abstract class Character : Unit
         TacticalType = ETacticalTypeParse.Parse( config.TacticalType);
         TacticalLevel = new(config.TacticalLevel);
         // General
-        AbilityHaste = config.AbilityHaste;
-        Vaparism = config.Vampirism;
+        AbilityHaste = new(config.AbilityHaste);
+        Vaparism = new(config.Vampirism);
         Mana = new(config.Mana);
         // Attack
         Damage = new(config.Damage);
         AttackSpeed = new(config.AttackSpeed);
-        Accuracy = config.Accuracy;
-        CriticalChance = config.CriticalChance;
-        CriticalDamage = config.CriticalDamage;
-        ArmorPenetration = config.ArmorPenetration;
+        Accuracy = new(config.Accuracy);
+        CriticalChance = new(config.CriticalChance);
+        CriticalDamage = new(config.CriticalDamage);
+        ArmorPenetration = new(config.ArmorPenetration);
         IgnoringArmor = new(config.IgnoringArmor);
         // Defensive
         HealthPoints = new(config.HealthPoints);
         Shield = new(config.Shield);
-        ShieldEfficiency = config.ShieldEfficiency;
+        ShieldEfficiency = new(config.ShieldEfficiency);
         HealthPassive = new(config.HealthPassive);
-        HealthEfficiency = config.HealthEfficiency;
-        Dexterity = config.Dexterity;
-        CriticalDefeat = config.CriticalDefeat;
+        HealthEfficiency = new(config.HealthEfficiency);
+        Dexterity = new(config.Dexterity);
+        CriticalDefeat = new(config.CriticalDefeat);
         Armor = new (config.Armor);
     }
 }

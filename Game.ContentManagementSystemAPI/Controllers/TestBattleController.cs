@@ -6,7 +6,7 @@ using Serilog;
 namespace Game.ContentManagementSystemAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("admin/[controller]")]
     public class TestBattleController : ControllerBase
     {
 
@@ -15,7 +15,7 @@ namespace Game.ContentManagementSystemAPI.Controllers
             
         }
 
-        [HttpGet("custom")]
+        [HttpPost("custom")]
         public async Task<IActionResult> Get([FromQuery] string jsonBattleConfiguration)
         {
             var config = JsonConvert.DeserializeObject<BattleConfiguration>(jsonBattleConfiguration);
@@ -27,7 +27,7 @@ namespace Game.ContentManagementSystemAPI.Controllers
 
             var battle = new Battle(config!);
 
-            return Ok(battle.Result);
+            return Ok(await battle.CalculateBattle());
         }
     }
 }
