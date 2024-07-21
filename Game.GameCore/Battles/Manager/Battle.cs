@@ -1,7 +1,7 @@
 ﻿using App.GameCore.Battles.System;
 using App.GameCore.Units;
-using App.GameCore.Units.Actions;
-using App.GameCore.Units.Actions.Interfaces;
+using App.GameCore.Units.Actions.Abilitys;
+using App.GameCore.Units.Actions.Abilitys.Interfaces;
 
 namespace App.GameCore.Battles.Manager;
 
@@ -21,7 +21,6 @@ public class Battle
         BattleResult = new(battleConfiguration);
     }
 
-    
     public async Task<BattleResult> CalculateBattle()
     {
         try

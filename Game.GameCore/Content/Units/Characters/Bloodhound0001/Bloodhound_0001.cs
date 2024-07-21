@@ -2,7 +2,7 @@
 using App.GameCore.Tools.ConfigImporters.ConfigReaders;
 using App.GameCore.Units;
 
-namespace App.GameCore.Content.Characters.Bloodhound0001
+namespace App.GameCore.Content.Units.Characters.Bloodhound0001
 {
     internal class Bloodhound_0001 : Character
     {

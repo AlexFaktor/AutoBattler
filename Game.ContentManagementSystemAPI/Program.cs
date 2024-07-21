@@ -1,8 +1,4 @@
-using App.ContentManagementSystemAPI;
-using App.GameCore.Tools.ConfigImporters.ConfigReaders;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using App.GameCore.Tools.ConfigImporters;
 
 namespace App.ContentManagementSystemAPI
 {
@@ -17,13 +13,19 @@ namespace App.ContentManagementSystemAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Add Google Sheets downloader service
-            builder.Services.AddSingleton<GoogleSheetsDownloader>();
-            builder.Services.AddSingleton<CharacterConfigReader>(provider =>
+            // Реєструємо HttpClient
+            builder.Services.AddHttpClient();
+
+            // Завантажуємо конфігурації з файлу appsettings.json
+            var googleSheetsSettings = new List<GoogleSheetsSettings>();
+            builder.Configuration.GetSection("GoogleSheetsConfigs").Bind(googleSheetsSettings);
+
+            // Реєструємо DownloadAllGameConfigService
+            builder.Services.AddSingleton<DownloadAllGameConfigService>(sp =>
             {
-                var googleSheetsDownloader = provider.GetRequiredService<GoogleSheetsDownloader>();
-                googleSheetsDownloader.DownloadSheetAsCsv().Wait(); // Ensure the config is downloaded before creating the reader
-                return new CharacterConfigReader("path/to/your/csv/file.csv"); // Path to your CSV file
+                var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+                var httpClient = httpClientFactory.CreateClient();
+                return new DownloadAllGameConfigService(googleSheetsSettings, httpClient);
             });
 
             var app = builder.Build();

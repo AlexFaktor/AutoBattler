@@ -1,4 +1,5 @@
-﻿using App.GameCore.Battles.System;
+﻿using App.GameCore.Battles.Enums;
+using App.GameCore.Battles.System;
 using App.GameCore.BattleSystem.Enums;
 using App.Manager.BattleSystem;
 using Newtonsoft.Json.Converters;
@@ -8,9 +9,11 @@ namespace App.GameCore.Battles.Manager;
 
 public class BattleConfiguration
 {
-    public BattleConfiguration(int randomSeed, EDayTime dayTime, ETempetura tempetura, ETerrain terrain, EWeather weather, List<Team> teams)
+    public BattleConfiguration(int randomSeed, EBattleType battleType, EDayTime dayTime, ETempetura tempetura, ETerrain terrain, EWeather weather, List<Team> teams)
     {
         RandomSeed = randomSeed;
+        BattleType = battleType;
+
         DayTime = dayTime;
         Tempetura = tempetura;
         Terrain = terrain;
@@ -20,6 +23,8 @@ public class BattleConfiguration
 
     public int RandomSeed { get; set; }
 
+    [JsonConverter(typeof(StringEnumConverter))]
+    public EBattleType BattleType { get; set; }
     [JsonConverter(typeof(StringEnumConverter))]
     public EDayTime DayTime { get; set; }
     [JsonConverter(typeof(StringEnumConverter))]

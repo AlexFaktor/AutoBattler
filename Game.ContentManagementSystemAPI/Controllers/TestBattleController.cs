@@ -9,7 +9,6 @@ namespace App.ContentManagementSystemAPI.Controllers
     [Route("admin/[controller]")]
     public class TestBattleController : ControllerBase
     {
-
         public TestBattleController()
         {
             
