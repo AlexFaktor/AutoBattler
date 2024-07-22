@@ -1,6 +1,6 @@
 ﻿using App.Core.Resources.Interfraces.ScheduledTaskService;
 
-namespace App.Web;
+namespace App.ScheduledTaskService;
 
 public class Program
 {

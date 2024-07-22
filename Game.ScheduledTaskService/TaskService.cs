@@ -4,7 +4,7 @@ using App.Database.Repositorys.ScheduledTasks;
 using App.ScheduledTaskService.Executors;
 using System.Data;
 
-namespace App.Web;
+namespace App.ScheduledTaskService;
 
 public class TaskService : ITaskService
 {

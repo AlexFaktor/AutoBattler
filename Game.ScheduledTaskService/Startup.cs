@@ -2,40 +2,42 @@
 using Npgsql;
 using System.Data;
 
-namespace App.Web
+namespace App.ScheduledTaskService;
+
+public class Startup
 {
-    public class Startup
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration) => Configuration = configuration;
+        Configuration = configuration;
+    }
 
-        public IConfiguration Configuration { get; }
+    public IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddControllers();
+
+        var connectionString = Configuration.GetConnectionString("DefaultConnection");
+
+        services.AddScoped<IDbConnection>(sp => new NpgsqlConnection(connectionString));
+
+        services.AddScoped<ITaskService, TaskService>();
+        services.AddHostedService<TaskSchedulerHostedService>();
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
         {
-            services.AddControllers();
-
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
-
-            services.AddScoped<IDbConnection>(sp => new NpgsqlConnection(connectionString));
-
-            services.AddScoped<ITaskService, TaskService>();
-            services.AddHostedService<TaskSchedulerHostedService>();
+            app.UseDeveloperExceptionPage();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        app.UseHttpsRedirection();
+        app.UseRouting();
+        app.UseAuthorization();
+        app.UseEndpoints(endpoints =>
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseHttpsRedirection();
-            app.UseRouting();
-            app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
+            endpoints.MapControllers();
+        });
     }
 }
