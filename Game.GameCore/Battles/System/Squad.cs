@@ -28,8 +28,8 @@ public class Squad
 
 public class SquadConfiguration
 {
-    public List<UnitConfiguration> UnitConfigurations { get; set; }
-    public SquadConfiguration(List<UnitConfiguration> unitConfigurations)
+    public List<CharacterConfiguration> UnitConfigurations { get; set; }
+    public SquadConfiguration(List<CharacterConfiguration> unitConfigurations)
     {
         UnitConfigurations = unitConfigurations;
     }

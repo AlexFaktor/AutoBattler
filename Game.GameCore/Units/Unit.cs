@@ -9,7 +9,7 @@ public abstract class Unit
 {
     // Metadata
     public Guid Token { get; } = Guid.NewGuid();
-    public Team? Team { get; set; }
+    public Team Team { get; set; }
 
     // Info
     public short Id { get; protected set; }
@@ -56,6 +56,11 @@ public abstract class Unit
     // Events
     public event EventHandler<AttackEventArgs>? OnAttack;
     public event EventHandler<DamageReceivedEventArgs>? OnDamageReceived;
+
+    public Unit(Team team)
+    {
+        Team = team;
+    }
 
     public void ApplyEffect(Effect effect)
     {

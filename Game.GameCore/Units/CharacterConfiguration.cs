@@ -2,12 +2,12 @@
 
 namespace App.GameCore.Units;
 
-public class UnitConfiguration
+public class CharacterConfiguration
 {
     public int Id { get; set; } = 0;
     public Team Team { get; set; }
 
-    public UnitConfiguration(Team team)
+    public CharacterConfiguration(Team team)
     { 
         Team = team;
     }

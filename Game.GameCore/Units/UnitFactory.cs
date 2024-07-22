@@ -1,5 +1,5 @@
 ﻿using App.GameCore.Battles.System;
-using App.GameCore.Content.Characters.Bloodhound0001;
+using App.GameCore.Content.Units.Characters.Bloodhound0001;
 using App.GameCore.Tools.ConfigImporters.ConfigReaders;
 using App.GameCore.Units.Enums;
 
@@ -14,7 +14,7 @@ public class UnitFactory
         _characterConfigReader = characterConfigReader;
     }
 
-    public Unit GetUnit(UnitConfiguration config, Team team)
+    public Unit GetUnit(CharacterConfiguration config, Team team)
     {
         switch (config.Id)
         {

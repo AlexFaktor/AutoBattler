@@ -6,7 +6,7 @@ namespace App.GameCore.Units;
 
 public abstract class Character : Unit
 {
-    public Character(UnitConfiguration configuration,Team team, CharacterConfigReader configReader) 
+    public Character(CharacterConfiguration configuration, CharacterConfigReader configReader, Team team) : base(team)
     {
         var config = configReader.GetCharacterConfigById(configuration.Id);
 
