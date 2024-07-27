@@ -4,7 +4,7 @@ using CsvHelper.Configuration.Attributes;
 using App.GameCore.Units.Enums;
 using System.Globalization;
 
-namespace App.GameCore.Tools.ConfigImporters.ConfigReaders;
+namespace App.GameCore.Tools.ShellImporters.ConfigReaders;
 
 internal class CharacterImporter
 {

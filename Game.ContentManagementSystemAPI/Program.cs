@@ -1,4 +1,5 @@
-using App.GameCore.Tools.ConfigImporters;
+using App.GameCore.Tools.ShellImporters;
+using Serilog;
 
 namespace App.ContentManagementSystemAPI;
 
@@ -6,45 +7,70 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
+        // Build configuration
+        var configuration = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            .Build();
 
-        // Add services to the container.
-        builder.Services.AddControllers();
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        // Configure Serilog
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(configuration)
+            .CreateLogger();
 
-        // Register HttpClient
-        builder.Services.AddHttpClient();
-
-        // Load configurations from the appsettings.json file
-        var googleSheetsSettings = new List<GoogleSheetsSettings>();
-        builder.Configuration.GetSection("GoogleSheetsConfigs").Bind(googleSheetsSettings);
-
-        // Register DownloadAllGameConfigService
-        builder.Services.AddSingleton<DownloadAllGameConfigService>(sp =>
+        try
         {
-            var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
-            var httpClient = httpClientFactory.CreateClient();
-            return new DownloadAllGameConfigService(googleSheetsSettings, httpClient);
-        });
+            Log.Information("Starting up the service");
+            var builder = WebApplication.CreateBuilder(args);
 
-        var app = builder.Build();
+            // Add Serilog
+            builder.Host.UseSerilog();
 
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            // Add services to the container.
+            builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+
+            // Register HttpClient
+            builder.Services.AddHttpClient();
+
+            // Load configurations from the appsettings.json file
+            var googleSheetsSettings = new List<GoogleSheetsSettings>();
+            builder.Configuration.GetSection("GoogleSheetsConfigs").Bind(googleSheetsSettings);
+
+            // Register DownloadAllGameConfigService
+            builder.Services.AddSingleton<DownloadAllGameConfigService>(sp =>
+            {
+                var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+                var httpClient = httpClientFactory.CreateClient();
+                return new DownloadAllGameConfigService(googleSheetsSettings, httpClient);
+            });
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseAuthorization();
+            app.MapControllers();
+
+            // Initialize the download service
+            var downloadService = app.Services.GetRequiredService<DownloadAllGameConfigService>();
+            await downloadService.InitializeAsync();
+
+            app.Run();
         }
-
-        app.UseHttpsRedirection();
-        app.UseAuthorization();
-        app.MapControllers();
-
-        // Initialize the download service
-        var downloadService = app.Services.GetRequiredService<DownloadAllGameConfigService>();
-        await downloadService.InitializeAsync();
-
-        app.Run();
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "The application failed to start correctly");
+        }
+        finally
+        {
+            Log.CloseAndFlush();
+        }
     }
 }

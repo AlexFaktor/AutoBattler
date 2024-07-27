@@ -1,5 +1,5 @@
 ﻿using App.GameCore.Battles.System;
-using App.GameCore.Tools.ConfigImporters.ConfigReaders;
+using App.GameCore.Tools.ShellImporters.ConfigReaders;
 using App.GameCore.Units.Enums;
 
 namespace App.GameCore.Units;

@@ -1,7 +1,7 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Sheets.v4;
 
-namespace App.GameCore.Tools.ConfigImporters;
+namespace App.GameCore.Tools.ShellImporters;
 
 public class GoogleSheetsDownloader
 {

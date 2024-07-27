@@ -1,7 +1,7 @@
-﻿using App.GameCore.Tools.ConfigImporters.ConfigReaders;
+﻿using App.GameCore.Tools.ShellImporters.ConfigReaders;
 using Serilog;
 
-namespace App.GameCore.Tools.ConfigImporters;
+namespace App.GameCore.Tools.ShellImporters;
 
 public class DownloadAllGameConfigService
 {
