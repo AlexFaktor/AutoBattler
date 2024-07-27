@@ -22,7 +22,7 @@ public abstract class Unit
     public TUnitValue<float> Speed { get; protected set; } = new(5);
     public TUnitValue<float> AttackRange { get; protected set; } = new(30);
     public ETacticalType TacticalType { get; protected set; }
-    public TUnitValue<byte> TacticalLevel { get; protected set; } = new(0);
+    public TUnitValue<int> TacticalLevel { get; protected set; } = new(0);
 
     // General
     public TUnitPercentage AbilityHaste { get; protected set; } = new(0);

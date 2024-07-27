@@ -1,4 +1,5 @@
-﻿using CsvHelper;
+﻿using App.GameCore.Units.Enums;
+using CsvHelper;
 using CsvHelper.Configuration;
 using System.Globalization;
 
@@ -80,13 +81,13 @@ public class CharacterConfig
     public int Version { get; set; }
     public string Description { get; set; } = string.Empty;
     public string UrlImage { get; set; } = string.Empty;
-    public string Class1 { get; set; } = string.Empty;
-    public string Class2 { get; set; } = string.Empty;
+    public EUnitClass Class1 { get; set; } = EUnitClass.None;
+    public EUnitClass Class2 { get; set; } = EUnitClass.None;
     public float Initiative { get; set; }
     public float Speed { get; set; }
     public float AttackRange { get; set; }
-    public string TacticalType { get; set; } = string.Empty;
-    public byte TacticalLevel { get; set; }
+    public ETacticalType TacticalType { get; set; } = ETacticalType.Default;
+    public int TacticalLevel { get; set; }
     public float AbilityHaste { get; set; }
     public float Vampirism { get; set; }
     public float Mana { get; set; }

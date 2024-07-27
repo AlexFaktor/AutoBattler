@@ -399,3 +399,4 @@ FodyWeavers.xsd
 
 # My
 /.doc
+/Game.ContentManagementSystemAPI/config

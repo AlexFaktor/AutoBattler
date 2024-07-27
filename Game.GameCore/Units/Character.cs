@@ -18,12 +18,12 @@ public abstract class Character : Unit
         Id = (short)config.Id;
         Name = config.Name;
         // Tactics
-        Class = EUnitClassParse.Parse(config.Class1);
-        SubClass = EUnitClassParse.Parse(config.Class2);
+        Class = config.Class1;
+        SubClass = config.Class2;
         Initiative = new(config.Initiative);
         Speed = new(config.Speed);
         AttackRange = new(config.AttackRange);
-        TacticalType = ETacticalTypeParse.Parse( config.TacticalType);
+        TacticalType = config.TacticalType;
         TacticalLevel = new(config.TacticalLevel);
         // General
         AbilityHaste = new(config.AbilityHaste);
