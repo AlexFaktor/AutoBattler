@@ -3,10 +3,10 @@
 public class Team
 {
     public Guid Token { get; } = Guid.NewGuid();
-    public Player Player { get; }
+    public IPlayer Player { get; }
     public Squad Squad { get; }
 
-    public Team(Player player, SquadConfiguration squadConfiguration)
+    public Team(IPlayer player, SquadConfiguration squadConfiguration)
     {
         Player = player;
         Squad = new(squadConfiguration);

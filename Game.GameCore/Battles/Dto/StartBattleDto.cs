@@ -1,0 +1,62 @@
+﻿using App.GameCore.Battles.Enums;
+using App.GameCore.Battles.System;
+using App.GameCore.BattleSystem.Enums;
+using App.Manager.BattleSystem;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace App.GameCore.Battles.Dto;
+
+public class StartBattleDto
+{
+    public int RandomSeed { get; set; }
+    public EBattleType BattleType { get; set; }
+    public EDayTime DayTime { get; set; }
+    public ETempetura Tempetura { get; set; }
+    public ETerrain Terrain { get; set; }
+    public EWeather Weather { get; set; }
+    public Dictionary<IPlayer, SquadConfiguration> Team { get; set; }
+
+    public StartBattleDto() { }
+
+    public StartBattleDto(string json)
+    {
+        var dtoWithStringKey = JsonConvert.DeserializeObject<StartBattleDtoWithStringKey>(json);
+
+        RandomSeed = dtoWithStringKey.RandomSeed;
+        BattleType = dtoWithStringKey.BattleType;
+        DayTime = dtoWithStringKey.DayTime;
+        Tempetura = dtoWithStringKey.Tempetura;
+        Terrain = dtoWithStringKey.Terrain;
+        Weather = dtoWithStringKey.Weather;
+        Team = dtoWithStringKey.Team.ToDictionary(kvp => (IPlayer)new Player { Id = Guid.Parse( kvp.Key) }, kvp => kvp.Value);
+    }
+
+    public string GetJSON()
+    {
+        var dtoWithStringKey = new StartBattleDtoWithStringKey
+        {
+            RandomSeed = this.RandomSeed,
+            BattleType = this.BattleType,
+            DayTime = this.DayTime,
+            Tempetura = this.Tempetura,
+            Terrain = this.Terrain,
+            Weather = this.Weather,
+            Team = this.Team.ToDictionary(kvp => kvp.Key.Id.ToString(), kvp => kvp.Value)
+        };
+
+        return JsonConvert.SerializeObject(dtoWithStringKey, Formatting.Indented);
+    }
+}
+
+public class StartBattleDtoWithStringKey
+{
+    public int RandomSeed { get; set; }
+    public EBattleType BattleType { get; set; }
+    public EDayTime DayTime { get; set; }
+    public ETempetura Tempetura { get; set; }
+    public ETerrain Terrain { get; set; }
+    public EWeather Weather { get; set; }
+    public Dictionary<string, SquadConfiguration> Team { get; set; }
+}

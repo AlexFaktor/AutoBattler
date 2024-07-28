@@ -18,6 +18,7 @@ public class BattleConfiguration
         Tempetura = tempetura;
         Terrain = terrain;
         Weather = weather;
+
         Teams = teams;
     }
 
