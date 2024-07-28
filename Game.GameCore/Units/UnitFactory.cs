@@ -23,7 +23,7 @@ public class UnitFactory
         _characterConfigReader = characterConfigReader;
     }
 
-    public Unit GetUnit(CharacterConfiguration config, Team team)
+    public Unit GetUnit(UnitConfiguration config, Team team)
     {
         return config.Id switch
         {

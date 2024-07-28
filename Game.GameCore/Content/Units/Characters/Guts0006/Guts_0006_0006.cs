@@ -6,7 +6,7 @@ namespace App.GameCore.Content.Units.Characters.Guts0006
 {
     internal class Guts_0006 : Character
     {
-        public Guts_0006(CharacterConfiguration config, Team team, CharacterConfigReader pathConfig) : base(config, pathConfig, team)
+        public Guts_0006(UnitConfiguration config, Team team, CharacterConfigReader pathConfig) : base(config, pathConfig, team)
         {
         }
     }

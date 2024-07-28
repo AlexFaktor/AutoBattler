@@ -6,7 +6,7 @@ namespace App.GameCore.Content.Units.Characters.Isidro0007
 {
     internal class Isidro_0007 : Character
     {
-        public Isidro_0007(CharacterConfiguration config, Team team, CharacterConfigReader pathConfig) : base(config, pathConfig, team)
+        public Isidro_0007(UnitConfiguration config, Team team, CharacterConfigReader pathConfig) : base(config, pathConfig, team)
         {
         }
     }

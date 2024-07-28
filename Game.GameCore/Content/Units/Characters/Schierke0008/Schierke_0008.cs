@@ -6,7 +6,7 @@ namespace App.GameCore.Content.Units.Characters.Schierke0008
 {
     internal class Schierke_0008 : Character
     {
-        public Schierke_0008(CharacterConfiguration config, Team team, CharacterConfigReader pathConfig) : base(config, pathConfig, team)
+        public Schierke_0008(UnitConfiguration config, Team team, CharacterConfigReader pathConfig) : base(config, pathConfig, team)
         {
         }
     }

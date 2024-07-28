@@ -6,7 +6,7 @@ namespace App.GameCore.Content.Units.Characters.Caustic0002
 {
     internal class Caustic_0002 : Character
     {
-        public Caustic_0002(CharacterConfiguration config, Team team, CharacterConfigReader pathConfig) : base(config, pathConfig, team)
+        public Caustic_0002(UnitConfiguration config, Team team, CharacterConfigReader pathConfig) : base(config, pathConfig, team)
         {
         }
     }
