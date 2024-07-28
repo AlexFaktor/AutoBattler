@@ -9,5 +9,4 @@ namespace App.GameCore.Content.Units.Characters.Bloodhound0001
         public Bloodhound_0001(CharacterConfiguration config, Team team, CharacterConfigReader pathConfig) : base(config, pathConfig,team)
         {
         }
-    }
-}
+    }}
