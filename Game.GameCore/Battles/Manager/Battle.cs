@@ -8,17 +8,19 @@ namespace App.GameCore.Battles.Manager;
 public class Battle
 {
     public BattleConfiguration Configuration { get; }
+    public BattleResult BattleResult { get; protected set; }
 
     public ulong Timeline { get; set; }
     public List<Unit> AllUnits { get; protected set; } = [];
     public List<Team> AllTeam { get; protected set; } = [];
     public List<BattleAction> AllBattleActions { get; protected set; } = [];
-    public BattleResult BattleResult { get; protected set; }
+    public Random Random { get; set; }
 
     public Battle(BattleConfiguration battleConfiguration)
     {
         Configuration = battleConfiguration;
         BattleResult = new(battleConfiguration);
+        Random = new Random(battleConfiguration.Seed);
     }
 
     public async Task<BattleResult> CalculateBattle()

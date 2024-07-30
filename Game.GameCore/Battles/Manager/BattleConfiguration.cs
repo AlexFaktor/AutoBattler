@@ -11,7 +11,7 @@ public class BattleConfiguration
 {
     public BattleConfiguration(int randomSeed, EBattleType battleType, EDayTime dayTime, ETempetura tempetura, ETerrain terrain, EWeather weather, List<Team> teams)
     {
-        RandomSeed = randomSeed;
+        Seed = randomSeed;
         BattleType = battleType;
 
         DayTime = dayTime;
@@ -22,7 +22,7 @@ public class BattleConfiguration
         Teams = teams;
     }
 
-    public int RandomSeed { get; set; }
+    public int Seed { get; set; }
 
     [JsonConverter(typeof(StringEnumConverter))]
     public EBattleType BattleType { get; set; }
