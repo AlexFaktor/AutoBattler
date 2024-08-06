@@ -29,7 +29,7 @@ internal class AbilityAutoAttack : RechargingAbility
         var isCrit = (float)_battle.Random.NextDouble() > GetChanceOfCrit(target);
 
 
-        target.ReceiveDamageFromUnit(GetTotalPower());
+        target.ReceiveDamageFromUnit(GetTotalPower(isCrit));
 
         Time.Reload();
     }
@@ -37,9 +37,19 @@ internal class AbilityAutoAttack : RechargingAbility
     private double GetTotalPower(bool isCrit)
     {
         var damage = _unit.Damage.Now;
-        var coefficientInitiative = GameFormulas.GetRatio(_unit.Initiative.Now, _unit.Initiative.Default);
-        return damage * coefficientInitiative;
+        var coefInitiative = GameFormulas.GetRatio(_unit.Initiative.Now, _unit.Initiative.Default);
+        var coefCritDamage = _unit.CriticalDamage.Now;
+
+        // Power with crit
+        if (isCrit)
+        {
+            return damage * coefInitiative * (1 + coefCritDamage);
+        }
+        // Default power
+        else
+            return damage * coefInitiative;
     }
+
 
     private float GetChanceOfHit(Unit target)
     {
