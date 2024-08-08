@@ -2,7 +2,7 @@
 
 namespace App.GameCore.Battles.System;
 
-public abstract class BattleAction
+public abstract class BattleAction : IBattleAction
 {
     protected Battle _battle;
 
@@ -12,4 +12,9 @@ public abstract class BattleAction
     }
 
     public abstract void Action();
+}
+
+public interface IBattleAction
+{ 
+    void Action();
 }

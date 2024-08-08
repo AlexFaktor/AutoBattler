@@ -1,7 +1,9 @@
 ﻿using App.GameCore.Battles.System;
+using App.GameCore.Tools.Formulas;
 using App.GameCore.Units.Actions;
 using App.GameCore.Units.Enums;
 using App.GameCore.Units.Types;
+using System.Drawing;
 
 namespace App.GameCore.Units;
 
@@ -49,9 +51,9 @@ public abstract class Unit
     public TUnitValue<float> Armor { get; protected set; } = new(0);
 
     // Other
-    public double Position { get; protected set; }
+    public float Position { get; protected set; }
 
-    protected List<UnitAction> _actions = [];
+    public List<UnitAction> Actions { get; protected set; } = [];
 
     // Events
     public event EventHandler<AttackEventArgs>? OnAttack;
@@ -83,7 +85,8 @@ public abstract class Unit
 
     public virtual Unit SelectEnemy(List<Unit> enemys) // MAKE RANDOM ENEMY SYSTEM SELECT
     {
-        return enemys[0];
+        var priorities = UnitClassFormulas.WeightToSelect(Class, SubClass);
+
     }
 
     public virtual void ReceiveDamageFromUnit(double damage)
@@ -102,6 +105,25 @@ public abstract class Unit
 
     public bool IsAlive() => HealthPoints.Now > 0;
     public bool IsShield() => Shield.Now > 0;
+
+    public UnitRadius GetAttackRadius(float attackRange)
+    {
+        return new UnitRadius()
+        {
+            Back = Position - attackRange,
+            Front = Position + attackRange,
+        };
+    }
+    public Dictionary<Unit, float> GetTargets(UnitRadius radius, List<Unit> enemys)
+    {
+
+    }
+}
+
+public struct UnitRadius
+{
+    public float Back {  get; set; }
+    public float Front {  get; set; }
 }
 
 public class AttackEventArgs : EventArgs

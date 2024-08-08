@@ -1,4 +1,5 @@
 ﻿using App.GameCore.Battles.System;
+using App.GameCore.Tools.ShellImporters.ConfigReaders;
 using App.GameCore.Units;
 using App.GameCore.Units.Actions.Abilitys;
 using App.GameCore.Units.Actions.Abilitys.Interfaces;
@@ -7,20 +8,50 @@ namespace App.GameCore.Battles.Manager;
 
 public class Battle
 {
+    // Tools
+    private UnitFactory _unitFactory;
+
+    // Main
     public BattleConfiguration Configuration { get; }
     public BattleResult BattleResult { get; protected set; }
-
-    public ulong Timeline { get; set; }
-    public List<Unit> AllUnits { get; protected set; } = [];
-    public List<Team> AllTeam { get; protected set; } = [];
-    public List<BattleAction> AllBattleActions { get; protected set; } = [];
     public Random Random { get; set; }
 
-    public Battle(BattleConfiguration battleConfiguration)
+    // Battle 
+    public ulong Timeline { get; set; }
+    public List<Team> AllTeam { get; protected set; } = [];
+    public List<Unit> AllUnits { get; protected set; } = [];
+    public List<IBattleAction> AllBattleActions { get; protected set; } = [];
+    
+
+    public Battle(BattleConfiguration battleConfiguration, CharacterConfigReader characteConfigReader)
     {
+        _unitFactory = new(characteConfigReader);
+
         Configuration = battleConfiguration;
         BattleResult = new(battleConfiguration);
         Random = new Random(battleConfiguration.Seed);
+
+
+        InitializeConfiguration();
+
+        void InitializeConfiguration()
+        {
+            Timeline = 0;
+            var allTeams = new List<Team>();
+            foreach (var teamConfig in battleConfiguration.TeamConfigurations) {
+                allTeams.Add(new(teamConfig, this, _unitFactory));
+            }
+            AllTeam = allTeams;
+            AllUnits = allTeams.SelectMany(t => t.Units).ToList();
+            AllBattleActions = AllUnits
+            .SelectMany(u => u.Actions)
+            .OfType<IBattleAction>()
+            .ToList();
+        }
+    }
+    private void InitializeTeams()
+    {
+
     }
 
     public async Task<BattleResult> CalculateBattle()

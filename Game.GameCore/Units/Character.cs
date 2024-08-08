@@ -1,6 +1,5 @@
 ﻿using App.GameCore.Battles.System;
 using App.GameCore.Tools.ShellImporters.ConfigReaders;
-using App.GameCore.Units.Enums;
 
 namespace App.GameCore.Units;
 
@@ -45,6 +44,6 @@ public abstract class Character : Unit
         HealthEfficiency = new(config.HealthEfficiency);
         Dexterity = new(config.Dexterity);
         CriticalDefeat = new(config.CriticalDefeat);
-        Armor = new (config.Armor);
+        Armor = new(config.Armor);
     }
 }

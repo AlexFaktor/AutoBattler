@@ -9,19 +9,6 @@ namespace App.GameCore.Battles.Manager;
 
 public class BattleConfiguration
 {
-    public BattleConfiguration(int randomSeed, EBattleType battleType, EDayTime dayTime, ETempetura tempetura, ETerrain terrain, EWeather weather, List<Team> teams)
-    {
-        Seed = randomSeed;
-        BattleType = battleType;
-
-        DayTime = dayTime;
-        Tempetura = tempetura;
-        Terrain = terrain;
-        Weather = weather;
-
-        Teams = teams;
-    }
-
     public int Seed { get; set; }
 
     [JsonConverter(typeof(StringEnumConverter))]
@@ -35,5 +22,25 @@ public class BattleConfiguration
     [JsonConverter(typeof(StringEnumConverter))]
     public EWeather Weather { get; set; }
 
-    public List<Team> Teams { get; set; }
+    public List<TeamConfiguration> TeamConfigurations { get; set; }
+
+    public BattleConfiguration(
+        int randomSeed,
+        EBattleType battleType,
+        EDayTime dayTime,
+        ETempetura tempetura,
+        ETerrain terrain,
+        EWeather weather,
+        List<TeamConfiguration> teams)
+    {
+        Seed = randomSeed;
+        BattleType = battleType;
+
+        DayTime = dayTime;
+        Tempetura = tempetura;
+        Terrain = terrain;
+        Weather = weather;
+
+        TeamConfigurations = teams;
+    }
 }

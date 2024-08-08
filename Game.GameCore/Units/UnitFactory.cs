@@ -14,16 +14,11 @@ using App.GameCore.Units.Enums;
 
 namespace App.GameCore.Units;
 
-public class UnitFactory
+public class UnitFactory(CharacterConfigReader characterConfigReader)
 {
-    private readonly CharacterConfigReader _characterConfigReader;
+    private readonly CharacterConfigReader _characterConfigReader = characterConfigReader;
 
-    public UnitFactory(CharacterConfigReader characterConfigReader)
-    {
-        _characterConfigReader = characterConfigReader;
-    }
-
-    public Unit GetUnit(UnitConfiguration config, Team team)
+    private Unit GetUnit(UnitConfiguration config, Team team)
     {
         return config.Id switch
         {
@@ -39,5 +34,17 @@ public class UnitFactory
             (int)EUnit.FL4K => new FL4K_0010(config, team, _characterConfigReader),
             _ => throw new Exception("unit creation error"),
         };
+    }
+
+    internal List<Unit> GetUnits(List<UnitConfiguration> unitConfigurations, Team team)
+    {
+        var units = new List<Unit>();
+
+        foreach (var unitConfiguration in unitConfigurations)
+        {
+            var unit = GetUnit(unitConfiguration, team);
+            units.Add(unit);
+        }
+        return units;
     }
 }
