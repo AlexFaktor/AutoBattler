@@ -4,6 +4,6 @@ public class BattleLogs
 {
     public string Text { get; set; } = string.Empty;
     public string ActualDuration { get; set; } = string.Empty;
-    public Exception? Exception { get; set; }
+    public string ExceptionText { get; set; } = string.Empty;
     public bool IsEnded { get; set; } = false;
 }

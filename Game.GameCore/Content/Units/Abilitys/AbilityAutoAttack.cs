@@ -23,7 +23,7 @@ internal class AbilityAutoAttack : RechargingAbility
         }
 
         var enemys = _battle.AllUnits.Where(u => u.Team.Token != _unit.Team.Token).ToList();
-        var target = _unit.SelectEnemy(enemys);
+        var target = _unit.SelectEnemy(enemys, _unit.AttackRange.Now, _battle.Configuration.Seed);
 
         var isHit = (float)_battle.Random.NextDouble() > GetChanceOfHit(target);
         var isCrit = (float)_battle.Random.NextDouble() > GetChanceOfCrit(target);

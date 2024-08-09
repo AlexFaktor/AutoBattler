@@ -1,4 +1,6 @@
-﻿namespace App.GameCore.Tools.Formulas;
+﻿using System;
+
+namespace App.GameCore.Tools.Formulas;
 
 public static class GameFormulas
 {
@@ -49,4 +51,22 @@ public static class GameFormulas
         return damage - (damage * totalArmorCeof);
     }
 
+    public static T SelectRandomlyWithPriorities<T>(Dictionary<T, float> valuePairs, int seed)
+    {
+        float totalWeight = valuePairs.Values.Sum();
+
+        Random random = new(seed);
+        float randomNumber = (float)(random.NextDouble() * totalWeight);
+
+        // Проходимо по словнику і шукаємо елемент, на який припадає випадкове число
+        foreach (var pair in valuePairs)
+        {
+            if (randomNumber < pair.Value)
+            {
+                return pair.Key;
+            }
+            randomNumber -= pair.Value;
+        }
+        throw new InvalidOperationException("The object could not be selected. The dictionary may be empty or contain incorrect data.");
+    }
 }

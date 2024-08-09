@@ -15,7 +15,7 @@ public class Team
         Units = factory.GetUnits(configuration.UnitConfigurations, this);
     }
 
-    public bool IsSquadAilve()
+    public bool IsTeamAilve()
     {
         byte AliveSoldiers = 0;
         foreach (var unit in Units)

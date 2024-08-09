@@ -83,10 +83,12 @@ public abstract class Unit
 
     }
 
-    public virtual Unit SelectEnemy(List<Unit> enemys) // MAKE RANDOM ENEMY SYSTEM SELECT
+    public virtual Unit SelectEnemy(List<Unit> enemys, float attackRange, int seed)
     {
-        var priorities = UnitClassFormulas.WeightToSelect(Class, SubClass);
-
+        var targetsPrioritetsClass = UnitClassFormulas.WeightToSelect(Class, SubClass); // Get priorities based on class
+        var targetsPrioritetsDistance = GetTargets(GetAttackRadius(attackRange), enemys); // Get enemies in the attack radius and their priority based on distance
+        var targets = AddСlassСonsideration(targetsPrioritetsClass, targetsPrioritetsDistance); // Combine class and distance priorities
+        return GameFormulas.SelectRandomlyWithPriorities(targets, seed);
     }
 
     public virtual void ReceiveDamageFromUnit(double damage)
@@ -106,7 +108,7 @@ public abstract class Unit
     public bool IsAlive() => HealthPoints.Now > 0;
     public bool IsShield() => Shield.Now > 0;
 
-    public UnitRadius GetAttackRadius(float attackRange)
+    protected UnitRadius GetAttackRadius(float attackRange)
     {
         return new UnitRadius()
         {
@@ -114,16 +116,43 @@ public abstract class Unit
             Front = Position + attackRange,
         };
     }
-    public Dictionary<Unit, float> GetTargets(UnitRadius radius, List<Unit> enemys)
+    protected Dictionary<Unit, float> GetTargets(UnitRadius radius, List<Unit> enemys)
     {
+        var dictionary = new Dictionary<Unit, float>();
 
+        foreach (var enemy in enemys)
+        {
+            if (enemy.Position < radius.Front && enemy.Position > radius.Back)
+            {
+                var distance = Math.Abs(Math.Abs(enemy.Position) - Math.Abs(Position)); 
+                var difference = 1 - (distance / radius.Radius);
+                dictionary.Add(enemy, difference);
+            }
+        }
+
+        return dictionary;
     }
+    protected Dictionary<Unit, float> AddСlassСonsideration(Dictionary<EUnitClass, float> targetsPrioritetsClass, Dictionary<Unit, float> targets)
+    {
+        foreach (var target in targets.Keys.ToList())
+        {
+            EUnitClass unitClass = target.Class; // Припускаємо, що у класу Unit є властивість UnitClass
+            if (targetsPrioritetsClass.TryGetValue(unitClass, out float priority))
+            {
+                targets[target] *= priority;
+            }
+        }
+
+        return targets;
+    }
+
 }
 
 public struct UnitRadius
 {
     public float Back {  get; set; }
     public float Front {  get; set; }
+    public readonly float Radius => (Front - Back) / 2;
 }
 
 public class AttackEventArgs : EventArgs

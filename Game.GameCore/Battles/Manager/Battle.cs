@@ -49,16 +49,14 @@ public class Battle
             .ToList();
         }
     }
-    private void InitializeTeams()
-    {
-
-    }
+    
 
     public async Task<BattleResult> CalculateBattle()
     {
         try
         {
             var result = BattleResult;
+            InitializeTeams();
 
             // Ігровий цикл
             while (true)
@@ -75,6 +73,11 @@ public class Battle
         {
             Console.WriteLine(e.ToString());
             throw;
+        }
+
+        void InitializeTeams()
+        {
+
         }
     }
 
@@ -115,7 +118,7 @@ public class Battle
 
         foreach (var team in AllTeam)
         {
-            if (team.Squad.IsSquadAilve())
+            if (team.IsTeamAilve())
                 AliveTeams.Add(team);
         }
 
