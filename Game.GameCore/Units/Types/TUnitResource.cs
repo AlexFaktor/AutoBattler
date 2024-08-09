@@ -20,8 +20,8 @@
             }
         }
 
-        public event EventHandler<ResourceChangingEventArgs<T>> OnNowChanging;
-        public event EventHandler<ResourceChangedEventArgs<T>> OnNowChanged;
+        public event EventHandler<ResourceChangingEventArgs<T>>? OnNowChanging;
+        public event EventHandler<ResourceChangedEventArgs<T>>? OnNowChanged;
 
         public TUnitResource(T defaultValue)
         {

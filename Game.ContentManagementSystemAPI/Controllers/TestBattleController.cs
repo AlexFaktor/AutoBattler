@@ -1,4 +1,5 @@
 using App.GameCore.Battles.Manager;
+using App.GameCore.Tools.ShellImporters;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Serilog;
@@ -9,9 +10,14 @@ namespace App.ContentManagementSystemAPI.Controllers
     [Route("admin/[controller]")]
     public class TestBattleController : ControllerBase
     {
-        public TestBattleController()
+        private IServiceProvider _serviceProvider;
+
+        private DownloaderGameConfigService _downloader;
+
+        public TestBattleController(IServiceProvider serviceProvider)
         {
-            
+            _serviceProvider = serviceProvider;
+            _downloader = serviceProvider.GetRequiredService<DownloaderGameConfigService>();
         }
 
         [HttpPost("custom")]
@@ -24,7 +30,7 @@ namespace App.ContentManagementSystemAPI.Controllers
                 return NotFound();
             }
 
-            var battle = new Battle(config!);
+            var battle = new Battle(config!, _downloader.characterConfigs);
 
             return Ok(await battle.CalculateBattle());
         }

@@ -3,13 +3,13 @@ using Serilog;
 
 namespace App.GameCore.Tools.ShellImporters;
 
-public class DownloadAllGameConfigService
+public class DownloaderGameConfigService
 {
     private readonly List<GoogleSheetsSettings> _sheetsSettings;
     private readonly HttpClient _httpClient;
     public CharacterConfigReader characterConfigs { get; private set; }
 
-    public DownloadAllGameConfigService(List<GoogleSheetsSettings> sheetsSettings, HttpClient httpClient)
+    public DownloaderGameConfigService(List<GoogleSheetsSettings> sheetsSettings, HttpClient httpClient)
     {
         _sheetsSettings = sheetsSettings;
         _httpClient = httpClient;

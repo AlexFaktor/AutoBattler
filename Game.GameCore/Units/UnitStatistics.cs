@@ -2,5 +2,6 @@
 {
     public class UnitStatistics
     {
+        public UnitStatistics() { }
     }
 }

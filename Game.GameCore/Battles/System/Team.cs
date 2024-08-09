@@ -12,7 +12,7 @@ public class Team
     public Team(TeamConfiguration configuration, Battle battle, UnitFactory factory)
     {
         Player = configuration.Player;
-        Units = factory.GetUnits(configuration.UnitConfigurations, this);
+        Units = factory.GetUnits(configuration.UnitConfigurations, this, battle);
     }
 
     public bool IsTeamAilve()

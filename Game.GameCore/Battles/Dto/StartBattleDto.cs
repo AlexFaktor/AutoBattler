@@ -3,8 +3,6 @@ using App.GameCore.Battles.System;
 using App.GameCore.BattleSystem.Enums;
 using App.Manager.BattleSystem;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace App.GameCore.Battles.Dto;
 
@@ -16,7 +14,7 @@ public class StartBattleDto
     public ETempetura Tempetura { get; set; }
     public ETerrain Terrain { get; set; }
     public EWeather Weather { get; set; }
-    public Dictionary<IPlayer, SquadConfiguration> Team { get; set; }
+    public Dictionary<IPlayer, TeamConfiguration> Team { get; set; }
 
     public StartBattleDto() { }
 
@@ -30,7 +28,7 @@ public class StartBattleDto
         Tempetura = dtoWithStringKey.Tempetura;
         Terrain = dtoWithStringKey.Terrain;
         Weather = dtoWithStringKey.Weather;
-        Team = dtoWithStringKey.Team.ToDictionary(kvp => (IPlayer)new Player { Id = Guid.Parse( kvp.Key) }, kvp => kvp.Value);
+        Team = dtoWithStringKey.Team.ToDictionary(kvp => (IPlayer)new Player { Id = Guid.Parse(kvp.Key) }, kvp => kvp.Value);
     }
 
     public string GetJSON()
@@ -58,5 +56,5 @@ public class StartBattleDtoWithStringKey
     public ETempetura Tempetura { get; set; }
     public ETerrain Terrain { get; set; }
     public EWeather Weather { get; set; }
-    public Dictionary<string, SquadConfiguration> Team { get; set; }
+    public Dictionary<string, TeamConfiguration> Team { get; set; }
 }

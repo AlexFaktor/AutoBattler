@@ -20,8 +20,8 @@
             }
         }
 
-        public event EventHandler<PercentageChangingEventArgs<float>> OnNowChanging;
-        public event EventHandler<PercentageChangedEventArgs<float>> OnNowChanged;
+        public event EventHandler<PercentageChangingEventArgs<float>>? OnNowChanging;
+        public event EventHandler<PercentageChangedEventArgs<float>>? OnNowChanged;
 
         public TUnitPercentage(float value)
         {

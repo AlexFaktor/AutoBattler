@@ -1,9 +1,9 @@
-﻿using App.GameCore.Battles.System;
+﻿using App.GameCore.Battles.Manager;
+using App.GameCore.Battles.System;
 using App.GameCore.Tools.Formulas;
 using App.GameCore.Units.Actions;
 using App.GameCore.Units.Enums;
 using App.GameCore.Units.Types;
-using System.Drawing;
 
 namespace App.GameCore.Units;
 
@@ -12,6 +12,7 @@ public abstract class Unit
     // Metadata
     public Guid Token { get; } = Guid.NewGuid();
     public Team Team { get; set; }
+    public Battle Battle { get; set; }
 
     // Info
     public short Id { get; protected set; }
@@ -59,9 +60,10 @@ public abstract class Unit
     public event EventHandler<AttackEventArgs>? OnAttack;
     public event EventHandler<DamageReceivedEventArgs>? OnDamageReceived;
 
-    public Unit(Team team)
+    public Unit(Team team, Battle battle)
     {
         Team = team;
+        Battle = battle;
     }
 
     public void ApplyEffect(Effect effect)
@@ -124,7 +126,7 @@ public abstract class Unit
         {
             if (enemy.Position < radius.Front && enemy.Position > radius.Back)
             {
-                var distance = Math.Abs(Math.Abs(enemy.Position) - Math.Abs(Position)); 
+                var distance = Math.Abs(Math.Abs(enemy.Position) - Math.Abs(Position));
                 var difference = 1 - (distance / radius.Radius);
                 dictionary.Add(enemy, difference);
             }
@@ -146,12 +148,40 @@ public abstract class Unit
         return targets;
     }
 
+    internal void Move(IEnumerable<Unit> enemies)
+    {
+        if (enemies == null || !enemies.Any())
+            return;
+
+        Unit? closestEnemy = null;
+        float closestDistance = float.MaxValue;
+
+        foreach (var enemy in enemies)
+        {
+            float distance = CalculateDistance(Position, enemy.Position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestEnemy = enemy;
+            }
+        }
+
+        if (closestEnemy != null)
+        {
+            if (closestEnemy.Position > Position)
+                Position = +Speed.Now;
+            else if (closestEnemy.Position < Position)
+                Position = -Speed.Now;
+        }
+
+        float CalculateDistance(float positionA, float positionB) => Math.Abs(Math.Abs(positionA) - Math.Abs(positionB));
+    }
 }
 
 public struct UnitRadius
 {
-    public float Back {  get; set; }
-    public float Front {  get; set; }
+    public float Back { get; set; }
+    public float Front { get; set; }
     public readonly float Radius => (Front - Back) / 2;
 }
 

@@ -16,8 +16,8 @@ public class TUnitValue<T>
         }
     }
 
-    public event EventHandler<ValueChangingEventArgs<T>> OnNowChanging;
-    public event EventHandler<ValueChangedEventArgs<T>> OnNowChanged;
+    public event EventHandler<ValueChangingEventArgs<T>>? OnNowChanging;
+    public event EventHandler<ValueChangedEventArgs<T>>? OnNowChanged;
 
     public TUnitValue(T defaultValue)
     {

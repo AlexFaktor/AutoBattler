@@ -38,11 +38,11 @@ public class Program
             builder.Configuration.GetSection("GoogleSheetsConfigs").Bind(googleSheetsSettings);
 
             // Register DownloadAllGameConfigService
-            builder.Services.AddSingleton<DownloadAllGameConfigService>(sp =>
+            builder.Services.AddSingleton<DownloaderGameConfigService>(sp =>
             {
                 var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
                 var httpClient = httpClientFactory.CreateClient();
-                return new DownloadAllGameConfigService(googleSheetsSettings, httpClient);
+                return new DownloaderGameConfigService(googleSheetsSettings, httpClient);
             });
 
             var app = builder.Build();
@@ -53,13 +53,13 @@ public class Program
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();
 
             // Initialize the download service
-            var downloadService = app.Services.GetRequiredService<DownloadAllGameConfigService>();
+            var downloadService = app.Services.GetRequiredService<DownloaderGameConfigService>();
             await downloadService.InitializeAsync();
 
             app.Run();

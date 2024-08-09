@@ -1,11 +1,12 @@
-﻿using App.GameCore.Battles.System;
+﻿using App.GameCore.Battles.Manager;
+using App.GameCore.Battles.System;
 using App.GameCore.Tools.ShellImporters.ConfigReaders;
 
 namespace App.GameCore.Units;
 
 public abstract class Character : Unit
 {
-    public Character(UnitConfiguration configuration, CharacterConfigReader configReader, Team team) : base(team)
+    public Character(UnitConfiguration configuration, CharacterConfigReader configReader, Team team, Battle battle) : base(team, battle)
     {
         var config = configReader.GetCharacterConfigById(configuration.Id);
 

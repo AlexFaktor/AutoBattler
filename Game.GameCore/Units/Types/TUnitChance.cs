@@ -20,8 +20,8 @@
             }
         }
 
-        public event EventHandler<ChanceChangingEventArgs<float>> OnNowChanging;
-        public event EventHandler<ChanceChangedEventArgs<float>> OnNowChanged;
+        public event EventHandler<ChanceChangingEventArgs<float>>? OnNowChanging;
+        public event EventHandler<ChanceChangedEventArgs<float>>? OnNowChanged;
 
         public TUnitChance(float value)
         {
