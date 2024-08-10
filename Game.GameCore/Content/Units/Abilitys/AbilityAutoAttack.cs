@@ -31,6 +31,11 @@ internal class AbilityAutoAttack : RechargingAbility
         }
 
         var isHit = (float)_battle.Random.NextDouble() > GetChanceOfHit(target);
+        if (!isHit)
+        {
+            Time.Reload();
+            return;
+        }
         var isCrit = (float)_battle.Random.NextDouble() > GetChanceOfCrit(target);
 
         target.ReceiveDamageFromUnit(GetTotalPower(isCrit));

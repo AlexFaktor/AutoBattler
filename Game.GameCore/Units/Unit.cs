@@ -97,11 +97,11 @@ public abstract class Unit
     {
         if (IsShield())
         {
-            Shield.Now -= damage;
+            Shield.Now = Shield.Now - damage;
         }
         else if (IsAlive())
         {
-            HealthPoints.Now -= damage;
+            HealthPoints.Now = HealthPoints.Now - damage;
         }
         else // Dead
             return;

@@ -6,7 +6,7 @@ namespace App.GameCore.Battles.System;
 public class Team
 {
     public Guid Token { get; } = Guid.NewGuid();
-    public IPlayer Player { get; }
+    public Player Player { get; }
     public List<Unit> Units { get; } = [];
 
     public Team(TeamConfiguration configuration, Battle battle, UnitFactory factory)
@@ -32,10 +32,10 @@ public class Team
 
 public class TeamConfiguration
 {
-    public IPlayer Player { get; set; }
+    public Player Player { get; set; }
     public List<UnitConfiguration> UnitConfigurations { get; set; }
 
-    public TeamConfiguration(IPlayer player, List<UnitConfiguration> unitConfigurations)
+    public TeamConfiguration(Player player, List<UnitConfiguration> unitConfigurations)
     {
         Player = player;
         UnitConfigurations = unitConfigurations;

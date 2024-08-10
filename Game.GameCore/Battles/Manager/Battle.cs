@@ -59,15 +59,19 @@ public class Battle
             InitializeTeams();
 
             // Ігровий цикл
-            while (true)
+            while (result.Stats.TeamWinner == Guid.Empty)
             {
                 FindAndExecuteAction();
                 FindWinner(result);
-
-                if (result.Stats.TeamWinner != Guid.Empty)
-                    return result;
-
+                foreach (var unit in AllUnits)
+                {
+                    Console.WriteLine($"{unit.Name} - HP:{unit.HealthPoints.Max}/{unit.HealthPoints.Now}");
+                    
+                }
+                Thread.Sleep(50);
+                Console.Clear();
             }
+            return result;
         }
         catch (Exception e)
         {
@@ -96,7 +100,6 @@ public class Battle
                 AllBattleActions.Remove(battleAction);
                 return;
             }
-
         }
 
         var reloadableBattleActions = new List<RechargingAbility>();
@@ -108,8 +111,6 @@ public class Battle
 
         var reloadableBattleAction = reloadableBattleActions.OrderBy(a => a.Time.NextUse).First();
         reloadableBattleAction.Action();
-        reloadableBattleAction.Time.Reload();
-        Timeline = reloadableBattleAction.Time.NextUse;
     }
 
     private void FindWinner(BattleResult result)
@@ -120,6 +121,8 @@ public class Battle
         {
             if (team.IsTeamAilve())
                 AliveTeams.Add(team);
+            if (AliveTeams.Count > 0)
+                return;
         }
 
         if (AliveTeams.Count == 0)
