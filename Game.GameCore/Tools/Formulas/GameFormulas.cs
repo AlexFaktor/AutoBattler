@@ -1,4 +1,7 @@
-﻿using System;
+﻿using App.GameCore.Battles.Manager;
+using App.GameCore.Units;
+using System;
+using System.Runtime.InteropServices;
 
 namespace App.GameCore.Tools.Formulas;
 
@@ -51,12 +54,10 @@ public static class GameFormulas
         return damage - (damage * totalArmorCeof);
     }
 
-    public static T SelectRandomlyWithPriorities<T>(Dictionary<T, float> valuePairs, int seed)
+    public static Unit SelectRandomlyWithPriorities(Dictionary<Unit, float> valuePairs, Battle battle)
     {
         float totalWeight = valuePairs.Values.Sum();
-
-        Random random = new(seed);
-        float randomNumber = (float)(random.NextDouble() * totalWeight);
+        float randomNumber = (float)(battle.Random.NextDouble() * totalWeight);
 
         // Проходимо по словнику і шукаємо елемент, на який припадає випадкове число
         foreach (var pair in valuePairs)
@@ -67,6 +68,7 @@ public static class GameFormulas
             }
             randomNumber -= pair.Value;
         }
-        throw new InvalidOperationException("The object could not be selected. The dictionary may be empty or contain incorrect data.");
+        battle.Logger.LogError("selectRandomWithPriorities", "Could not select in the loop");
+        throw new Exception("method: SelectRandomlyWithPriorities could not select in the loop");
     }
 }

@@ -9,7 +9,6 @@ public class BattleResult
     public DateTime EndTime { get; private set; }
 
     public BattleStats Stats { get; set; } = new ();
-    public BattleLogs Logs { get; set; } = new();
 
     public BattleResult(BattleConfiguration configuration)
     {
@@ -18,10 +17,6 @@ public class BattleResult
 
     public void EndBattle()
     {
-        var logs = Logs;
-        logs.IsEnded = true;
-        Logs = logs;
-
         EndTime = DateTime.UtcNow;
     }
 }

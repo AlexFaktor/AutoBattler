@@ -32,7 +32,7 @@ namespace App.ContentManagementSystemAPI.Controllers
 
             var battle = new Battle(config!, _downloader.characterConfigs);
 
-            return Ok(await battle.CalculateBattle());
+            return Ok(battle.CalculateBattle());
         }
         
         [HttpPost("pve")]
@@ -47,7 +47,7 @@ namespace App.ContentManagementSystemAPI.Controllers
 
             var battle = new Battle(config!, _downloader.characterConfigs);
 
-            return Ok(await battle.CalculateBattle());
+            return Ok(battle.CalculateBattle());
         }
     }
 }

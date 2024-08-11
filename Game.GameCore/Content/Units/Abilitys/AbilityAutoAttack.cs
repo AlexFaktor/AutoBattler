@@ -16,13 +16,8 @@ internal class AbilityAutoAttack : RechargingAbility
 
     public override void Action()
     {
-        if (_battle.Timeline < Time.Now)
-        {
-            _battle.BattleResult.Logs.Text += $"[{_battle.Timeline}] AbilityAutoAttack on reload\n";
-        }
-
         var enemys = GetEnemys();
-        var target = _unit.SelectEnemy(enemys, _unit.AttackRange.Now, _battle.Configuration.Seed);
+        var target = _unit.SelectEnemy(enemys, _unit.AttackRange.Now);
 
         if (target is null)
         {
@@ -30,18 +25,16 @@ internal class AbilityAutoAttack : RechargingAbility
             return;
         }
 
-        var isHit = (float)_battle.Random.NextDouble() > GetChanceOfHit(target);
+        var isHit = (float)_battle.Random.NextDouble() > _unit.ChanceOfHitUnit(target);
         if (!isHit)
         {
             Time.Reload();
             return;
         }
-        var isCrit = (float)_battle.Random.NextDouble() > GetChanceOfCrit(target);
+        var isCrit = (float)_battle.Random.NextDouble() > _unit.ChanceOfCritUnit(target);
 
-        target.ReceiveDamageFromUnit(GetTotalPower(isCrit));
+        target.ReceiveDamageFromUnit(GetTotalPower(isCrit), _unit);
 
         Time.Reload();
     }
-
-
 }

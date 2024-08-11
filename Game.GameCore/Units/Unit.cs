@@ -59,6 +59,8 @@ public abstract class Unit
     // Events
     public event EventHandler<AttackEventArgs>? OnAttack;
     public event EventHandler<DamageReceivedEventArgs>? OnDamageReceived;
+    public event EventHandler<DeadEventArgs>? OnDead;
+    public event EventHandler<ShieldBrokenEventArgs>? OnShieldBroken;
 
     public Unit(Team team, Battle battle)
     {
@@ -85,26 +87,35 @@ public abstract class Unit
 
     }
 
-    public virtual Unit SelectEnemy(List<Unit> enemys, float attackRange, int seed)
+    public virtual Unit SelectEnemy(List<Unit> enemys, float attackRange)
     {
         var targetsPrioritetsClass = UnitClassFormulas.WeightToSelect(Class, SubClass); // Get priorities based on class
         var targetsPrioritetsDistance = GetTargets(GetAttackRadius(attackRange), enemys); // Get enemies in the attack radius and their priority based on distance
         var targets = AddСlassСonsideration(targetsPrioritetsClass, targetsPrioritetsDistance); // Combine class and distance priorities
-        return GameFormulas.SelectRandomlyWithPriorities(targets, seed);
+        return GameFormulas.SelectRandomlyWithPriorities(targets, Battle);
     }
-
-    public virtual void ReceiveDamageFromUnit(double damage)
+    public virtual void ReceiveDamageFromUnit(double damage, Unit attacker)
     {
         if (IsShield())
         {
-            Shield.Now = Shield.Now - damage;
+            Shield.Now -= damage;
+            OnDamageReceived?.Invoke(this, new DamageReceivedEventArgs(damage, attacker, toShield: true));
+
+            if (!IsShield())
+            {
+                OnShieldBroken?.Invoke(this, new ShieldBrokenEventArgs(attacker));
+            }
         }
         else if (IsAlive())
         {
-            HealthPoints.Now = HealthPoints.Now - damage;
+            HealthPoints.Now -= damage;
+            OnDamageReceived?.Invoke(this, new DamageReceivedEventArgs(damage, attacker, toHealPoints: true));
+
+            if (!IsAlive()) // перевірка чи юніт помер після отримання урону
+            {
+                OnDead?.Invoke(this, new DeadEventArgs(attacker));
+            }
         }
-        else // Dead
-            return;
     }
 
     public bool IsAlive() => HealthPoints.Now > 0;
@@ -148,6 +159,23 @@ public abstract class Unit
         return targets;
     }
 
+    public float ChanceOfHitUnit(Unit target)
+    {
+        var accuracy = Accuracy.Now;
+        var dexterity = target.Dexterity.Now;
+        var coefInitiative = (float)GameFormulas.GetRatio(Initiative.Now, Initiative.Default);
+        var coefInitiativeTarger = (float)GameFormulas.GetRatio(target.Initiative.Now, target.Initiative.Default);
+        return (accuracy * coefInitiative) - (dexterity * coefInitiativeTarger);
+    }
+    public float ChanceOfCritUnit(Unit target) // Треба придумати як задіяти ініціативу цілі
+    {
+        var crit = CriticalChance.Now;
+        var affectedArea = target.CriticalDefeat.Now;
+        var coefInitiative = (float)GameFormulas.GetRatio(Initiative.Now, Initiative.Default);
+        var coefInitiativeTarger = (float)GameFormulas.GetRatio(target.Initiative.Now, target.Initiative.Default);
+        return (crit * coefInitiative) + (affectedArea);
+    }
+
     internal void Move(IEnumerable<Unit> enemies)
     {
         if (enemies == null || !enemies.Any())
@@ -176,6 +204,17 @@ public abstract class Unit
 
         float CalculateDistance(float positionA, float positionB) => Math.Abs(Math.Abs(positionA) - Math.Abs(positionB));
     }
+    public void TeleportTo(float position)
+    {
+        Position = position;
+    }
+
+    public void LogResource()
+    {
+        var logger = Battle.Logger;
+
+        logger.LogInfo("unit", $" {Name} >> S {Shield.Max:F1}/{Shield.Now:F1}| H {HealthPoints.Max:F1}/{HealthPoints.Now:F1} ");
+    }
 }
 
 public struct UnitRadius
@@ -185,26 +224,28 @@ public struct UnitRadius
     public readonly float Radius => (Front - Back) / 2;
 }
 
-public class AttackEventArgs : EventArgs
+public class AttackEventArgs(double damageDealt, bool isCritical, bool isMiss) : EventArgs
 {
-    public double DamageDealt { get; }
-    public bool IsCritical { get; }
-    public bool IsMiss { get; }
-
-    public AttackEventArgs(double damageDealt, bool isCritical, bool isMiss)
-    {
-        DamageDealt = damageDealt;
-        IsCritical = isCritical;
-        IsMiss = isMiss;
-    }
+    public double DamageDealt { get; } = damageDealt;
+    public bool IsCritical { get; } = isCritical;
+    public bool IsMiss { get; } = isMiss;
 }
 
-public class DamageReceivedEventArgs : EventArgs
+public class DamageReceivedEventArgs(double damageReceived, Unit from, bool toShield = false, bool toHealPoints = false) : EventArgs
 {
-    public double DamageReceived { get; }
+    public double DamageReceived { get; } = damageReceived;
+    public Unit Attacker { get; set; } = from;
+    public bool IsShield { get; } = toShield;
+    public bool IsToHealPoints { get; } = toHealPoints;
 
-    public DamageReceivedEventArgs(double damageReceived)
-    {
-        DamageReceived = damageReceived;
-    }
+}
+
+public class DeadEventArgs(Unit killer) : EventArgs
+{
+    public Unit Killer { get; } = killer;
+}
+
+public class ShieldBrokenEventArgs(Unit whoBrokenShield) : EventArgs
+{
+    public Unit WhoBrokenShield { get; } = whoBrokenShield;
 }

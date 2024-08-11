@@ -10,6 +10,7 @@ public class Battle
 {
     // Tools
     private UnitFactory _unitFactory;
+    public BattleLogger Logger { get; private set; }
 
     // Main
     public BattleConfiguration Configuration { get; }
@@ -26,13 +27,15 @@ public class Battle
     public Battle(BattleConfiguration battleConfiguration, CharacterConfigReader characteConfigReader)
     {
         _unitFactory = new(characteConfigReader);
-
+        
         Configuration = battleConfiguration;
+        
         BattleResult = new(battleConfiguration);
         Random = new Random(battleConfiguration.Seed);
 
-
         InitializeConfiguration();
+
+        Logger = new(DateTime.Now, this);
 
         void InitializeConfiguration()
         {
@@ -49,9 +52,8 @@ public class Battle
             .ToList();
         }
     }
-    
 
-    public async Task<BattleResult> CalculateBattle()
+    public BattleResult CalculateBattle()
     {
         try
         {
@@ -79,9 +81,24 @@ public class Battle
             throw;
         }
 
-        void InitializeTeams()
+        void InitializeTeams() // NEED MAKE BE COMPLEX
         {
+            PlaceUnit();
 
+            void PlaceUnit()
+            {
+                float startPostition = -500f;
+                float stepBetweenTeam = 1000f;
+
+                foreach (var team in AllTeam)
+                {
+                    foreach (var unit in team.Units)
+                    {
+                        unit.TeleportTo(startPostition);
+                    }
+                    startPostition += stepBetweenTeam;
+                }
+            }
         }
     }
 

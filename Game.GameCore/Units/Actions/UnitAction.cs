@@ -3,12 +3,7 @@ using App.GameCore.Battles.System;
 
 namespace App.GameCore.Units.Actions;
 
-public abstract class UnitAction : BattleAction
+public abstract class UnitAction(Battle battle, Unit unit) : BattleAction(battle)
 {
-    protected Unit _unit;
-
-    protected UnitAction(Battle battle, Unit unit) : base(battle)
-    {
-        _unit = unit;
-    }
+    protected Unit _unit = unit;
 }

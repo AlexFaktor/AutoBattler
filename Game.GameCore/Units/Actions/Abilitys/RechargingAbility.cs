@@ -4,10 +4,7 @@ using App.GameCore.Units.Types;
 
 namespace App.GameCore.Units.Actions.Abilitys;
 
-public abstract class RechargingAbility : Ability, IPeriodicAbility
+public abstract class RechargingAbility(Battle battle, Unit unit) : Ability(battle, unit), IPeriodicAbility
 {
     abstract public BattleTimer Time { get; set; }
-    protected RechargingAbility(Battle battle, Unit unit) : base(battle, unit)
-    {
-    }
 }

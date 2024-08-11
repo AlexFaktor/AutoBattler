@@ -3,12 +3,8 @@ using App.GameCore.Tools.Formulas;
 
 namespace App.GameCore.Units.Actions.Abilitys;
 
-public abstract class Ability : UnitAction
+public abstract class Ability(Battle battle, Unit unit) : UnitAction(battle, unit)
 {
-    protected Ability(Battle battle, Unit unit) : base(battle, unit)
-    {
-    }
-
     protected List<Unit> GetEnemys() => _battle.AllUnits.Where(u => u.Team.Token != _unit.Team.Token).ToList();
     protected double GetTotalPower(bool isCrit)
     {
@@ -25,20 +21,6 @@ public abstract class Ability : UnitAction
         else
             return damage * coefInitiative;
     }
-    protected float GetChanceOfHit(Unit target)
-    {
-        var accuracy = _unit.Accuracy.Now;
-        var dexterity = target.Dexterity.Now;
-        var coefInitiative = (float)GameFormulas.GetRatio(_unit.Initiative.Now, _unit.Initiative.Default);
-        var coefInitiativeTarger = (float)GameFormulas.GetRatio(target.Initiative.Now, target.Initiative.Default);
-        return (accuracy * coefInitiative) - (dexterity * coefInitiativeTarger);
-    }
-    protected float GetChanceOfCrit(Unit target) // Треба придумати як задіяти ініціативу цілі
-    {
-        var crit = _unit.CriticalChance.Now;
-        var affectedArea = target.CriticalDefeat.Now;
-        var coefInitiative = (float)GameFormulas.GetRatio(_unit.Initiative.Now, _unit.Initiative.Default);
-        var coefInitiativeTarger = (float)GameFormulas.GetRatio(target.Initiative.Now, target.Initiative.Default);
-        return (crit * coefInitiative) + (affectedArea);
-    }
+    
+    
 }
