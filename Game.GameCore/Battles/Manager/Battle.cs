@@ -57,29 +57,20 @@ public class Battle
     {
         try
         {
-            var result = BattleResult;
             InitializeTeams();
+            InitializeBattle();
 
             // Ігровий цикл
-            while (result.Stats.TeamWinner == Guid.Empty)
+            while (BattleResult.Stats.TeamWinner == Guid.Empty)
             {
                 FindAndExecuteAction();
-                FindWinner(result);
-                foreach (var unit in AllUnits)
-                {
-                    Console.WriteLine($"{unit.Name} - HP:{unit.HealthPoints.Max}/{unit.HealthPoints.Now}");
-                    
-                }
-                Thread.Sleep(50);
-                Console.Clear();
             }
-            return result;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.ToString());
-            throw;
+            Logger.LogError(e.Message);
         }
+        return BattleResult;
 
         void InitializeTeams() // NEED MAKE BE COMPLEX
         {
@@ -87,8 +78,8 @@ public class Battle
 
             void PlaceUnit()
             {
-                float startPostition = -500f;
-                float stepBetweenTeam = 1000f;
+                float startPostition = -100f;
+                float stepBetweenTeam = 200f;
 
                 foreach (var team in AllTeam)
                 {
@@ -97,6 +88,21 @@ public class Battle
                         unit.TeleportTo(startPostition);
                     }
                     startPostition += stepBetweenTeam;
+                }
+            }
+        }
+        void InitializeBattle()
+        {
+            foreach (var unit in AllUnits)
+            {
+                unit.OnDead += Unit_OnDead;     ;
+            }
+
+            void Unit_OnDead(object? sender, DeadEventArgs e)
+            {
+                if (sender is Unit)
+                {
+                    FindWinner();
                 }
             }
         }
@@ -127,10 +133,12 @@ public class Battle
         }
 
         var reloadableBattleAction = reloadableBattleActions.OrderBy(a => a.Time.NextUse).First();
+
+        Timeline = reloadableBattleAction.Time.NextUse;
         reloadableBattleAction.Action();
     }
 
-    private void FindWinner(BattleResult result)
+    private void FindWinner()
     {
         var AliveTeams = new List<Team>();
 
@@ -138,13 +146,20 @@ public class Battle
         {
             if (team.IsTeamAilve())
                 AliveTeams.Add(team);
-            if (AliveTeams.Count > 0)
+            if (AliveTeams.Count > 1)
                 return;
         }
 
         if (AliveTeams.Count == 0)
             throw new Exception("No alive teams");
+
         else if (AliveTeams.Count == 1)
-            result.Stats.TeamWinner = AliveTeams.First().Token;
+        {
+            BattleResult.Stats.TeamWinner = AliveTeams.First().Token;
+            var team = AllTeam.First(t => t.Token == BattleResult.Stats.TeamWinner);
+            Logger.LogCustom("battle-win", $" \nID: {BattleResult.Stats.TeamWinner}\nNAME: {team.Player.Username}\n ");
+            return;
+        }
+        Logger.LogCustom("battle-info", $" No team to win ");
     }
 }

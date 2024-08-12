@@ -87,10 +87,13 @@ public abstract class Unit
 
     }
 
-    public virtual Unit SelectEnemy(List<Unit> enemys, float attackRange)
+    public virtual Unit? SelectEnemy(List<Unit> enemys, float attackRange)
     {
-        var targetsPrioritetsClass = UnitClassFormulas.WeightToSelect(Class, SubClass); // Get priorities based on class
         var targetsPrioritetsDistance = GetTargets(GetAttackRadius(attackRange), enemys); // Get enemies in the attack radius and their priority based on distance
+        if (targetsPrioritetsDistance.Count < 1)
+            return null;
+        var targetsPrioritetsClass = UnitClassFormulas.WeightToSelect(Class, SubClass); // Get priorities based on class
+        
         var targets = AddСlassСonsideration(targetsPrioritetsClass, targetsPrioritetsDistance); // Combine class and distance priorities
         return GameFormulas.SelectRandomlyWithPriorities(targets, Battle);
     }
@@ -197,9 +200,9 @@ public abstract class Unit
         if (closestEnemy != null)
         {
             if (closestEnemy.Position > Position)
-                Position = +Speed.Now;
+                Position = Position + Speed.Now;
             else if (closestEnemy.Position < Position)
-                Position = -Speed.Now;
+                Position = Position - Speed.Now;
         }
 
         float CalculateDistance(float positionA, float positionB) => Math.Abs(Math.Abs(positionA) - Math.Abs(positionB));
@@ -213,7 +216,7 @@ public abstract class Unit
     {
         var logger = Battle.Logger;
 
-        logger.LogInfo("unit", $" {Name} >> S {Shield.Max:F1}/{Shield.Now:F1}| H {HealthPoints.Max:F1}/{HealthPoints.Now:F1} ");
+        logger.LogInfo("unit", $" {Name} >> S {Shield.Now:F1}/{Shield.Max:F1}| H {HealthPoints.Now:F1}/{HealthPoints.Max:F1} ");
     }
 }
 
