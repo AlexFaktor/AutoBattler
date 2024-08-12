@@ -7,7 +7,7 @@ public class DownloaderGameConfigService
 {
     private readonly List<GoogleSheetsSettings> _sheetsSettings;
     private readonly HttpClient _httpClient;
-    public CharacterConfigReader characterConfigs { get; private set; }
+    public CharacterConfigReader characterConfigs { get; private set; } = null;
 
     public DownloaderGameConfigService(List<GoogleSheetsSettings> sheetsSettings, HttpClient httpClient)
     {

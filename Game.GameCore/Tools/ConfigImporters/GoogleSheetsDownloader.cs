@@ -1,5 +1,8 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Sheets.v4;
+using Google.Apis.Sheets.v4.Data;
+using Serilog;
+using static Google.Apis.Requests.BatchRequest;
 
 namespace App.GameCore.Tools.ShellImporters;
 
@@ -21,7 +24,7 @@ public class GoogleSheetsDownloader
     {
         try
         {
-            Console.WriteLine("Loading credentials from: " + _settings.CredentialsFilePath);
+            Log.Information($"Loading credentials.");
 
             using (var stream = new FileStream(_settings.CredentialsFilePath, FileMode.Open, FileAccess.Read))
             {
@@ -33,11 +36,11 @@ public class GoogleSheetsDownloader
                 throw new InvalidOperationException("Failed to create credentials from the service account file.");
             }
 
-            Console.WriteLine("Authorization successful.");
+            Log.Information($"Authorization successful.");
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Error during authorization: " + ex.Message);
+            Log.Error("Error during authorization: " + ex.Message);
             throw;
         }
     }
@@ -51,7 +54,7 @@ public class GoogleSheetsDownloader
 
         if (File.Exists(_settings.CsvFilePath))
         {
-            Console.WriteLine("File already exists.");
+            Log.Warning($"File {_settings.CsvFilePath} already exists.");
             return;
         }
 
@@ -69,20 +72,16 @@ public class GoogleSheetsDownloader
             {
                 var content = await response.Content.ReadAsByteArrayAsync();
                 await File.WriteAllBytesAsync(_settings.CsvFilePath, content);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("File downloaded successfully.");
-                Console.ResetColor();
+                Log.Information("File downloaded successfully");
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Failed to download file. Status code: " + response.StatusCode);
-                Console.ResetColor();
+                Log.Warning($"Failed to download file. Status code:  {response.StatusCode} downloaded successfully");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Error during download: " + ex.Message);
+            Log.Error("Error during download: " + ex.Message);
             throw;
         }
     }

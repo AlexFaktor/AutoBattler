@@ -11,15 +11,15 @@ public class BattleConfiguration
 {
     public int Seed { get; set; }
 
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public EBattleType BattleType { get; set; }
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public EDayTime DayTime { get; set; }
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public ETempetura Tempetura { get; set; }
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public ETerrain Terrain { get; set; }
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public EWeather Weather { get; set; }
 
     public List<TeamConfiguration> TeamConfigurations { get; set; }
@@ -42,5 +42,10 @@ public class BattleConfiguration
         Weather = weather;
 
         TeamConfigurations = teams;
+    }
+
+    public BattleConfiguration()
+    {
+
     }
 }
