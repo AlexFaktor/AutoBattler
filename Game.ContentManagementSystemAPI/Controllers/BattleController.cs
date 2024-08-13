@@ -49,5 +49,21 @@ namespace App.ContentManagementSystemAPI.Controllers
 
             return Ok(battle.CalculateBattle());
         }
+
+        [HttpPost("admin/custom")]
+        public async Task<IActionResult> Get([FromQuery] string jsonBattleConfiguration)
+        {
+            var config = JsonConvert.DeserializeObject<BattleConfiguration>(jsonBattleConfiguration);
+            if (config == null)
+            {
+                Log.Error($"Cannot create config with this JSON:\n{jsonBattleConfiguration}\n");
+                return NotFound();
+            }
+            Log.Information("Custom battle started.");
+            var battleResult = new Battle(config!, _downloader.characterConfigs).CalculateBattle();
+            Log.Information($"Custom battle successfully completed\nDuration: {battleResult.Stats.ActualDuration}\nID: {battleResult.Id}");
+
+            return Ok(battleResult);
+        }
     }
 }

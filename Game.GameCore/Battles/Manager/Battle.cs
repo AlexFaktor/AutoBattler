@@ -3,6 +3,7 @@ using App.GameCore.Tools.ShellImporters.ConfigReaders;
 using App.GameCore.Units;
 using App.GameCore.Units.Actions.Abilitys;
 using App.GameCore.Units.Actions.Abilitys.Interfaces;
+using System.Diagnostics;
 
 namespace App.GameCore.Battles.Manager;
 
@@ -55,8 +56,12 @@ public class Battle
 
     public BattleResult CalculateBattle()
     {
+        var stopwatch = new Stopwatch();
+
         try
         {
+            StartBattle();
+
             InitializeTeams();
             InitializeBattle();
 
@@ -65,6 +70,8 @@ public class Battle
             {
                 FindAndExecuteAction();
             }
+
+            EndBattle();
         }
         catch (Exception e)
         {
@@ -95,7 +102,7 @@ public class Battle
         {
             foreach (var unit in AllUnits)
             {
-                unit.OnDead += Unit_OnDead;     ;
+                unit.OnDead += Unit_OnDead;
             }
 
             void Unit_OnDead(object? sender, DeadEventArgs e)
@@ -105,6 +112,17 @@ public class Battle
                     FindWinner();
                 }
             }
+        }
+
+        void StartBattle()
+        {
+            stopwatch.Start();
+        }
+        void EndBattle()
+        {
+            stopwatch.Stop();
+            BattleResult.Stats.ActualDuration = stopwatch.ElapsedMilliseconds;
+            BattleResult.EndTime = DateTime.UtcNow;
         }
     }
 

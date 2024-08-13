@@ -6,17 +6,12 @@ public class BattleResult
     public Guid Id { get; } = Guid.NewGuid();
 
     public DateTime StartTime { get; set; } = DateTime.UtcNow;
-    public DateTime EndTime { get; private set; }
+    public DateTime EndTime { get; set; }
 
     public BattleStats Stats { get; set; } = new ();
 
     public BattleResult(BattleConfiguration configuration)
     {
         Configuration = configuration;
-    }
-
-    public void EndBattle()
-    {
-        EndTime = DateTime.UtcNow;
     }
 }
