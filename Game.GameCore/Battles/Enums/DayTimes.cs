@@ -1,6 +1,6 @@
 ﻿namespace App.GameCore.BattleSystem.Enums;
 
-public enum EDayTime
+public enum DayTimes
 {
     Default = 0,
     Unknown,           // Невідомо

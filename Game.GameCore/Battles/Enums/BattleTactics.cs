@@ -1,6 +1,6 @@
 ﻿namespace App.Manager.BattleSystem;
 
-public enum EBattleTactics
+public enum BattleTactics
 {
     None = 0,
 

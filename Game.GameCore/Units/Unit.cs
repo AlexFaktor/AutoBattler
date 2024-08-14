@@ -19,12 +19,12 @@ public abstract class Unit
     public string Name { get; protected set; } = string.Empty;
 
     // Tactics
-    public EUnitClass Class { get; protected set; }
-    public EUnitClass SubClass { get; protected set; }
+    public UnitClass Class { get; protected set; }
+    public UnitClass SubClass { get; protected set; }
     public TUnitResource<float> Initiative { get; protected set; } = new(100); // Event when changed
     public TUnitValue<float> Speed { get; protected set; } = new(5);
     public TUnitValue<float> AttackRange { get; protected set; } = new(30);
-    public ETacticalType TacticalType { get; protected set; }
+    public TacticalTypes TacticalType { get; protected set; }
     public TUnitValue<int> TacticalLevel { get; protected set; } = new(0);
 
     // General
@@ -148,11 +148,11 @@ public abstract class Unit
 
         return dictionary;
     }
-    protected Dictionary<Unit, float> AddСlassСonsideration(Dictionary<EUnitClass, float> targetsPrioritetsClass, Dictionary<Unit, float> targets)
+    protected Dictionary<Unit, float> AddСlassСonsideration(Dictionary<UnitClass, float> targetsPrioritetsClass, Dictionary<Unit, float> targets)
     {
         foreach (var target in targets.Keys.ToList())
         {
-            EUnitClass unitClass = target.Class; // Припускаємо, що у класу Unit є властивість UnitClass
+            UnitClass unitClass = target.Class; // Припускаємо, що у класу Unit є властивість UnitClass
             if (targetsPrioritetsClass.TryGetValue(unitClass, out float priority))
             {
                 targets[target] *= priority;

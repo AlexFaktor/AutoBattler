@@ -23,16 +23,16 @@ public class UnitFactory(CharacterConfigReader characterConfigReader)
     {
         return config.Id switch
         {
-            (int)EUnit.Bloodhound => new Bloodhound_0001(config, team, _characterConfigReader, battle),
-            (int)EUnit.Caustic => new Caustic_0002(config, team, _characterConfigReader, battle),
-            (int)EUnit.Lifeline => new Lifeline_0003(config, team, _characterConfigReader, battle),
-            (int)EUnit.ArminArlert => new ArminArlert_0004(config, team, _characterConfigReader, battle),
-            (int)EUnit.LeviAckerman => new LeviAckerman_0005(config, team, _characterConfigReader, battle),
-            (int)EUnit.Guts => new Guts_0006(config, team, _characterConfigReader, battle),
-            (int)EUnit.Isidro => new Isidro_0007(config, team, _characterConfigReader, battle),
-            (int)EUnit.Schierke => new Schierke_0008(config, team, _characterConfigReader, battle),
-            (int)EUnit.Serpico => new Serpico_0009(config, team, _characterConfigReader, battle),
-            (int)EUnit.FL4K => new FL4K_0010(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.Bloodhound => new Bloodhound_0001(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.Caustic => new Caustic_0002(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.Lifeline => new Lifeline_0003(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.ArminArlert => new ArminArlert_0004(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.LeviAckerman => new LeviAckerman_0005(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.Guts => new Guts_0006(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.Isidro => new Isidro_0007(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.Schierke => new Schierke_0008(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.Serpico => new Serpico_0009(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.FL4K => new FL4K_0010(config, team, _characterConfigReader, battle),
             _ => throw new Exception("unit creation error"),
         };
     }

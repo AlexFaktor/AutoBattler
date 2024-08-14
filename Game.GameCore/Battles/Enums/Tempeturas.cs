@@ -1,6 +1,6 @@
 ﻿namespace App.Manager.BattleSystem;
 
-public enum ETempetura
+public enum Tempeturas
 {
     Default = 0,
     Inferno,    // Ад  > 40+

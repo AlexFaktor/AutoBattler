@@ -9,11 +9,11 @@ namespace App.GameCore.Battles.Dto;
 public class StartBattleDto
 {
     public int RandomSeed { get; set; }
-    public EBattleType BattleType { get; set; }
-    public EDayTime DayTime { get; set; }
-    public ETempetura Tempetura { get; set; }
-    public ETerrain Terrain { get; set; }
-    public EWeather Weather { get; set; }
+    public BattleTypes BattleType { get; set; }
+    public DayTimes DayTime { get; set; }
+    public Tempeturas Tempetura { get; set; }
+    public Terrains Terrain { get; set; }
+    public Weathers Weather { get; set; }
     public Dictionary<IPlayer, TeamConfiguration> Team { get; set; }
 
     public StartBattleDto() { }
@@ -51,10 +51,10 @@ public class StartBattleDto
 public class StartBattleDtoWithStringKey
 {
     public int RandomSeed { get; set; }
-    public EBattleType BattleType { get; set; }
-    public EDayTime DayTime { get; set; }
-    public ETempetura Tempetura { get; set; }
-    public ETerrain Terrain { get; set; }
-    public EWeather Weather { get; set; }
+    public BattleTypes BattleType { get; set; }
+    public DayTimes DayTime { get; set; }
+    public Tempeturas Tempetura { get; set; }
+    public Terrains Terrain { get; set; }
+    public Weathers Weather { get; set; }
     public Dictionary<string, TeamConfiguration> Team { get; set; }
 }

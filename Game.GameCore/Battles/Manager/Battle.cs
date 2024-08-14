@@ -123,6 +123,7 @@ public class Battle
             stopwatch.Stop();
             BattleResult.Stats.ActualDuration = stopwatch.ElapsedMilliseconds;
             BattleResult.EndTime = DateTime.UtcNow;
+            BattleResult.Stats.TotalTimeline = Timeline;
         }
     }
 

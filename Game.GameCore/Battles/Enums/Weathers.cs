@@ -1,6 +1,6 @@
 ﻿namespace App.Manager.BattleSystem;
 
-public enum EWeather
+public enum Weathers
 {
     Default = 0,
     Sunny,      // Сонячно

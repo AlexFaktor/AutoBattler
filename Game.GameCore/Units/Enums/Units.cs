@@ -1,6 +1,6 @@
 ﻿namespace App.GameCore.Units.Enums;
 
-public enum EUnit
+public enum Units
 {
     Default = 0,
     Bloodhound,

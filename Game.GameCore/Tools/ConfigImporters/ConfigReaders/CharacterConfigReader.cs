@@ -81,12 +81,12 @@ public class CharacterConfig
     public int Version { get; set; }
     public string Description { get; set; } = string.Empty;
     public string UrlImage { get; set; } = string.Empty;
-    public EUnitClass Class1 { get; set; } = EUnitClass.None;
-    public EUnitClass Class2 { get; set; } = EUnitClass.None;
+    public UnitClass Class1 { get; set; } = UnitClass.None;
+    public UnitClass Class2 { get; set; } = UnitClass.None;
     public float Initiative { get; set; }
     public float Speed { get; set; }
     public float AttackRange { get; set; }
-    public ETacticalType TacticalType { get; set; } = ETacticalType.Default;
+    public TacticalTypes TacticalType { get; set; } = TacticalTypes.Default;
     public int TacticalLevel { get; set; }
     public float AbilityHaste { get; set; }
     public float Vampirism { get; set; }

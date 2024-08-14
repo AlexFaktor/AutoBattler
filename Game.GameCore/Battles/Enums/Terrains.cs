@@ -1,6 +1,6 @@
 ﻿namespace App.Manager.BattleSystem;
 
-public enum ETerrain
+public enum Terrains
 {
     Default = 0,
     Swamp,           // Болото
