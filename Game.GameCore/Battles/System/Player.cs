@@ -1,22 +1,16 @@
 ﻿namespace App.GameCore.Battles.System;
 
-public class Player : IPlayer
+public class Player : IBattlePlayer
 {
     public Guid Id { get; set; }
     public string Username { get; set; }
-    public object Value { get; set; }
 
-    public Player() { }
-
-    public Player(object value)
-    {
-        Value = value;
-    }
+    public Player() 
+    { }
 }
 
-public interface IPlayer
+public interface IBattlePlayer
 {
     public Guid Id { get; set; }
     public string Username { get; set; }
-    public object Value { get; set; }
 }

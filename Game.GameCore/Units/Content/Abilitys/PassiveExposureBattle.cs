@@ -1,7 +1,7 @@
 ﻿using App.GameCore.Battles.Manager;
 using App.GameCore.Battles.System;
 
-namespace App.GameCore.Content.Units.Abilitys;
+namespace App.GameCore.Units.Content.Abilitys;
 
 internal class PassiveExposureBattle : BattleAction
 {

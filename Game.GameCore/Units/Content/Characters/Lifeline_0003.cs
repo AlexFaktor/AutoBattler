@@ -1,10 +1,9 @@
 ﻿using App.GameCore.Battles.Manager;
 using App.GameCore.Battles.System;
-using App.GameCore.Content.Units.Abilitys;
 using App.GameCore.Tools.ShellImporters.ConfigReaders;
-using App.GameCore.Units;
+using App.GameCore.Units.Content.Abilitys;
 
-namespace App.GameCore.Content.Units.Characters.Lifeline0003;
+namespace App.GameCore.Units.Content.Characters;
 
 internal class Lifeline_0003 : Character
 {

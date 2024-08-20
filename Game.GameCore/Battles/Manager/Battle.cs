@@ -10,7 +10,7 @@ namespace App.GameCore.Battles.Manager;
 public class Battle
 {
     // Tools
-    private UnitFactory _unitFactory;
+    private readonly UnitFactory _unitFactory;
     public BattleLogger Logger { get; private set; }
 
     // Main

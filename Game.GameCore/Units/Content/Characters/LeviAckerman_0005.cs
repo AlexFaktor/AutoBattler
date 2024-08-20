@@ -1,10 +1,9 @@
 ﻿using App.GameCore.Battles.Manager;
 using App.GameCore.Battles.System;
-using App.GameCore.Content.Units.Abilitys;
 using App.GameCore.Tools.ShellImporters.ConfigReaders;
-using App.GameCore.Units;
+using App.GameCore.Units.Content.Abilitys;
 
-namespace App.GameCore.Content.Units.Characters.LeviAckerman0005;
+namespace App.GameCore.Units.Content.Characters;
 
 internal class LeviAckerman_0005 : Character
 {

@@ -1,17 +1,7 @@
 ﻿using App.GameCore.Battles.Manager;
 using App.GameCore.Battles.System;
-using App.GameCore.Content.Units.Characters.ArminArlert0004;
-using App.GameCore.Content.Units.Characters.Bloodhound0001;
-using App.GameCore.Content.Units.Characters.Caustic0002;
-using App.GameCore.Content.Units.Characters.FL4K0010;
-using App.GameCore.Content.Units.Characters.Guts0006;
-using App.GameCore.Content.Units.Characters.Isidro0007;
-using App.GameCore.Content.Units.Characters.LeviAckerman0005;
-using App.GameCore.Content.Units.Characters.Lifeline0003;
-using App.GameCore.Content.Units.Characters.Schierke0008;
-using App.GameCore.Content.Units.Characters.Serpico0009;
 using App.GameCore.Tools.ShellImporters.ConfigReaders;
-using App.GameCore.Units.Enums;
+using App.GameCore.Units.Content.Characters;
 
 namespace App.GameCore.Units;
 

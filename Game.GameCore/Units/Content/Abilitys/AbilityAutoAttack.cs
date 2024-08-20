@@ -3,7 +3,7 @@ using App.GameCore.Units;
 using App.GameCore.Units.Actions.Abilitys;
 using App.GameCore.Units.Types;
 
-namespace App.GameCore.Content.Units.Abilitys;
+namespace App.GameCore.Units.Content.Abilitys;
 
 internal class AbilityAutoAttack : RechargingAbility
 {
