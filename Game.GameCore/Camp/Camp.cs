@@ -1,4 +1,4 @@
-﻿using App.GameCore.Battles.System;
+﻿using App.GameCore.Manager;
 
 namespace App.GameCore.Camp;
 
