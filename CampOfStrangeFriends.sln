@@ -9,11 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Core", "Game.Core\App.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Telegram", "Game.Telegram\App.Telegram.csproj", "{59FFEFFA-2231-4F02-AD12-A22FE2383964}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Discord", "Game.Discord\App.Discord.csproj", "{8A2853BF-3BA8-4F00-8912-6EE179A92EA5}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.ScheduledTaskService", "Game.ScheduledTaskService\App.ScheduledTaskService.csproj", "{9E087683-651D-45DE-9FC3-47FD0A1FBDC7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.GameAPI", "Game.ContentManagementSystemAPI\App.GameAPI.csproj", "{6A712816-E16D-4308-919A-21D42B641562}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.GameAPI", "Game.GameAPI\App.GameAPI.csproj", "{6A712816-E16D-4308-919A-21D42B641562}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.GameCore", "Game.GameCore\App.GameCore.csproj", "{5A3E49D3-D3C8-4440-8453-65ED9398609A}"
 EndProject
@@ -35,10 +33,6 @@ Global
 		{59FFEFFA-2231-4F02-AD12-A22FE2383964}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59FFEFFA-2231-4F02-AD12-A22FE2383964}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59FFEFFA-2231-4F02-AD12-A22FE2383964}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8A2853BF-3BA8-4F00-8912-6EE179A92EA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8A2853BF-3BA8-4F00-8912-6EE179A92EA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8A2853BF-3BA8-4F00-8912-6EE179A92EA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8A2853BF-3BA8-4F00-8912-6EE179A92EA5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9E087683-651D-45DE-9FC3-47FD0A1FBDC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9E087683-651D-45DE-9FC3-47FD0A1FBDC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E087683-651D-45DE-9FC3-47FD0A1FBDC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
