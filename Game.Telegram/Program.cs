@@ -1,5 +1,4 @@
-﻿using App.Core.Config;
-using App.Database.Repositorys.Things;
+﻿using App.Database.Repositorys.Things;
 using App.Database.Service.Users;
 using App.Telegram.Service;
 using Microsoft.Extensions.Configuration;
@@ -26,12 +25,12 @@ internal class Program
             })
             .ConfigureServices((context, services) =>
             {
-                var configuration = context.Configuration;
-                var connectionString = configuration.GetConnectionString("DefaultConnection")!;
+                var appSettings = context.Configuration;
+                var connectionString = appSettings.GetConnectionString("DefaultConnection")!;
 
                 services.AddSingleton<IDbConnection>(sp => new NpgsqlConnection(connectionString));
 
-                services.AddSingleton<ITelegramBotClient>(new TelegramBotClient(Config.telegram_token));
+                services.AddSingleton<ITelegramBotClient>(new TelegramBotClient(appSettings.Ge));
                 services.AddTransient<UserRepository>(sp => new UserRepository(connectionString));
                 services.AddTransient<UStatisticsRepository>(sp => new UStatisticsRepository(connectionString));
                 services.AddTransient<UTelegramRepository>(sp => new UTelegramRepository(connectionString));
