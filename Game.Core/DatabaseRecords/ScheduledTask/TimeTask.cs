@@ -1,6 +1,6 @@
 ﻿namespace App.Core.DatabaseRecords.ScheduledTask;
 
-public abstract class TimeTask
+public abstract class AbstractTask
 {
     public int FrequencyInSeconds { get; set; }
     public DateTime LastExecutionTime { get; set; }

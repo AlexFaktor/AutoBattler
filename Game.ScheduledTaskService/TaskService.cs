@@ -91,7 +91,7 @@ public class TaskService : ITaskService
         }
     }
 
-    private static void CalculateTime(out int executionsNeeded, out int timeToNextExecution, TimeTask task)
+    private static void CalculateTime(out int executionsNeeded, out int timeToNextExecution, AbstractTask task)
     {
         var timeSinceLastExecution = DateTime.UtcNow - task.LastExecutionTime; // Скільки часу прошло з останього виклику
         executionsNeeded = (int)timeSinceLastExecution.TotalSeconds / task.FrequencyInSeconds; // Скільки викликів потрібно зробити

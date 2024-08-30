@@ -1,6 +1,6 @@
 ﻿namespace App.Core.Resources.Enums.ScheduledTask
 {
-    public enum EIndidualTask
+    public enum IndividualTasks
     {
     }
 }

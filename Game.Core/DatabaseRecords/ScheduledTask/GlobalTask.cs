@@ -2,10 +2,10 @@
 
 namespace App.Core.DatabaseRecords.ScheduledTask;
 
-public class GlobalTask : TimeTask
+public class GlobalTask : AbstractTask
 {
     public Guid Id { get; set; }
-    public EGlobalTask Type { get; set; }
+    public GlobalTasks Type { get; set; }
     public int CallsNeeded { get; set; }
     
 }

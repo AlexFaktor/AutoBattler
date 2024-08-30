@@ -21,7 +21,7 @@ public class BattleController : ControllerBase
     }
 
     [HttpPost("pvp")]
-    public async Task<IActionResult> MakePvP([FromQuery] string jsonBattleConfiguration)
+    public IActionResult MakePvP([FromQuery] string jsonBattleConfiguration)
     {
         var config = JsonConvert.DeserializeObject<BattleConfiguration>(jsonBattleConfiguration);
         if (config == null)
@@ -36,7 +36,7 @@ public class BattleController : ControllerBase
     }
     
     [HttpPost("pve")]
-    public async Task<IActionResult> MakePvE([FromQuery] string jsonBattleConfiguration)
+    public IActionResult MakePvE([FromQuery] string jsonBattleConfiguration)
     {
         var config = JsonConvert.DeserializeObject<BattleConfiguration>(jsonBattleConfiguration);
         if (config == null)
@@ -51,7 +51,7 @@ public class BattleController : ControllerBase
     }
 
     [HttpPost("admin/custom")]
-    public async Task<IActionResult> Get([FromQuery] string jsonBattleConfiguration)
+    public IActionResult Get([FromQuery] string jsonBattleConfiguration)
     {
         var config = JsonConvert.DeserializeObject<BattleConfiguration>(jsonBattleConfiguration);
         if (config == null)

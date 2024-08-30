@@ -1,6 +1,6 @@
 ﻿namespace App.Core.Resources.Enums.ScheduledTask
 {
-    public enum EGlobalTask
+    public enum GlobalTasks
     {
         None = 0,
 

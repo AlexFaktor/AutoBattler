@@ -59,18 +59,6 @@ public class UserRepository
             };
             await connection.ExecuteAsync(insertTelegramQuery, userTelegram, transaction);
 
-            // Вставка в таблицю user.Camp
-            var insertCampQuery = @"
-                    INSERT INTO ""user"".""Camp"" (""userId"", ""name"")
-                    VALUES (@UserId, @Name);
-                ";
-            var userCamp = new UserCamp
-            {
-                UserId = userId,
-                Name = "Default Camp Name" // Замість цього додайте реальну логіку для визначення імені табору
-            };
-            await connection.ExecuteAsync(insertCampQuery, userCamp, transaction);
-
             // Вставка в таблицю user.Resources
             var insertResourcesQuery = @"
                     INSERT INTO ""user"".""Resources"" (""userId"", ""randomCoin"", ""fackoins"", ""soulValue"", ""energy"")

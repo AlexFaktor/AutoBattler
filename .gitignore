@@ -399,3 +399,5 @@ FodyWeavers.xsd
 
 # My
 /.doc
+Game.GameAPI/configs
+Game.GameAPI/keys

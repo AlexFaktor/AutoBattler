@@ -1,11 +1,8 @@
-﻿using App.Core.Resources.Enums.Game;
+﻿namespace App.Core.DatabaseRecords.Things;
 
-namespace App.Core.DatabaseRecords.Things
+public class ItemRecord
 {
-    public class ItemRecord
-    {
-        public Guid Id { get; set; }
-        public Guid UserId { get; set; }
-        public EItem ItemId { get; set; }
-    }
+    public Guid Id { get; set; }
+    public Guid UserId { get; set; }
+    public int ItemId { get; set; }
 }

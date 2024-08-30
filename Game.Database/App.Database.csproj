@@ -8,11 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Game.Core\App.Core.csproj" />
+    <Compile Remove="Repositorys\Filters\**" />
+    <EmbeddedResource Remove="Repositorys\Filters\**" />
+    <None Remove="Repositorys\Filters\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositorys\Filters\" />
+    <ProjectReference Include="..\Game.Core\App.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

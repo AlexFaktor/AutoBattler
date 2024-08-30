@@ -16,7 +16,7 @@ public class ExecutorGlobalTasks(IDbConnection connection)
     {
         switch (task.Type)
         {
-            case EGlobalTask.RestoreEnergy:
+            case GlobalTasks.RestoreEnergy:
                 await RestoreEnergy(task, 20, 400);
                 break;
 
