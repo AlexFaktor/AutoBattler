@@ -401,3 +401,7 @@ FodyWeavers.xsd
 /.doc
 Game.GameAPI/configs
 Game.GameAPI/keys
+appsettings.Development.json
+/Game.Telegram/appsettings.Development.json
+/Game.ScheduledTaskService/appsettings.Development.json
+/Game.GameAPI/appsettings.Development.json
