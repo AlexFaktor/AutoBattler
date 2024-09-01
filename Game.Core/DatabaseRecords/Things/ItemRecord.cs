@@ -1,4 +1,4 @@
-﻿namespace App.Core.DatabaseRecords.Things;
+﻿namespace Core.DatabaseRecords.Things;
 
 public class ItemRecord
 {

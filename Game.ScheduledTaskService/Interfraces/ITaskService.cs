@@ -1,4 +1,4 @@
-﻿namespace App.Core.Resources.Interfraces.ScheduledTaskService;
+﻿namespace Core.Resources.Interfraces.ScheduledTaskService;
 
 public interface ITaskService
 {

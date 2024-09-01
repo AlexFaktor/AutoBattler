@@ -1,9 +1,9 @@
 ﻿using Dapper;
-using App.Core.DatabaseRecords.Things;
+using Core.DatabaseRecords.Things;
 using Npgsql;
 using System.Data;
 
-namespace App.Database.Repositorys.Things;
+namespace Database.Repositorys.Things;
 
 public class UCharacterRepository
 {

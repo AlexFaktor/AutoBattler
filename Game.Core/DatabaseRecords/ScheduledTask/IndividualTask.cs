@@ -1,6 +1,6 @@
-﻿using App.Core.Resources.Enums.ScheduledTask;
+﻿using Core.Resources.Enums.ScheduledTask;
 
-namespace App.Core.DatabaseRecords.ScheduledTask;
+namespace Core.DatabaseRecords.ScheduledTask;
 
 public class IndividualTask : AbstractTask
 {

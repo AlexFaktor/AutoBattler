@@ -1,4 +1,4 @@
-﻿namespace App.GameCore.Units.Enums;
+﻿namespace GameLogic.Units.Enums;
 
 public enum Units
 {

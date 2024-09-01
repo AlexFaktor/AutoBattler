@@ -1,9 +1,9 @@
 ﻿using Dapper;
-using App.Core.DatabaseRecords.ScheduledTask;
+using Core.DatabaseRecords.ScheduledTask;
 using Npgsql;
 using System.Data;
 
-namespace App.Database.Repositorys.ScheduledTasks;
+namespace Database.Repositorys.ScheduledTasks;
 
 public class GlobalTaskRepository
 {

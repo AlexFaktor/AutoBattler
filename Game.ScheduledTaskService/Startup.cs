@@ -1,8 +1,8 @@
-﻿using App.Core.Resources.Interfraces.ScheduledTaskService;
+﻿using Core.Resources.Interfraces.ScheduledTaskService;
 using Npgsql;
 using System.Data;
 
-namespace App.ScheduledTaskService;
+namespace ScheduledTaskService;
 
 public class Startup
 {

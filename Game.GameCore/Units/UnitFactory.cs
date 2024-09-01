@@ -1,9 +1,9 @@
-﻿using App.GameCore.Battles.Manager;
-using App.GameCore.Battles.System;
-using App.GameCore.Tools.ShellImporters.ConfigReaders;
-using App.GameCore.Units.Content.Characters;
+﻿using GameLogic.Battles.Manager;
+using GameLogic.Battles.System;
+using GameLogic.Tools.ShellImporters.ConfigReaders;
+using GameLogic.Units.Content.Characters;
 
-namespace App.GameCore.Units;
+namespace GameLogic.Units;
 
 public class UnitFactory(CharacterConfigReader characterConfigReader)
 {

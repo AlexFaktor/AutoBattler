@@ -1,7 +1,7 @@
-﻿using App.GameCore.Tools.ShellImporters.ConfigReaders;
+﻿using GameLogic.Tools.ShellImporters.ConfigReaders;
 using Serilog;
 
-namespace App.GameCore.Tools.ShellImporters;
+namespace GameLogic.Tools.ShellImporters;
 
 public class DownloaderGameConfigService
 {

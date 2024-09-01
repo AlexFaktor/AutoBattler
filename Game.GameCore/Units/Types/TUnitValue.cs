@@ -1,6 +1,6 @@
-﻿namespace App.GameCore.Units.Types;
+﻿namespace GameLogic.Units.Types;
 
-public class TUnitValue<T>
+public class TUnitProperty<T>
 {
     public T Default { get; }
 
@@ -19,7 +19,7 @@ public class TUnitValue<T>
     public event EventHandler<ValueChangingEventArgs<T>>? OnNowChanging;
     public event EventHandler<ValueChangedEventArgs<T>>? OnNowChanged;
 
-    public TUnitValue(T defaultValue)
+    public TUnitProperty(T defaultValue)
     {
         Default = defaultValue;
         _now = defaultValue;

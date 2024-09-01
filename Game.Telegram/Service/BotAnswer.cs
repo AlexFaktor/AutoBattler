@@ -1,11 +1,11 @@
-﻿using App.Core.DatabaseRecords.Users;
-using App.Database.Service.Users;
-using App.Telegram.Service.Keyboards;
+﻿using Core.DatabaseRecords.Users;
+using Database.Service.Users;
 using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using TelegramBot.Service.Keyboards;
 
-namespace App.Telegram.Service;
+namespace TelegramBot.Service;
 
 public class BotAnswer
 {

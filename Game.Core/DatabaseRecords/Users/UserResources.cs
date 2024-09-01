@@ -1,4 +1,4 @@
-﻿namespace App.Core.DatabaseRecords.Users;
+﻿namespace Core.DatabaseRecords.Users;
 
 public class UserResources
 {

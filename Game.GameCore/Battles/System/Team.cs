@@ -1,8 +1,8 @@
-﻿using App.GameCore.Battles.Manager;
-using App.GameCore.Manager;
-using App.GameCore.Units;
+﻿using GameLogic.Battles.Manager;
+using GameLogic.Manager;
+using GameLogic.Units;
 
-namespace App.GameCore.Battles.System;
+namespace GameLogic.Battles.System;
 
 public class Team
 {

@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Units\Content\Enemys\" />
+    <Compile Remove="Units\Content\Enemys\**" />
+    <EmbeddedResource Remove="Units\Content\Enemys\**" />
+    <None Remove="Units\Content\Enemys\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Game.Core\App.Core.csproj" />
+    <ProjectReference Include="..\Game.Core\Core.csproj" />
   </ItemGroup>
 
 </Project>

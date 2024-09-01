@@ -1,12 +1,12 @@
 ﻿using Dapper;
-using App.Core.DatabaseRecords.Users;
-using App.Core.Dtos.UserDtos.Telegrams;
+using Core.DatabaseRecords.Users;
+using Core.Dtos.UserDtos.Telegrams;
 using Npgsql;
 using System.Data;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace App.Database.Service.Users;
+namespace Database.Service.Users;
 
 public class UserRepository
 {

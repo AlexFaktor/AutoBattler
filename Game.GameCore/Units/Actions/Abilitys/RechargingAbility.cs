@@ -1,8 +1,9 @@
-﻿using App.GameCore.Battles.Manager;
-using App.GameCore.Units.Actions.Abilitys.Interfaces;
-using App.GameCore.Units.Types;
+﻿using GameCore.Units.Actions.Abilitys;
+using GameLogic.Battles.Manager;
+using GameLogic.Units.Actions.Abilitys.Interfaces;
+using GameLogic.Units.Types;
 
-namespace App.GameCore.Units.Actions.Abilitys;
+namespace GameLogic.Units.Actions.Abilitys;
 
 public abstract class RechargingAbility(Battle battle, Unit unit) : Ability(battle, unit), IPeriodicAbility
 {

@@ -1,9 +1,9 @@
-﻿using App.GameCore.Battles.Manager;
-using App.GameCore.Units;
-using App.GameCore.Units.Actions.Abilitys;
-using App.GameCore.Units.Types;
+﻿using GameLogic.Battles.Manager;
+using GameLogic.Units;
+using GameLogic.Units.Actions.Abilitys;
+using GameLogic.Units.Types;
 
-namespace App.GameCore.Units.Content.Abilitys;
+namespace GameLogic.Units.Content.Abilitys;
 
 internal class PassiveHealthRecovery : RechargingAbility
 {

@@ -1,7 +1,7 @@
-﻿using App.GameCore.Battles.Manager;
-using App.GameCore.Battles.System;
+﻿using GameLogic.Battles.Manager;
+using GameLogic.Battles.System;
 
-namespace App.GameCore.Units.Content.Abilitys;
+namespace GameLogic.Units.Content.Abilitys;
 
 internal class PassiveExposureBattle : BattleAction
 {

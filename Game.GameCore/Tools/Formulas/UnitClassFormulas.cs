@@ -1,7 +1,7 @@
-﻿using App.GameCore.Units;
-using App.GameCore.Units.Enums;
+﻿using GameLogic.Units;
+using GameLogic.Units.Enums;
 
-namespace App.GameCore.Tools.Formulas;
+namespace GameLogic.Tools.Formulas;
 
 internal class UnitClassFormulas
 {

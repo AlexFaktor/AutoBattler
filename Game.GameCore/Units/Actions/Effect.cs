@@ -1,6 +1,6 @@
-﻿using App.GameCore.Battles.Manager;
+﻿using GameLogic.Battles.Manager;
 
-namespace App.GameCore.Units.Actions;
+namespace GameLogic.Units.Actions;
 
 public abstract class Effect(Battle battle, Unit unit) : UnitAction(battle, unit)
 {

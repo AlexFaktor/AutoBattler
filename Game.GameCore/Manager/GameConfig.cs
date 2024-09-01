@@ -1,6 +1,6 @@
-﻿using App.GameCore.Tools.ShellImporters.ConfigReaders;
+﻿using GameLogic.Tools.ShellImporters.ConfigReaders;
 
-namespace App.GameCore.Manager;
+namespace GameLogic.Manager;
 
 public class GameConfig
 {

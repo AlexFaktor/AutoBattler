@@ -1,12 +1,12 @@
-﻿using App.Core.Dtos.UserDtos.Telegrams;
-using App.Core.Resources.Enums.Telegram;
-using App.Database.Service.Users;
+﻿using Core.Dtos.UserDtos.Telegrams;
+using Core.Resources.Enums.Telegram;
+using Database.Service.Users;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.RegularExpressions;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace App.Telegram.Service;
+namespace TelegramBot.Service;
 
 public class CommandHandler
 {
@@ -65,17 +65,17 @@ public class CommandHandler
             };
 
             await _telegramRepository.UpdateAsync(message.From!.Id, dto);
-            await _telegramRepository.ChangeStatus(message.From!.Id, ETelegramUserStatus.Default, 0);
+            await _telegramRepository.ChangeStatus(message.From!.Id, TelegramUserStatuses.Default, 0);
         }
         else if (message.Text.StartsWith("/setusername") && user != null)
         {
             await bot.SendTextMessageAsync(message.Chat.Id, $"Current name is {user.Username} \r\nEnter your new name:");
-            await _telegramRepository.ChangeStatus(message.From!.Id, ETelegramUserStatus.SetUsername, 0);
+            await _telegramRepository.ChangeStatus(message.From!.Id, TelegramUserStatuses.SetUsername, 0);
         }
         else if (message.Text.StartsWith("/sethashtag") && user != null)
         {
             await bot.SendTextMessageAsync(message.Chat.Id, $"Current hashtag is {user.Hashtag} \r\nEnter your new hashtag:");
-            await _telegramRepository.ChangeStatus(message.From!.Id, ETelegramUserStatus.SetHashtag, 0);
+            await _telegramRepository.ChangeStatus(message.From!.Id, TelegramUserStatuses.SetHashtag, 0);
         }
         else if (message.Text.StartsWith("/profile") && user != null)
         {
@@ -120,7 +120,7 @@ public class CommandHandler
 
         user.Username = newUsername;
         await _userRepository.UpdateAsync(user.Id, user);
-        await _telegramRepository.ChangeStatus(message.From!.Id, ETelegramUserStatus.Default, 0);
+        await _telegramRepository.ChangeStatus(message.From!.Id, TelegramUserStatuses.Default, 0);
         await bot.SendTextMessageAsync(chatId, $"Your name has been changed. Your new name: {newUsername}");
     }
 
@@ -157,7 +157,7 @@ public class CommandHandler
         user.Hashtag = newHashtag;
 
         await _userRepository.UpdateAsync(user.Id, user);
-        await _telegramRepository.ChangeStatus(message.From!.Id, ETelegramUserStatus.Default, 0);
+        await _telegramRepository.ChangeStatus(message.From!.Id, TelegramUserStatuses.Default, 0);
         await bot.SendTextMessageAsync(chatId, $"Your hashtag has been changed. Your new hashtag: {newHashtag}");
 
         static bool ContainsOnlyAsciiLettersAndDigits(string input) => Regex.IsMatch(input, @"^[a-zA-Z0-9]+$");
@@ -176,7 +176,7 @@ public class CommandHandler
         if (userTelegram.StatusLevel == 0)
         {
             await bot.SendTextMessageAsync(chatId, $"Hi {userTelegram.FirstName}. Enter your name to be used in the game:");
-            await _telegramRepository.ChangeStatus(message.From!.Id, ETelegramUserStatus.UserRegistration, 1);
+            await _telegramRepository.ChangeStatus(message.From!.Id, TelegramUserStatuses.UserRegistration, 1);
         }
         else if (userTelegram.StatusLevel == 1)
         {
@@ -197,7 +197,7 @@ public class CommandHandler
 
             user.Username = newUsername;
             await _userRepository.UpdateAsync(user.Id, user);
-            await _telegramRepository.ChangeStatus(message.From!.Id, ETelegramUserStatus.Default, 0);
+            await _telegramRepository.ChangeStatus(message.From!.Id, TelegramUserStatuses.Default, 0);
             await bot.SendTextMessageAsync(chatId, $"Congratulations {newUsername} and have a great trip. You can view your information with the /profile command.");
         }
     }

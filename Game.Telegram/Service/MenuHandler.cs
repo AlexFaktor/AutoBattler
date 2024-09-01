@@ -2,7 +2,7 @@
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 
-namespace App.Telegram.Service;
+namespace TelegramBot.Service;
 
 public class MenuHandler
 {

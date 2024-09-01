@@ -1,4 +1,4 @@
-﻿namespace App.GameCore.Battles.Enums;
+﻿namespace GameLogic.Battles.Enums;
 
 public enum BattleTypes
 {

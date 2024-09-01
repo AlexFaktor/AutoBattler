@@ -1,4 +1,4 @@
-﻿namespace App.Core.DatabaseRecords.ScheduledTask;
+﻿namespace Core.DatabaseRecords.ScheduledTask;
 
 public abstract class AbstractTask
 {

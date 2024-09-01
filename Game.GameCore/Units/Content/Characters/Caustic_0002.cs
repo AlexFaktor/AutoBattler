@@ -1,9 +1,9 @@
-﻿using App.GameCore.Battles.Manager;
-using App.GameCore.Battles.System;
-using App.GameCore.Tools.ShellImporters.ConfigReaders;
-using App.GameCore.Units.Content.Abilitys;
+﻿using GameLogic.Battles.Manager;
+using GameLogic.Battles.System;
+using GameLogic.Tools.ShellImporters.ConfigReaders;
+using GameLogic.Units.Content.Abilitys;
 
-namespace App.GameCore.Units.Content.Characters;
+namespace GameLogic.Units.Content.Characters;
 
 internal class Caustic_0002 : Character
 {

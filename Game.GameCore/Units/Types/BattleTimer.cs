@@ -1,4 +1,4 @@
-﻿        namespace App.GameCore.Units.Types;
+﻿namespace GameLogic.Units.Types;
 
 public class BattleTimer
 {

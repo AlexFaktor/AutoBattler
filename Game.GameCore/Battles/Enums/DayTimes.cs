@@ -1,4 +1,4 @@
-﻿namespace App.GameCore.BattleSystem.Enums;
+﻿namespace GameLogic.BattleSystem.Enums;
 
 public enum DayTimes
 {

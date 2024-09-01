@@ -1,8 +1,8 @@
-﻿using App.GameCore.Battles.Manager;
-using App.GameCore.Battles.System;
-using App.GameCore.Tools.ShellImporters.ConfigReaders;
+﻿using GameLogic.Battles.Manager;
+using GameLogic.Battles.System;
+using GameLogic.Tools.ShellImporters.ConfigReaders;
 
-namespace App.GameCore.Units;
+namespace GameLogic.Units;
 
 public abstract class Enemy : Unit
 {

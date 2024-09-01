@@ -1,4 +1,4 @@
-﻿namespace App.Manager.BattleSystem;
+﻿namespace Manager.BattleSystem;
 
 public enum Tempeturas
 {

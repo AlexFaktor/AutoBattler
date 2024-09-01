@@ -1,10 +1,10 @@
-﻿using App.Core.DatabaseRecords.ScheduledTask;
-using App.Core.Resources.Enums.ScheduledTask;
-using App.Database.Repositorys.ScheduledTasks;
-using App.Database.Service.Users;
+﻿using Core.DatabaseRecords.ScheduledTask;
+using Core.Resources.Enums.ScheduledTask;
+using Database.Repositorys.ScheduledTasks;
+using Database.Service.Users;
 using System.Data;
 
-namespace App.ScheduledTaskService.Executors;
+namespace ScheduledTaskService.Executors;
 
 public class ExecutorGlobalTasks(IDbConnection connection)
 {

@@ -1,4 +1,4 @@
-﻿namespace App.Core.Resources.Enums.ScheduledTask
+﻿namespace Core.Resources.Enums.ScheduledTask
 {
     public enum GlobalTasks
     {

@@ -1,9 +1,9 @@
-﻿using App.GameCore.Battles.Manager;
-using App.GameCore.Units;
+﻿using GameLogic.Battles.Manager;
+using GameLogic.Units;
 using System;
 using System.Runtime.InteropServices;
 
-namespace App.GameCore.Tools.Formulas;
+namespace GameLogic.Tools.Formulas;
 
 public static class GameFormulas
 {

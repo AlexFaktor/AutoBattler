@@ -1,10 +1,10 @@
-﻿using App.GameCore.Battles.Manager;
-using App.GameCore.Tools.ShellImporters;
+﻿using GameLogic.Battles.Manager;
+using GameLogic.Tools.ShellImporters;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Serilog;
 
-namespace App.ContentManagementSystemAPI.Controllers;
+namespace ContentManagementSystemAPI.Controllers;
 
 [ApiController]
 [Route("[controller]")]

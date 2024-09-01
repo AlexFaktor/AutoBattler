@@ -1,11 +1,11 @@
-﻿using App.GameCore.Battles.System;
-using App.GameCore.Tools.ShellImporters.ConfigReaders;
-using App.GameCore.Units;
-using App.GameCore.Units.Actions.Abilitys;
-using App.GameCore.Units.Actions.Abilitys.Interfaces;
+﻿using GameLogic.Battles.System;
+using GameLogic.Tools.ShellImporters.ConfigReaders;
+using GameLogic.Units;
+using GameLogic.Units.Actions.Abilitys;
+using GameLogic.Units.Actions.Abilitys.Interfaces;
 using System.Diagnostics;
 
-namespace App.GameCore.Battles.Manager;
+namespace GameLogic.Battles.Manager;
 
 public class Battle
 {

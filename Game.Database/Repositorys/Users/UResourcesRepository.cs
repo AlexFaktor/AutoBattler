@@ -1,9 +1,9 @@
 ﻿using Dapper;
 using Npgsql;
 using System.Data;
-using App.Core.DatabaseRecords.Users;
+using Core.DatabaseRecords.Users;
 
-namespace App.Database.Service.Users;
+namespace Database.Service.Users;
 
 public class UResourcesRepository
 {

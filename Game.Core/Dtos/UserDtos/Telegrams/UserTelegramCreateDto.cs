@@ -1,4 +1,4 @@
-﻿namespace App.Core.Dtos.UserDtos.Telegrams;
+﻿namespace Core.Dtos.UserDtos.Telegrams;
 
 public class UserTelegramCreateDto
 {

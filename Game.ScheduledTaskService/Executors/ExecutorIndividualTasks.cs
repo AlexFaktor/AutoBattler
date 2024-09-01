@@ -1,7 +1,7 @@
-﻿using App.Core.DatabaseRecords.ScheduledTask;
+﻿using Core.DatabaseRecords.ScheduledTask;
 using System.Data;
 
-namespace App.ScheduledTaskService.Executors;
+namespace ScheduledTaskService.Executors;
 
 public class ExecutorIndividualTasks(IDbConnection connection)
 {

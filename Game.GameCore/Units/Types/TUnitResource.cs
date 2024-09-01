@@ -1,55 +1,54 @@
-﻿namespace App.GameCore.Units.Types
-{
-    public class TUnitResource<T> where T : struct, IComparable, IFormattable, IConvertible, IComparable<T>, IEquatable<T>
-    {
-        private T _now;
+﻿namespace GameLogic.Units.Types;
 
-        public T Default { get; }
-        public T Max { get; set; }
-        public T Now
+public class TUnitResource<T> where T : struct, IComparable, IFormattable, IConvertible, IComparable<T>, IEquatable<T>
+{
+    private T _now;
+
+    public T Default { get; }
+    public T Max { get; set; }
+    public T Now
+    {
+        get => _now;
+        set
         {
-            get => _now;
-            set
+            if (!_now.Equals(value))
             {
-                if (!_now.Equals(value))
-                {
-                    OnNowChanging?.Invoke(this, new ResourceChangingEventArgs<T>(_now, value));
-                    _now = value;
-                    OnNowChanged?.Invoke(this, new ResourceChangedEventArgs<T>(_now));
-                }
+                OnNowChanging?.Invoke(this, new ResourceChangingEventArgs<T>(_now, value));
+                _now = value;
+                OnNowChanged?.Invoke(this, new ResourceChangedEventArgs<T>(_now));
             }
         }
-
-        public event EventHandler<ResourceChangingEventArgs<T>>? OnNowChanging;
-        public event EventHandler<ResourceChangedEventArgs<T>>? OnNowChanged;
-
-        public TUnitResource(T defaultValue)
-        {
-            Default = defaultValue;
-            Max = defaultValue;
-            _now = defaultValue;
-        }
     }
 
-    public class ResourceChangingEventArgs<T> : EventArgs
-    {
-        public T OldValue { get; }
-        public T NewValue { get; }
+    public event EventHandler<ResourceChangingEventArgs<T>>? OnNowChanging;
+    public event EventHandler<ResourceChangedEventArgs<T>>? OnNowChanged;
 
-        public ResourceChangingEventArgs(T oldValue, T newValue)
-        {
-            OldValue = oldValue;
-            NewValue = newValue;
-        }
+    public TUnitResource(T defaultValue)
+    {
+        Default = defaultValue;
+        Max = defaultValue;
+        _now = defaultValue;
     }
+}
 
-    public class ResourceChangedEventArgs<T> : EventArgs
+public class ResourceChangingEventArgs<T> : EventArgs
+{
+    public T OldValue { get; }
+    public T NewValue { get; }
+
+    public ResourceChangingEventArgs(T oldValue, T newValue)
     {
-        public T NewValue { get; }
+        OldValue = oldValue;
+        NewValue = newValue;
+    }
+}
 
-        public ResourceChangedEventArgs(T newValue)
-        {
-            NewValue = newValue;
-        }
+public class ResourceChangedEventArgs<T> : EventArgs
+{
+    public T NewValue { get; }
+
+    public ResourceChangedEventArgs(T newValue)
+    {
+        NewValue = newValue;
     }
 }

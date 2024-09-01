@@ -1,6 +1,6 @@
-﻿namespace App.Core.Resources.Enums.Telegram
+﻿namespace Core.Resources.Enums.Telegram
 {
-    public enum ETelegramUserStatus
+    public enum TelegramUserStatuses
     {
 
         Default = 0,

@@ -1,4 +1,4 @@
-﻿namespace App.GameCore.Battles.Manager;
+﻿namespace GameLogic.Battles.Manager;
 
 public class BattleResult
 {

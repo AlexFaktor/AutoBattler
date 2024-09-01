@@ -1,7 +1,6 @@
-﻿namespace App.GameCore.Units
+﻿namespace GameLogic.Units;
+
+public class UnitStatistics
 {
-    public class UnitStatistics
-    {
-        public UnitStatistics() { }
-    }
+    public UnitStatistics() { }
 }

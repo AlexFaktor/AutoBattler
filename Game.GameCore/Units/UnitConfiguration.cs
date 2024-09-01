@@ -1,4 +1,4 @@
-﻿namespace App.GameCore.Units;
+﻿namespace GameLogic.Units;
 
 public class UnitConfiguration
 {

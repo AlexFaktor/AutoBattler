@@ -1,11 +1,11 @@
-﻿using App.GameCore.Battles.Enums;
-using App.GameCore.Battles.System;
-using App.GameCore.BattleSystem.Enums;
-using App.Manager.BattleSystem;
+﻿using GameLogic.Battles.Enums;
+using GameLogic.Battles.System;
+using GameLogic.BattleSystem.Enums;
+using Manager.BattleSystem;
 using Newtonsoft.Json.Converters;
 using System.Text.Json.Serialization;
 
-namespace App.GameCore.Battles.Manager;
+namespace GameLogic.Battles.Manager;
 
 public class BattleConfiguration
 {

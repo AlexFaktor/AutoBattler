@@ -1,11 +1,11 @@
-﻿using App.Core.Dtos.UserDtos.Telegrams;
-using App.Core.Resources.Enums.Telegram;
+﻿using Core.Dtos.UserDtos.Telegrams;
+using Core.Resources.Enums.Telegram;
 using Dapper;
 using Npgsql;
 using System.Data;
-using App.Core.DatabaseRecords.Users;
+using Core.DatabaseRecords.Users;
 
-namespace App.Database.Service.Users;
+namespace Database.Service.Users;
 
 public class UTelegramRepository
 {
@@ -102,17 +102,17 @@ public class UTelegramRepository
         return result;
     }
 
-    public async Task<(ETelegramUserStatus, short)> GetStatus(long telegramId)
+    public async Task<(TelegramUserStatuses, short)> GetStatus(long telegramId)
     {
         using var connection = Connection;
         connection.Open();
         var query = "SELECT \"status\", \"statusLevel\" FROM \"user\".\"Telegram\" WHERE \"telegramId\" = @TelegramId";
-        var result = await connection.QuerySingleOrDefaultAsync<(ETelegramUserStatus, short)>(query, new { TelegramId = telegramId });
+        var result = await connection.QuerySingleOrDefaultAsync<(TelegramUserStatuses, short)>(query, new { TelegramId = telegramId });
         connection.Close();
         return result;
     }
 
-    public async Task<bool> ChangeStatus(long telegramId, ETelegramUserStatus status, short statusLvl)
+    public async Task<bool> ChangeStatus(long telegramId, TelegramUserStatuses status, short statusLvl)
     {
         using var connection = Connection;
         connection.Open();

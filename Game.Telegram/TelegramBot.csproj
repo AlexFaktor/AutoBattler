@@ -34,8 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Game.Core\App.Core.csproj" />
-    <ProjectReference Include="..\Game.Database\App.Database.csproj" />
+    <ProjectReference Include="..\Game.Core\Core.csproj" />
+    <ProjectReference Include="..\Game.Database\Database.csproj" />
   </ItemGroup>
 
 </Project>

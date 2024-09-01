@@ -1,6 +1,6 @@
-﻿using App.GameCore.Units.Types;
+﻿using GameLogic.Units.Types;
 
-namespace App.GameCore.Units.Actions.Abilitys.Interfaces;
+namespace GameLogic.Units.Actions.Abilitys.Interfaces;
 
 public interface IPeriodicAbility
 {

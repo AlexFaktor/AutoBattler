@@ -1,7 +1,7 @@
-using App.GameCore.Tools.ShellImporters;
+using GameLogic.Tools.ShellImporters;
 using Serilog;
 
-namespace App.ContentManagementSystemAPI;
+namespace ContentManagementSystemAPI;
 
 public class Program
 {

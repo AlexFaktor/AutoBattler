@@ -1,10 +1,10 @@
-﻿using App.Core.DatabaseRecords.ScheduledTask;
-using App.Core.Resources.Interfraces.ScheduledTaskService;
-using App.Database.Repositorys.ScheduledTasks;
-using App.ScheduledTaskService.Executors;
+﻿using Core.DatabaseRecords.ScheduledTask;
+using Core.Resources.Interfraces.ScheduledTaskService;
+using Database.Repositorys.ScheduledTasks;
+using ScheduledTaskService.Executors;
 using System.Data;
 
-namespace App.ScheduledTaskService;
+namespace ScheduledTaskService;
 
 public class TaskService : ITaskService
 {

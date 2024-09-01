@@ -1,11 +1,11 @@
-﻿using App.GameCore.Battles.Manager;
-using App.GameCore.Battles.System;
-using App.GameCore.Tools.Formulas;
-using App.GameCore.Units.Actions;
-using App.GameCore.Units.Enums;
-using App.GameCore.Units.Types;
+﻿using GameLogic.Battles.Manager;
+using GameLogic.Battles.System;
+using GameLogic.Tools.Formulas;
+using GameLogic.Units.Actions;
+using GameLogic.Units.Enums;
+using GameLogic.Units.Types;
 
-namespace App.GameCore.Units;
+namespace GameLogic.Units;
 
 public abstract class Unit
 {
@@ -22,10 +22,10 @@ public abstract class Unit
     public UnitClass Class { get; protected set; }
     public UnitClass SubClass { get; protected set; }
     public TUnitResource<float> Initiative { get; protected set; } = new(100); // Event when changed
-    public TUnitValue<float> Speed { get; protected set; } = new(5);
-    public TUnitValue<float> AttackRange { get; protected set; } = new(30);
+    public TUnitProperty<float> Speed { get; protected set; } = new(5);
+    public TUnitProperty<float> AttackRange { get; protected set; } = new(30);
     public TacticalTypes TacticalType { get; protected set; }
-    public TUnitValue<int> TacticalLevel { get; protected set; } = new(0);
+    public TUnitProperty<int> TacticalLevel { get; protected set; } = new(0);
 
     // General
     public TUnitPercentage AbilityHaste { get; protected set; } = new(0);
@@ -33,23 +33,23 @@ public abstract class Unit
     public TUnitResource<float> Mana { get; protected set; } = new(100);
 
     // Attack
-    public TUnitValue<double> Damage { get; protected set; } = new(0);
+    public TUnitProperty<double> Damage { get; protected set; } = new(0);
     public BattleTimer AttackSpeed { get; protected set; } = new(1000);
     public TUnitChance Accuracy { get; protected set; } = new(0.66f);
     public TUnitChance CriticalChance { get; protected set; } = new(0.05f);
     public TUnitPercentage CriticalDamage { get; protected set; } = new(0.20f);
     public TUnitPercentage ArmorPenetration { get; protected set; } = new(0);
-    public TUnitValue<float> IgnoringArmor { get; protected set; } = new(0);
+    public TUnitProperty<float> IgnoringArmor { get; protected set; } = new(0);
 
     // Defensive
     public TUnitResource<double> HealthPoints { get; protected set; } = new(1); // Event when changed 
     public TUnitResource<double> Shield { get; protected set; } = new(0); // Event when changed
     public TUnitPercentage ShieldEfficiency { get; protected set; } = new(0f);
-    public TUnitValue<float> HealthPassive { get; protected set; } = new(0);
+    public TUnitProperty<float> HealthPassive { get; protected set; } = new(0);
     public TUnitPercentage HealthEfficiency { get; protected set; } = new(0f);
     public TUnitChance Dexterity { get; protected set; } = new(0);
     public TUnitChance CriticalDefeat { get; protected set; } = new(0);
-    public TUnitValue<float> Armor { get; protected set; } = new(0);
+    public TUnitProperty<float> Armor { get; protected set; } = new(0);
 
     // Other
     public float Position { get; protected set; }

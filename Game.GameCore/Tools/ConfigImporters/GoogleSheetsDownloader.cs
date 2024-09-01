@@ -4,7 +4,7 @@ using Google.Apis.Sheets.v4.Data;
 using Serilog;
 using static Google.Apis.Requests.BatchRequest;
 
-namespace App.GameCore.Tools.ShellImporters;
+namespace GameLogic.Tools.ShellImporters;
 
 public class GoogleSheetsDownloader
 {

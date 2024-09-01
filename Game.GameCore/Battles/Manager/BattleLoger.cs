@@ -1,8 +1,8 @@
-﻿using App.GameCore.Battles.Enums;
-using App.GameCore.Units;
+﻿using GameLogic.Battles.Enums;
+using GameLogic.Units;
 using Serilog;
 
-namespace App.GameCore.Battles.Manager;
+namespace GameLogic.Battles.Manager;
 
 public class BattleLogger
 {

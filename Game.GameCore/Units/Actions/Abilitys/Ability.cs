@@ -1,7 +1,9 @@
-﻿using App.GameCore.Battles.Manager;
-using App.GameCore.Tools.Formulas;
+﻿using GameLogic.Battles.Manager;
+using GameLogic.Tools.Formulas;
+using GameLogic.Units;
+using GameLogic.Units.Actions;
 
-namespace App.GameCore.Units.Actions.Abilitys;
+namespace GameCore.Units.Actions.Abilitys;
 
 public abstract class Ability(Battle battle, Unit unit) : UnitAction(battle, unit)
 {

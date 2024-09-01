@@ -1,6 +1,6 @@
-﻿using App.Core.Resources.Interfraces.ScheduledTaskService;
+﻿using Core.Resources.Interfraces.ScheduledTaskService;
 
-namespace App.ScheduledTaskService;
+namespace ScheduledTaskService;
 
 public class TaskSchedulerHostedService : IHostedService, IDisposable
 {

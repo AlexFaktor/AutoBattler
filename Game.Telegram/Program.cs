@@ -1,6 +1,5 @@
-﻿using App.Database.Repositorys.Things;
-using App.Database.Service.Users;
-using App.Telegram.Service;
+﻿using Database.Repositorys.Things;
+using Database.Service.Users;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,8 +9,9 @@ using System.Data;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
+using TelegramBot.Service;
 
-namespace App.Telegram;
+namespace TelegramBot;
 
 internal class Program
 {
@@ -30,7 +30,7 @@ internal class Program
 
                 services.AddSingleton<IDbConnection>(sp => new NpgsqlConnection(connectionString));
 
-                services.AddSingleton<ITelegramBotClient>(new TelegramBotClient(appSettings.Ge));
+                services.AddSingleton<ITelegramBotClient>(new TelegramBotClient(appSettings["TelegramToken"]!));
                 services.AddTransient<UserRepository>(sp => new UserRepository(connectionString));
                 services.AddTransient<UStatisticsRepository>(sp => new UStatisticsRepository(connectionString));
                 services.AddTransient<UTelegramRepository>(sp => new UTelegramRepository(connectionString));

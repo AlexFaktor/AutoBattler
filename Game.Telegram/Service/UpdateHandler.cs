@@ -1,12 +1,12 @@
-﻿using App.Core.Dtos.UserDtos.Telegrams;
-using App.Core.Resources.Enums.Telegram;
-using App.Database.Service.Users;
+﻿using Core.Dtos.UserDtos.Telegrams;
+using Core.Resources.Enums.Telegram;
+using Database.Service.Users;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace App.Telegram.Service;
+namespace TelegramBot.Service;
 
 public class UpdateHandler
 {
@@ -67,23 +67,23 @@ public class UpdateHandler
                     Language = message.From.LanguageCode
                 });
 
-            await _telegramRepository.ChangeStatus(message.From.Id, ETelegramUserStatus.UserRegistration, 0);
+            await _telegramRepository.ChangeStatus(message.From.Id, TelegramUserStatuses.UserRegistration, 0);
             uTelegram = await _telegramRepository.GetAsync(user!.Id);
         }
         await _statisticsRepository.AddInteraction(uTelegram.UserId);
 
         switch (uTelegram!.Status)
         {
-            case ETelegramUserStatus.Default:
+            case TelegramUserStatuses.Default:
                 await _commandHandler.HandleCommand(bot, message);
                 break;
-            case ETelegramUserStatus.UserRegistration:
+            case TelegramUserStatuses.UserRegistration:
                 await _commandHandler.UserRegistration(bot, message);
                 break;
-            case ETelegramUserStatus.SetUsername:
+            case TelegramUserStatuses.SetUsername:
                 await _commandHandler.SetUsername(bot, message);
                 break;
-            case ETelegramUserStatus.SetHashtag:
+            case TelegramUserStatuses.SetHashtag:
                 await _commandHandler.SetHashtag(bot, message);
                 break;
             default:

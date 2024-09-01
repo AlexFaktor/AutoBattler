@@ -1,13 +1,13 @@
-﻿using App.Core.Resources.Enums.Telegram;
+﻿using Core.Resources.Enums.Telegram;
 
-namespace App.Core.DatabaseRecords.Users;
+namespace Core.DatabaseRecords.Users;
 
 public class UserTelegram
 {
     public Guid UserId { get; set; }
     public long TelegramId { get; set; }
 
-    public ETelegramUserStatus Status { get; set; } = ETelegramUserStatus.UserRegistration;
+    public TelegramUserStatuses Status { get; set; } = TelegramUserStatuses.UserRegistration;
     public short StatusLevel { get; set; } = 0;
 
     public string Username { get; set; } = string.Empty;

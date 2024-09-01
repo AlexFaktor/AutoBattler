@@ -1,6 +1,6 @@
-﻿using App.GameCore.Units;
+﻿using GameLogic.Units;
 
-namespace App.GameCore.Battles.Manager;
+namespace GameLogic.Battles.Manager;
 
 public class BattleStats
 {

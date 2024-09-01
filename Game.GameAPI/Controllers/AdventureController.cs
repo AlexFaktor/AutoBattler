@@ -1,7 +1,7 @@
-﻿using App.GameCore.Tools.ShellImporters;
+﻿using GameLogic.Tools.ShellImporters;
 using Microsoft.AspNetCore.Mvc;
 
-namespace App.ContentManagementSystemAPI.Controllers;
+namespace ContentManagementSystemAPI.Controllers;
 
 [ApiController]
 [Route("[controller]")]

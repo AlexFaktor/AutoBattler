@@ -1,10 +1,10 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
-using App.GameCore.Units.Enums;
+using GameLogic.Units.Enums;
 using System.Globalization;
 
-namespace App.GameCore.Tools.ShellImporters.ConfigReaders;
+namespace GameLogic.Tools.ShellImporters.ConfigReaders;
 
 internal class CharacterImporter
 {
