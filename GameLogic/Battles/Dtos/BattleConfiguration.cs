@@ -5,7 +5,7 @@ using Manager.BattleSystem;
 using Newtonsoft.Json.Converters;
 using System.Text.Json.Serialization;
 
-namespace GameLogic.Battles.Manager;
+namespace GameLogic.Battles.Dtos;
 
 public class BattleConfiguration
 {

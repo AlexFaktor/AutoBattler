@@ -1,4 +1,4 @@
-﻿namespace GameLogic.Manager;
+﻿namespace GameLogic.Main;
 
 public class Player : IBattlePlayer
 {

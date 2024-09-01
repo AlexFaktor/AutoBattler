@@ -1,4 +1,5 @@
-﻿using GameLogic.Battles.System;
+﻿using GameLogic.Battles.Dtos;
+using GameLogic.Battles.System;
 using GameLogic.Tools.ShellImporters.ConfigReaders;
 using GameLogic.Units;
 using GameLogic.Units.Actions.Abilitys;

@@ -1,6 +1,7 @@
 ﻿using GameLogic.Battles.Manager;
-using GameLogic.Manager;
+using GameLogic.Main;
 using GameLogic.Units;
+using GameLogic.Units.Dtos;
 
 namespace GameLogic.Battles.System;
 

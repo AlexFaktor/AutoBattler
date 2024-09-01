@@ -1,7 +1,5 @@
 ﻿using GameLogic.Battles.Manager;
 using GameLogic.Units;
-using System;
-using System.Runtime.InteropServices;
 
 namespace GameLogic.Tools.Formulas;
 
@@ -14,7 +12,7 @@ public static class GameFormulas
     /// <param name="currentNumber"></param>
     /// <param name="forCoefNumber"></param>
     /// <returns></returns>
-    public static double GetRatio(double currentNumber, double forCoefNumber) 
+    public static double GetRatio(double currentNumber, double forCoefNumber)
         => 1 / currentNumber * forCoefNumber;
 
 
@@ -46,8 +44,8 @@ public static class GameFormulas
     /// </summary>
     public static double DamageWithArmorAndIgnoringArmorAndPiercingArmor
         (double damage,
-        double armor, 
-        float piercingArmor, 
+        double armor,
+        float piercingArmor,
         float ignoringArmor)
     {
         var totalArmorCeof = PercentageOfArmorImpact((armor * (1 - piercingArmor)) - ignoringArmor);

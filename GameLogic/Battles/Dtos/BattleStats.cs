@@ -1,6 +1,6 @@
 ﻿using GameLogic.Units;
 
-namespace GameLogic.Battles.Manager;
+namespace GameLogic.Battles.Dtos;
 
 public class BattleStats
 {

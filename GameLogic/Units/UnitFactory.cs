@@ -2,6 +2,7 @@
 using GameLogic.Battles.System;
 using GameLogic.Tools.ShellImporters.ConfigReaders;
 using GameLogic.Units.Content.Characters;
+using GameLogic.Units.Dtos;
 
 namespace GameLogic.Units;
 
@@ -13,16 +14,16 @@ public class UnitFactory(CharacterConfigReader characterConfigReader)
     {
         return config.Id switch
         {
-            (int)Enums.Units.Bloodhound => new Bloodhound_0001(config, team, _characterConfigReader, battle),
-            (int)Enums.Units.Caustic => new Caustic_0002(config, team, _characterConfigReader, battle),
-            (int)Enums.Units.Lifeline => new Lifeline_0003(config, team, _characterConfigReader, battle),
-            (int)Enums.Units.ArminArlert => new ArminArlert_0004(config, team, _characterConfigReader, battle),
-            (int)Enums.Units.LeviAckerman => new LeviAckerman_0005(config, team, _characterConfigReader, battle),
-            (int)Enums.Units.Guts => new Guts_0006(config, team, _characterConfigReader, battle),
-            (int)Enums.Units.Isidro => new Isidro_0007(config, team, _characterConfigReader, battle),
-            (int)Enums.Units.Schierke => new Schierke_0008(config, team, _characterConfigReader, battle),
-            (int)Enums.Units.Serpico => new Serpico_0009(config, team, _characterConfigReader, battle),
-            (int)Enums.Units.FL4K => new FL4K_0010(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.Unit0001 => new Unit_0001(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.Unit2 => new Unit_0002(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.Unit3 => new Unit_0003(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.Unit4 => new Unit_0004(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.Unit5 => new Unit_0005(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.Unit6 => new Unit_0006(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.Unit7 => new Unit_0007(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.Unit8 => new Unit_0008(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.Unit9 => new Unit_0009(config, team, _characterConfigReader, battle),
+            (int)Enums.Units.Unit10 => new Unit_0010(config, team, _characterConfigReader, battle),
             _ => throw new Exception("unit creation error"),
         };
     }

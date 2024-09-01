@@ -1,6 +1,7 @@
 ﻿using GameLogic.Battles.Manager;
 using GameLogic.Battles.System;
 using GameLogic.Tools.ShellImporters.ConfigReaders;
+using GameLogic.Units.Dtos;
 
 namespace GameLogic.Units;
 

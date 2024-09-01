@@ -2,12 +2,13 @@
 using GameLogic.Battles.System;
 using GameLogic.Tools.ShellImporters.ConfigReaders;
 using GameLogic.Units.Content.Abilitys;
+using GameLogic.Units.Dtos;
 
 namespace GameLogic.Units.Content.Characters;
 
-internal class Bloodhound_0001 : Character
+internal class Unit_0004 : Character
 {
-    public Bloodhound_0001(UnitConfiguration config, Team team, CharacterConfigReader pathConfig, Battle battle) : base(config, pathConfig, team, battle)
+    public Unit_0004(UnitConfiguration config, Team team, CharacterConfigReader pathConfig, Battle battle) : base(config, pathConfig, team, battle)
     {
         Actions.Add(new AbilityAutoAttack(battle, this));
     }

@@ -1,4 +1,5 @@
-﻿using GameLogic.Battles.Manager;
+﻿using GameLogic.Battles.Dtos;
+using GameLogic.Battles.Manager;
 using GameLogic.Tools.ShellImporters;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;

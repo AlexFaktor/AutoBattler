@@ -1,6 +1,6 @@
 ﻿using GameLogic.Tools.ShellImporters.ConfigReaders;
 
-namespace GameLogic.Manager;
+namespace GameLogic.Main;
 
 public class GameConfig
 {

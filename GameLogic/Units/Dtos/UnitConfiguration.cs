@@ -1,4 +1,4 @@
-﻿namespace GameLogic.Units;
+﻿namespace GameLogic.Units.Dtos;
 
 public class UnitConfiguration
 {

@@ -1,10 +1,8 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Sheets.v4;
-using Google.Apis.Sheets.v4.Data;
 using Serilog;
-using static Google.Apis.Requests.BatchRequest;
 
-namespace GameLogic.Tools.ShellImporters;
+namespace GameLogic.Tools;
 
 public class GoogleSheetsDownloader
 {
