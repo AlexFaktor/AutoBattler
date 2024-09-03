@@ -42,8 +42,11 @@ public abstract class Unit
     public TUnitProperty<float> IgnoringArmor { get; protected set; } = new(0);
 
     // Defensive
-    public TUnitResource<double> HealthPoints { get; protected set; } = new(1); // Event when changed 
-    public TUnitResource<double> Shield { get; protected set; } = new(0); // Event when changed
+    public TUnitResource<double> HealthPoints { get; protected set; } = new(1);
+    public TUnitResource<double> Shield { get; protected set; } = new(0);
+
+    public List<TUnitResource<double>> Shields { get; protected set; } = new();
+
     public TUnitPercentage ShieldEfficiency { get; protected set; } = new(0f);
     public TUnitProperty<float> HealthPassive { get; protected set; } = new(0);
     public TUnitPercentage HealthEfficiency { get; protected set; } = new(0f);
@@ -101,7 +104,12 @@ public abstract class Unit
     {
         if (IsShield())
         {
-            Shield.Now -= damage;
+            var shield = Shields.First();
+            shield.Now -= damage;
+
+            if (shield.Now <= 0)
+                Shields.Remove(shield);
+
             OnDamageReceived?.Invoke(this, new DamageReceivedEventArgs(damage, attacker, toShield: true));
 
             if (!IsShield())
@@ -122,7 +130,7 @@ public abstract class Unit
     }
 
     public bool IsAlive() => HealthPoints.Now > 0;
-    public bool IsShield() => Shield.Now > 0;
+    public bool IsShield() => Shields.Count > 0;
 
     protected UnitRadius GetAttackRadius(float attackRange)
     {
