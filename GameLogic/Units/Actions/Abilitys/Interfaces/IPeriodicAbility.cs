@@ -1,4 +1,4 @@
-﻿using GameLogic.Units.Types;
+﻿using GameLogic.Battles.System;
 
 namespace GameLogic.Units.Actions.Abilitys.Interfaces;
 

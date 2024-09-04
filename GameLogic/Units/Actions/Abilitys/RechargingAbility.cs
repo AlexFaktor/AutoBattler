@@ -1,7 +1,7 @@
 ﻿using GameCore.Units.Actions.Abilitys;
 using GameLogic.Battles.Manager;
+using GameLogic.Battles.System;
 using GameLogic.Units.Actions.Abilitys.Interfaces;
-using GameLogic.Units.Types;
 
 namespace GameLogic.Units.Actions.Abilitys;
 

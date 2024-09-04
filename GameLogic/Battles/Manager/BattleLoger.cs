@@ -28,15 +28,19 @@ public class BattleLogger
 
         void InitializeLogger()
         {
+            battle.OnBattleStart += Battle_OnBattleStart;
+            battle.OnBattleEnd += Battle_OnBattleEnd;
+            battle.OnBattleDayPassed += Battle_OnBattleDayPassed;
+
             foreach (var unit in battle.AllUnits)
             {
                 unit.OnDead += Unit_OnDead;
                 unit.OnDamageReceived += Unit_OnDamageReceived;
+                unit.OnMove += Unit_OnMove;
             }
         }
     }
 
-    
 
     public void LogInfo(string message)
     {
@@ -79,12 +83,40 @@ public class BattleLogger
         _logger.Information($"{_battle.Timeline} | <{tag}-{subTag}>{{Message}}</{tag}-{subTag}>", message);
     }
 
+    private void Battle_OnBattleStart(object? sender, EventArgs e)
+    {
+        // Show configuration
+
+        if (sender is Battle battle)
+        {
+            LogCustom("battle", "start");
+        }
+    }
+
+    private void Battle_OnBattleEnd(object? sender, EventArgs e)
+    {
+        // Show result
+
+        if (sender is Battle battle)
+        {
+            LogCustom("battle", "end");
+        }
+    }
+
+    private void Battle_OnBattleDayPassed(object? sender, EventArgs e)
+    {
+        if (sender is Battle battle)
+        {
+            LogCustom("battle", "daypassed");
+        }
+    }
+
     private void Unit_OnDamageReceived(object? sender, DamageReceivedEventArgs e)
     {
         if (sender is Unit unit)
         {
             LogAction("info", $" {unit.Name} will receive {e.DamageReceived:F1} damage from {e.Attacker.Name} ");
-            unit.LogResource();
+            Unit_LogResource(sender);
         }
     }
 
@@ -96,4 +128,19 @@ public class BattleLogger
         }
     }
 
+    private void Unit_OnMove(object? sender, MoveEventArgs e)
+    {
+        if (sender is Unit unit)
+        {
+            LogAction("unit-move", $" {unit.Name} moved from {e.StartPositon} to {e.EndPositon} with speed {e.Speed}");
+        }
+    }
+
+    private void Unit_LogResource(object? sender)
+    {
+        if (sender is Unit unit)
+        {
+            LogInfo("unit", $" {unit.Name} >> S {unit.Shield.Now:F1}/{unit.Shield.Max:F1}| H {unit.HealthPoints.Now:F1}/{unit.HealthPoints.Max:F1} ");
+        }
+    }
 }

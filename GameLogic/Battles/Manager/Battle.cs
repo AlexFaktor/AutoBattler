@@ -24,7 +24,14 @@ public class Battle
     public List<Team> AllTeam { get; protected set; } = [];
     public List<Unit> AllUnits { get; protected set; } = [];
     public List<IBattleAction> AllBattleActions { get; protected set; } = [];
-    
+
+    // Events
+    public event EventHandler? OnBattleStart;
+    public event EventHandler? OnBattleEnd;
+    public event EventHandler? OnBattleDayPassed;
+
+    // Const
+    public const float TIMILINE_MAX_VALUE = 86400000f;
 
     public Battle(BattleConfiguration battleConfiguration, CharacterConfigReader characteConfigReader)
     {
@@ -38,6 +45,8 @@ public class Battle
         InitializeConfiguration();
 
         Logger = new(DateTime.Now, this);
+
+        OnBattleStart?.Invoke(this, new EventArgs());
 
         void InitializeConfiguration()
         {
@@ -69,6 +78,7 @@ public class Battle
             // Ігровий цикл
             while (BattleResult.Stats.TeamWinner == Guid.Empty)
             {
+                BattleTick();
                 FindAndExecuteAction();
             }
 
@@ -125,6 +135,17 @@ public class Battle
             BattleResult.Stats.ActualDuration = stopwatch.ElapsedMilliseconds;
             BattleResult.EndTime = DateTime.UtcNow;
             BattleResult.Stats.TotalTimeline = Timeline;
+
+            OnBattleEnd?.Invoke(this, new EventArgs());
+        }
+
+        void BattleTick()
+        {
+            if (Timeline > TIMILINE_MAX_VALUE)
+            {
+                OnBattleDayPassed?.Invoke(this, new EventArgs());
+                throw new Exception("The battle has been going on for a very long time");
+            }
         }
     }
 

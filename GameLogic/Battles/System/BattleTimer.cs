@@ -1,4 +1,6 @@
-﻿namespace GameLogic.Units.Types;
+﻿using System.Globalization;
+
+namespace GameLogic.Battles.System;
 
 public class BattleTimer
 {
@@ -8,7 +10,7 @@ public class BattleTimer
 
     public BattleTimer(float attackBySecond)
     {
-        Default =  uint.Parse((1000 / attackBySecond).ToString());
+        Default =  uint.Parse(Math.Round(1000 / attackBySecond).ToString(), CultureInfo.InvariantCulture);
         Now = Default;
         NextUse += Default;
     }

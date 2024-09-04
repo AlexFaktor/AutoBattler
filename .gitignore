@@ -399,9 +399,9 @@ FodyWeavers.xsd
 
 # My
 /.doc
-Game.GameAPI/configs
-Game.GameAPI/keys
+GameAPI/configs
+GameAPI/keys
 appsettings.Development.json
-/Game.Telegram/appsettings.Development.json
-/Game.ScheduledTaskService/appsettings.Development.json
-/Game.GameAPI/appsettings.Development.json
+/Telegram/appsettings.Development.json
+/ScheduledTaskService/appsettings.Development.json
+/GameAPI/appsettings.Development.json

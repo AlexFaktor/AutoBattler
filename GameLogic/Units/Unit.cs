@@ -56,14 +56,15 @@ public abstract class Unit
 
     // Other
     public float Position { get; protected set; }
-
     public List<UnitAction> Actions { get; protected set; } = [];
+    public List<Effect> Effects { get; protected set; } = [];
 
     // Events
     public event EventHandler<AttackEventArgs>? OnAttack;
     public event EventHandler<DamageReceivedEventArgs>? OnDamageReceived;
     public event EventHandler<DeadEventArgs>? OnDead;
     public event EventHandler<ShieldBrokenEventArgs>? OnShieldBroken;
+    public event EventHandler<MoveEventArgs>? OnMove;
 
     public Unit(Team team, Battle battle)
     {
@@ -96,7 +97,7 @@ public abstract class Unit
         if (targetsPrioritetsDistance.Count < 1)
             return null;
         var targetsPrioritetsClass = UnitClassFormulas.WeightToSelect(Class, SubClass); // Get priorities based on class
-        
+
         var targets = AddСlassСonsideration(targetsPrioritetsClass, targetsPrioritetsDistance); // Combine class and distance priorities
         return GameFormulas.SelectRandomlyWithPriorities(targets, Battle);
     }
@@ -187,8 +188,10 @@ public abstract class Unit
         return (crit * coefInitiative) + (affectedArea);
     }
 
-    internal void Move(IEnumerable<Unit> enemies)
+    internal void Move(IEnumerable<Unit> enemies, int speedReduction)
     {
+        var moveEventArgs = new MoveEventArgs(this);
+
         if (enemies == null || !enemies.Any())
             return;
 
@@ -205,26 +208,29 @@ public abstract class Unit
             }
         }
 
+        var totalSpeed = Speed.Now / speedReduction;
+
+        moveEventArgs.StartPositon = Position;
+
         if (closestEnemy != null)
         {
             if (closestEnemy.Position > Position)
-                Position = Position + Speed.Now;
+                Position = Position + totalSpeed;
             else if (closestEnemy.Position < Position)
-                Position = Position - Speed.Now;
+                Position = Position - totalSpeed;
         }
+
+        moveEventArgs.EndPositon = Position;
+        moveEventArgs.Speed = totalSpeed;
+
+        OnMove?.Invoke(this, moveEventArgs);
 
         float CalculateDistance(float positionA, float positionB) => Math.Abs(Math.Abs(positionA) - Math.Abs(positionB));
     }
+
     public void TeleportTo(float position)
     {
         Position = position;
-    }
-
-    public void LogResource()
-    {
-        var logger = Battle.Logger;
-
-        logger.LogInfo("unit", $" {Name} >> S {Shield.Now:F1}/{Shield.Max:F1}| H {HealthPoints.Now:F1}/{HealthPoints.Max:F1} ");
     }
 }
 
@@ -259,4 +265,12 @@ public class DeadEventArgs(Unit killer) : EventArgs
 public class ShieldBrokenEventArgs(Unit whoBrokenShield) : EventArgs
 {
     public Unit WhoBrokenShield { get; } = whoBrokenShield;
+}
+
+public class MoveEventArgs(Unit whoMove) : EventArgs
+{
+    public Unit WhoMove { get; } = whoMove;
+    public float StartPositon { get; set; }
+    public float EndPositon { get; set; }
+    public float Speed { get; set; }
 }
