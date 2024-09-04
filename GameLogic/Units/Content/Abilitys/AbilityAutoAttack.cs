@@ -1,7 +1,6 @@
 ﻿using GameLogic.Battles.Manager;
 using GameLogic.Battles.System;
 using GameLogic.Units.Actions.Abilitys;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GameLogic.Units.Content.Abilitys;
 
@@ -24,10 +23,10 @@ internal class AbilityAutoAttack : RechargingAbility
         if (target is null)
         {
             logger.LogAction("autoattack-info", $" {_unit.Name} has no target to attack ");
-            const int TIME_COLLDOWN_IF_MOVE = 100; // If the skill was not used due to the absence of enemies. It is included in the recharge for 100 milliseconds.
-            const int HOW_MANY_TIMES_WEAKER_WILL_BE_MOVE_SPEED = 10;
+            const int TIME_COLLDOWN_IF_MOVE = 400; // If the skill was not used due to the absence of enemies. It is included in the recharge for 100 milliseconds.
+            const float HOW_MANY_TIMES_WEAKER_WILL_BE_MOVE_SPEED = 2.5f;
             _unit.Move(enemys, HOW_MANY_TIMES_WEAKER_WILL_BE_MOVE_SPEED);
-            Time.Reload(TIME_COLLDOWN_IF_MOVE); 
+            Time.Reload(TIME_COLLDOWN_IF_MOVE);
             return;
         }
 

@@ -65,6 +65,7 @@ public abstract class Unit
     public event EventHandler<DeadEventArgs>? OnDead;
     public event EventHandler<ShieldBrokenEventArgs>? OnShieldBroken;
     public event EventHandler<MoveEventArgs>? OnMove;
+    public event EventHandler<HealthEventArgs>? OnHealthRecovery;
 
     public Unit(Team team, Battle battle)
     {
@@ -130,6 +131,21 @@ public abstract class Unit
         }
     }
 
+    public virtual void ReceiceDamage(double damage, object source)
+    {
+        if (HealthPoints.Now == HealthPoints.Max)
+            return;
+
+        var posibleHp = HealthPoints.Now + damage;
+        if (posibleHp >= HealthPoints.Max)
+            HealthPoints.Now = HealthPoints.Max;
+
+        if (posibleHp < HealthPoints.Max)
+            HealthPoints.Now = posibleHp;
+
+        OnHealthRecovery?.Invoke(source, new(this, damage, source.ToString()));
+    }
+
     public bool IsAlive() => HealthPoints.Now > 0;
     public bool IsShield() => Shields.Count > 0;
 
@@ -188,7 +204,7 @@ public abstract class Unit
         return (crit * coefInitiative) + (affectedArea);
     }
 
-    internal void Move(IEnumerable<Unit> enemies, int speedReduction)
+    internal void Move(IEnumerable<Unit> enemies, float speedReduction)
     {
         var moveEventArgs = new MoveEventArgs(this);
 
@@ -234,6 +250,8 @@ public abstract class Unit
     }
 }
 
+
+
 public struct UnitRadius
 {
     public float Back { get; set; }
@@ -273,4 +291,11 @@ public class MoveEventArgs(Unit whoMove) : EventArgs
     public float StartPositon { get; set; }
     public float EndPositon { get; set; }
     public float Speed { get; set; }
+}
+
+public class HealthEventArgs(Unit whoGetHeal, double healValue, string source) : EventArgs
+{
+    public Unit WhoGetHeal { get; set; } = whoGetHeal;
+    public double HealValue { get; set; } = healValue;
+    public string Source { get; set; } = source;
 }

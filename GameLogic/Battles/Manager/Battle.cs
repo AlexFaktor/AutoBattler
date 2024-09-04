@@ -70,9 +70,10 @@ public class Battle
 
         try
         {
-            StartBattle();
+            StartingBattleCalculation();
 
             InitializeTeams();
+            InitializeUnits();
             InitializeBattle();
 
             // Ігровий цикл
@@ -82,7 +83,7 @@ public class Battle
                 FindAndExecuteAction();
             }
 
-            EndBattle();
+            EndBattleCalculation();
         }
         catch (Exception e)
         {
@@ -96,8 +97,8 @@ public class Battle
 
             void PlaceUnit()
             {
-                float startPostition = -100f;
-                float stepBetweenTeam = 200f;
+                float startPostition = -5f;
+                float stepBetweenTeam = 10f;
 
                 foreach (var team in AllTeam)
                 {
@@ -109,7 +110,8 @@ public class Battle
                 }
             }
         }
-        void InitializeBattle()
+
+        void InitializeUnits()
         {
             foreach (var unit in AllUnits)
             {
@@ -118,18 +120,26 @@ public class Battle
 
             void Unit_OnDead(object? sender, DeadEventArgs e)
             {
-                if (sender is Unit)
+                if (sender is Unit unit)
                 {
+                    foreach (var action in unit.Actions) // Remove the skills of a dead unit
+                    {
+                        action.RemoveFromBattle();
+                    }
                     FindWinner();
                 }
             }
         }
+        void InitializeBattle()
+        {
+            
+        }
 
-        void StartBattle()
+        void StartingBattleCalculation()
         {
             stopwatch.Start();
         }
-        void EndBattle()
+        void EndBattleCalculation()
         {
             stopwatch.Stop();
             BattleResult.Stats.ActualDuration = stopwatch.ElapsedMilliseconds;
@@ -144,6 +154,7 @@ public class Battle
             if (Timeline > TIMILINE_MAX_VALUE)
             {
                 OnBattleDayPassed?.Invoke(this, new EventArgs());
+                EndBattleCalculation();
                 throw new Exception("The battle has been going on for a very long time");
             }
         }
@@ -151,8 +162,6 @@ public class Battle
 
     private void FindAndExecuteAction()
     {
-        if (BattleResult.Stats.TeamWinner != Guid.Empty)
-            return;
         if (AllBattleActions.Count <= 0)
             throw new Exception("No BattleAction");
 
@@ -167,11 +176,8 @@ public class Battle
         }
 
         var reloadableBattleActions = new List<RechargingAbility>();
-
         foreach (var battleAction in AllBattleActions)
-        {
             reloadableBattleActions.Add((RechargingAbility)battleAction);
-        }
 
         var reloadableBattleAction = reloadableBattleActions.OrderBy(a => a.Time.NextUse).First();
 

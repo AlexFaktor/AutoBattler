@@ -24,5 +24,10 @@ public abstract class Ability(Battle battle, Unit unit) : UnitAction(battle, uni
             return damage * coefInitiative;
     }
     
-    
+    protected double GetTotalPassiveHealth()
+    {
+        var healt = _unit.HealthPassive.Now;
+        var healtEff = _unit.HealthEfficiency.Now;
+        return healt * healtEff;
+    }
 }

@@ -37,10 +37,10 @@ public class BattleLogger
                 unit.OnDead += Unit_OnDead;
                 unit.OnDamageReceived += Unit_OnDamageReceived;
                 unit.OnMove += Unit_OnMove;
+                unit.OnHealthRecovery += Unit_OnHealthRecovery;
             }
         }
     }
-
 
     public void LogInfo(string message)
     {
@@ -118,6 +118,10 @@ public class BattleLogger
             LogAction("info", $" {unit.Name} will receive {e.DamageReceived:F1} damage from {e.Attacker.Name} ");
             Unit_LogResource(sender);
         }
+    }
+    private void Unit_OnHealthRecovery(object? sender, HealthEventArgs e)
+    {
+        LogAction("healt", $" {e.WhoGetHeal.Name} get {e.HealValue} healt from {e.Source} | Healt now: {e.WhoGetHeal.HealthPoints.Now}");
     }
 
     private void Unit_OnDead(object? sender, DeadEventArgs e)

@@ -1,6 +1,7 @@
 ﻿using GameLogic.Battles.Manager;
 using GameLogic.Battles.System;
 using GameLogic.Tools.ShellImporters.ConfigReaders;
+using GameLogic.Units.Content.Abilitys;
 using GameLogic.Units.Dtos;
 
 namespace GameLogic.Units;
@@ -47,5 +48,8 @@ public abstract class Character : Unit
         Dexterity = new(config.Dexterity);
         CriticalDefeat = new(config.CriticalDefeat);
         Armor = new(config.Armor);
+        
+        // Actions
+        Actions.Add(new PassiveHealthRecovery(Battle, this));
     }
 }
