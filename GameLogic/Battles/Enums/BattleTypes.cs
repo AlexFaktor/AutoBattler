@@ -9,7 +9,7 @@ public enum BattleTypes
     Test
 }
 
-public class EBattleTypeParser
+public class BattleTypesParser
 {
     public static string Parse(BattleTypes type)
     {

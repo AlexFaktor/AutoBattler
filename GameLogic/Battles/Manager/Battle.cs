@@ -20,7 +20,7 @@ public class Battle
     public Random Random { get; set; }
 
     // Battle 
-    public ulong Timeline { get; set; }
+    public ulong Timeline { get; set; } = 0;
     public List<Team> AllTeam { get; protected set; } = [];
     public List<Unit> AllUnits { get; protected set; } = [];
     public List<IBattleAction> AllBattleActions { get; protected set; } = [];
@@ -36,34 +36,26 @@ public class Battle
     public Battle(BattleConfiguration battleConfiguration, CharacterConfigReader characteConfigReader)
     {
         _unitFactory = new(characteConfigReader);
-        
         Configuration = battleConfiguration;
-        
-        
         Random = new Random(battleConfiguration.Seed);
 
         InitializeBattleConfiguration();
 
         Logger = new(DateTime.Now, this);
-
-        OnBattleStart?.Invoke(this, new EventArgs());
+        BattleResult = new(battleConfiguration, this);
 
         void InitializeBattleConfiguration()
         {
-            Timeline = 0;
-            var allTeams = new List<Team>();
-            foreach (var teamConfig in battleConfiguration.TeamConfigurations) {
-                allTeams.Add(new(teamConfig, this, _unitFactory));
+            foreach (var teamConfig in battleConfiguration.TeamConfigurations)
+            {
+                AllTeam.Add(new(teamConfig, this, _unitFactory));
             }
-            AllTeam = allTeams;
-            AllUnits = allTeams.SelectMany(t => t.Units).ToList();
+            AllUnits = AllTeam.SelectMany(t => t.Units).ToList();
             AllBattleActions = AllUnits
             .SelectMany(u => u.Actions)
             .OfType<IBattleAction>()
             .ToList();
         }
-
-        BattleResult = new(battleConfiguration, this);
     }
 
     public BattleResult CalculateBattle()
@@ -74,12 +66,12 @@ public class Battle
         {
             StartingBattleCalculation();
 
-            InitializeTeams();
             InitializeUnits();
-            InitializeBattle();
+            InitializeTeams();
 
-            // Ігровий цикл
-            while (BattleResult.Stats.TeamWinner == Guid.Empty)
+            OnBattleStart?.Invoke(this, new EventArgs());
+
+            while (BattleResult.Stats.TeamWinner == Guid.Empty) // Game loop
             {
                 BattleTick();
                 FindAndExecuteAction();
@@ -92,26 +84,6 @@ public class Battle
             Logger.LogError(e.Message);
         }
         return BattleResult;
-
-        void InitializeTeams() // NEED MAKE BE COMPLEX
-        {
-            PlaceUnit();
-
-            void PlaceUnit()
-            {
-                float startPostition = -5f;
-                float stepBetweenTeam = 10f;
-
-                foreach (var team in AllTeam)
-                {
-                    foreach (var unit in team.Units)
-                    {
-                        unit.TeleportTo(startPostition);
-                    }
-                    startPostition += stepBetweenTeam;
-                }
-            }
-        }
 
         void InitializeUnits()
         {
@@ -132,11 +104,25 @@ public class Battle
                 }
             }
         }
-        void InitializeBattle()
+        void InitializeTeams() // NEED MAKE BE COMPLEX
         {
-            
-        }
+            PlaceUnit();
 
+            void PlaceUnit()
+            {
+                float startPostition = -5f;
+                float stepBetweenTeam = 10f;
+
+                foreach (var team in AllTeam)
+                {
+                    foreach (var unit in team.Units)
+                    {
+                        unit.TeleportTo(startPostition);
+                    }
+                    startPostition += stepBetweenTeam;
+                }
+            }
+        }
         void StartingBattleCalculation()
         {
             stopwatch.Start();
@@ -150,7 +136,6 @@ public class Battle
 
             OnBattleEnd?.Invoke(this, new EventArgs());
         }
-
         void BattleTick()
         {
             if (Timeline > TIMILINE_MAX_VALUE)
@@ -186,7 +171,6 @@ public class Battle
         Timeline = reloadableBattleAction.Time.NextUse;
         reloadableBattleAction.Action();
     }
-
     private void FindWinner()
     {
         var AliveTeams = new List<Team>();

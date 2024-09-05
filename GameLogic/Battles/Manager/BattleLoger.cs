@@ -1,6 +1,8 @@
 ﻿using GameLogic.Battles.Enums;
+using GameLogic.BattleSystem.Enums;
 using GameLogic.Units;
 using Serilog;
+using System.Text;
 
 namespace GameLogic.Battles.Manager;
 
@@ -17,7 +19,7 @@ public class BattleLogger
         _logDirectory = Path.Combine(documentsPath, "Camp of Strangers", "Logs");
         Directory.CreateDirectory(_logDirectory);
 
-        string fileName = $"{battleTime:yyyy-MM-dd_HH-mm-ss}_{EBattleTypeParser.Parse(battle.Configuration.BattleType)}_battle-log.html";
+        string fileName = $"{battleTime:yyyy-MM-dd_HH-mm-ss}_{BattleTypesParser.Parse(battle.Configuration.BattleType)}_battle-log.html";
         string filePath = Path.Combine(_logDirectory, fileName);
 
         _logger = new LoggerConfiguration()
@@ -89,7 +91,32 @@ public class BattleLogger
 
         if (sender is Battle battle)
         {
-            LogCustom("battle", "start");
+            LogCustom($"battle", "start", "\n" +
+                $"STARTING CONFIGURATION\n" +
+                $"TYPE : {BattleTypesParser.Parse(battle.Configuration.BattleType)}\n" +
+                $"DAY TIME : {battle.Configuration.DayTime}\n" +
+                $"TEMPETURA : {battle.Configuration.Tempetura}\n" +
+                $"TERRAIN : {battle.Configuration.Terrain}\n" +
+                $"WEATHER : {battle.Configuration.Weather}\n" +
+                $"{TeamInfo()}\n");
+
+            string TeamInfo()
+            {
+                var text = new StringBuilder();
+
+                text.Append("TEAMS\n");
+
+                foreach (var team in battle.AllTeam)
+                {
+                    text.Append($" TOKEN - {team.Token}\n");
+                    foreach (var unit in team.Units)
+                    {
+                        text.Append($"  {unit.Name} > HEALPOINTS {unit.HealthPoints.Now}, ARMOR {unit.Armor.Now}, DAMAGE {unit.Damage.Now} \n");
+                    }
+                }
+
+                return text.ToString();
+            }
         }
     }
 
