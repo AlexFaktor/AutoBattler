@@ -171,7 +171,9 @@ public class BattleLogger
     {
         if (sender is Unit unit)
         {
-            LogInfo("unit", $" {unit.Name} >> S {unit.Shield.Now:F1}/{unit.Shield.Max:F1}| H {unit.HealthPoints.Now:F1}/{unit.HealthPoints.Max:F1} ");
+            var shieldNow = unit.Shields.FirstOrDefault()?.Now ?? 0;
+            var shieldMax = unit.Shields.FirstOrDefault()?.Max ?? 0;
+            LogInfo("unit", $" {unit.Name} >> S {shieldNow:F1}/{shieldMax:F1}| H {unit.HealthPoints.Now:F1}/{unit.HealthPoints.Max:F1} ");
         }
     }
 }

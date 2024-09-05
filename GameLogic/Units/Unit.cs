@@ -43,8 +43,6 @@ public abstract class Unit
 
     // Defensive
     public TUnitResource<double> HealthPoints { get; protected set; } = new(1);
-    public TUnitResource<double> Shield { get; protected set; } = new(0);
-
     public List<TUnitResource<double>> Shields { get; protected set; } = new();
 
     public TUnitPercentage ShieldEfficiency { get; protected set; } = new(0f);
@@ -139,7 +137,7 @@ public abstract class Unit
         }
     }
 
-    public virtual void ReceiceDamage(double damage, object source)
+    public virtual void ReceiceHeal(double damage, object source)
     {
         if (HealthPoints.Now == HealthPoints.Max)
             return;

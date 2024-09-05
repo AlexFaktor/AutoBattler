@@ -19,7 +19,7 @@ internal class PassiveHealthRecovery : RechargingAbility
     public override void Action()
     {
         var passiveHalth = GetTotalPassiveHealth() / HILL_RATE_PER_SECOND;
-        _unit.ReceiceDamage(passiveHalth, this);
+        _unit.ReceiceHeal(passiveHalth, this);
         Time.Reload(NEXT_USE);
     }
 }

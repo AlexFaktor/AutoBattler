@@ -41,14 +41,15 @@ public abstract class Character : Unit
         IgnoringArmor = new(config.IgnoringArmor);
         // Defensive
         HealthPoints = new(config.HealthPoints);
-        Shield = new(config.Shield);
+        Shields = [];
         ShieldEfficiency = new(config.ShieldEfficiency);
         HealthPassive = new(config.HealthPassive);
         HealthEfficiency = new(config.HealthEfficiency);
         Dexterity = new(config.Dexterity);
         CriticalDefeat = new(config.CriticalDefeat);
         Armor = new(config.Armor);
-        
+
+        Shields.Add(new(config.Shield));
         // Actions
         Actions.Add(new PassiveHealthRecovery(Battle, this));
     }
