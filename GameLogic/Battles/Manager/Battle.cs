@@ -39,16 +39,16 @@ public class Battle
         
         Configuration = battleConfiguration;
         
-        BattleResult = new(battleConfiguration);
+        
         Random = new Random(battleConfiguration.Seed);
 
-        InitializeConfiguration();
+        InitializeBattleConfiguration();
 
         Logger = new(DateTime.Now, this);
 
         OnBattleStart?.Invoke(this, new EventArgs());
 
-        void InitializeConfiguration()
+        void InitializeBattleConfiguration()
         {
             Timeline = 0;
             var allTeams = new List<Team>();
@@ -62,6 +62,8 @@ public class Battle
             .OfType<IBattleAction>()
             .ToList();
         }
+
+        BattleResult = new(battleConfiguration, this);
     }
 
     public BattleResult CalculateBattle()

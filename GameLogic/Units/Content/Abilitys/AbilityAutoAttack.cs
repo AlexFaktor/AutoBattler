@@ -22,9 +22,10 @@ internal class AbilityAutoAttack : RechargingAbility
 
         if (target is null)
         {
-            logger.LogAction("autoattack-info", $" {_unit.Name} has no target to attack ");
             const int TIME_COLLDOWN_IF_MOVE = 400; // If the skill was not used due to the absence of enemies. It is included in the recharge for 100 milliseconds.
             const float HOW_MANY_TIMES_WEAKER_WILL_BE_MOVE_SPEED = 2.5f;
+
+            logger.LogAction("autoattack-info", $" {_unit.Name} has no target to attack ");
             _unit.Move(enemys, HOW_MANY_TIMES_WEAKER_WILL_BE_MOVE_SPEED);
             Time.Reload(TIME_COLLDOWN_IF_MOVE);
             return;
@@ -34,17 +35,27 @@ internal class AbilityAutoAttack : RechargingAbility
         if (!isHit)
         {
             logger.LogAction("autoattack-info", $" {_unit.Name} missed ");
+            target.TriggerDodge(_unit);
+            _unit.TriggerMiss();
             Time.Reload(_unit.AttackSpeed.Now);
             return;
         }
-        var isCrit = (float)_battle.Random.NextDouble() > _unit.ChanceOfCritUnit(target);
+        _unit.TriggerHit();
+        
+        var isCrit = (float)_battle.Random.NextDouble() < _unit.ChanceOfCritUnit(target);
 
         if (isCrit)
             logger.LogAction("autoattack-info", $" {_unit.Name} attacked {target.Name} with crit ");
         else
             logger.LogAction("autoattack-info", $" {_unit.Name} attacked {target.Name}");
 
-        target.ReceiveDamageFromUnit(GetTotalPower(isCrit), _unit);
+        double hitDamage = GetTotalPower(isCrit);
+
+        double hitCrit = GetTotalPower(true);
+        double hitWithoutCrit = GetTotalPower(false);
+
+        _unit.TriggerAttack(hitDamage, isCrit, !isHit);
+        target.ReceiveDamageFromUnit(hitDamage, _unit, isCrit, hitCrit - hitWithoutCrit);
 
         Time.Reload(_unit.AttackSpeed.Now);
     }
